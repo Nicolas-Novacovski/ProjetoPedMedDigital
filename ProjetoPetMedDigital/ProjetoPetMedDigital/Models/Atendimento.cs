@@ -14,8 +14,5 @@ namespace ProjetoPetMedDigital.Models
 
         public string DoutorEscalado { get; set; }
         public string StatusAtendimento { get; set; }
-        public float ValorConsulta { get; set; }
-
-        
     }
 }
