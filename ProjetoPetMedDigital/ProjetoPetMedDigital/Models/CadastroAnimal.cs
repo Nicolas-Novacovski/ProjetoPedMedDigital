@@ -8,7 +8,7 @@ namespace PetMed_Digital.Models
     public class CadastroAnimal : BaseModel
     {
         [Key]
-        public int IdCachorro { get; set; }
+        public int IdAnimal { get; set; }
         public string NomeAnimal { get; set; }
         public int IdadeAnimal { get; set; }
         public string TipoAnimal { get; set; }

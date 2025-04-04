@@ -21,6 +21,6 @@ namespace PetMed_Digital.Models
         public int VacinasAplicadas { get; set; }
         public int EstoqueVacina { get; set; }
         public int EstoqueMedicamento { get; set; }
-        public int? ListaMateriais { get; set; }
+        public int? ListaMateriaisCompras { get; set; }
     }
 }

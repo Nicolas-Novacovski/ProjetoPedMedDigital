@@ -1,0 +1,50 @@
+﻿@import url('variables.css');
+
+.desativado {
+/*    color: var(--lightgray);*/
+    color: #CDCDCD;
+}
+
+.corPadrao {
+    color: var(--defaultFontColor);
+}
+
+.containerBannerInscricao {
+    display: flex;
+    align-items: center;
+}
+
+.textoBannerInscricao {
+    font-size: 1.5em;
+}
+
+.numeroBannerInscricao {
+    font-variation-settings: 'FILL' 1;
+    font-size: 6em;
+}
+
+.btn-success-2:disabled {
+    color: var(--gray);
+}
+
+.emblema-td {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.emblema-span {
+    color: white;
+    padding: 10%;
+    border-radius: 8px;
+/*    margin-right: 40px;*/
+}
+
+.emblema-sucesso {
+    background-color: var(--green);
+}
+
+.emblema-erro {
+    background-color: var(--red);
+}
+
