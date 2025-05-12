@@ -8,8 +8,17 @@ namespace ProjetoPetMedDigital.Models
     {
         [Key]
         public int IdProntuario { get; set; }
+
+        // Chave estrangeira para o Agendamento
+        [ForeignKey("Agendamento")]
         public int IdAgendamento { get; set; }
+        public Agendamento Agendamento { get; set; } // Navegação para a tabela Agendamento
+
+        // Chave estrangeira para o Veterinario
+        [ForeignKey("Veterinario")]
         public int IdVeterinario { get; set; }
+        public Veterinario Veterinario { get; set; } // Navegação para a tabela Veterinario
+
         public DateTime DataConsulta { get; set; }
         public string MotivoConsulta { get; set; }
         public string Diagnostico { get; set; }
@@ -19,6 +28,10 @@ namespace ProjetoPetMedDigital.Models
         public int FrequenciaCardiaca { get; set; }
         public int FrequenciaRespiatoria { get; set; }
         public string Observacoes { get; set; }
+
+        // Chave estrangeira para o Paciente
+        [ForeignKey("Paciente")]
         public int IdPaciente { get; set; }
+        public Paciente Paciente { get; set; } // Navegação para a tabela Paciente
     }
 }
