@@ -14,8 +14,6 @@ namespace ProjetoPetMedDigital.Models
         public string ValorSaida { get; set; }
         public string Salario { get; set; }
         public string CompraProdutos { get; set; }
-
-        // Chave estrangeira para o Cliente
-        [ForeignKey("Cliente")]
         public int IdCliente { get; set; }
-        public Cliente Cliente { get; set; } // Navegação para a
+    }
+}

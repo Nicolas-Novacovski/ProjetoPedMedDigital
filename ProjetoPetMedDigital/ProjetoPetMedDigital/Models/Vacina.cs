@@ -11,13 +11,6 @@ namespace ProjetoPetMedDigital.Models
         public string NomeVacina { get; set; }
         public string Descricao { get; set; }
         public string Duracao { get; set; }
-
-        // Chave estrangeira para o Paciente
-        [ForeignKey("Paciente")]
         public int IdPaciente { get; set; }
-        public Paciente Paciente { get; set; } // Navegação para a tabela Paciente
-
-        public ICollection<Veterinario> Veterinarios { get; set; }
-        public ICollection<ItemEstoque> ItensEstoque { get; set; }
     }
 }

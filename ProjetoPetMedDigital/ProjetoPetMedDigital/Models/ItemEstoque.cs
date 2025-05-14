@@ -17,12 +17,6 @@ namespace ProjetoPetMedDigital.Models
         public DateTime DataValidade { get; set; }
         public string Fornecedor { get; set; }
         public long TransacaoDesejada { get; set; }
-
-        // Chave estrangeira para a Vacina
-        [ForeignKey("Vacina")]
         public int IdVacina { get; set; }
-        public Vacina Vacina { get; set; } // Navegação para a tabela Vacina
-
-        public ICollection<Servico> Servicos { get; set; }
     }
 }

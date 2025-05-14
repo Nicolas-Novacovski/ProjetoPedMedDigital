@@ -20,12 +20,6 @@ namespace ProjetoPetMedDigital.Models
         public string Cidade { get; set; }
         public long Cargo { get; set; }
         public long TipoUsuario { get; set; }
-
-        // Chave estrangeira para o Veterinario
-        [ForeignKey("Veterinario")]
         public int IdVeterinario { get; set; }
-        public Veterinario Veterinario { get; set; } // Navegação para a tabela Veterinario
-
-        public ICollection<Usuario> Usuarios { get; set; }
     }
 }

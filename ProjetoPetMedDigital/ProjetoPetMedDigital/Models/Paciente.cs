@@ -8,21 +8,13 @@ namespace ProjetoPetMedDigital.Models
     {
         [Key]
         public int IdPaciente { get; set; }
-
-        // Chave estrangeira para o Cliente
-        [ForeignKey("Cliente")]
         public int IdCliente { get; set; }
-        public Cliente Cliente { get; set; } // Navegação para a tabela Cliente
-
-        public string Nome { get; set; }
-        public DateTime DataNascimento { get; set; }
-        public string Raca { get; set; }
-        public string Cor { get; set; }
-        public string Sexo { get; set; }
-
-        public ICollection<Prontuario> Prontuarios { get; set; }
-        public ICollection<Agendamento> Agendamentos { get; set; }
-        public ICollection<Vacina> Vacinas { get; set; }
-        public ICollection<AgendaVeterinario> Agendas { get; set; }
+        public string NomeCachorro { get; set; }
+        public long Estado { get; set; }
+        public string Problema { get; set; }
+        public long TipoAtendimento { get; set; }
+        public float Peso { get; set; }
+        public string SinaisVitais { get; set; }
+        public string Recomendacoes { get; set; }
     }
 }
