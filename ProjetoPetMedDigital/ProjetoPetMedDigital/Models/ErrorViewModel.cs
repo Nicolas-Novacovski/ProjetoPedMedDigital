@@ -1,4 +1,4 @@
-﻿namespace SeuProjeto.Models
+﻿namespace ProjetoPetMedDigital.Models
 {
     public class ErrorViewModel
     {
