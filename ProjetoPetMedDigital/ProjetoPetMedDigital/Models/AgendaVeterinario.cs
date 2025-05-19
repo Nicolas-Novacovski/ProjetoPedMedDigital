@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -12,5 +13,9 @@ namespace ProjetoPetMedDigital.Models
         public DateTime DataInicio { get; set; }
         public DateTime DataFim { get; set; }
         public int IdPaciente { get; set; }
+
+        // Propriedades de navegação
+        public Veterinario Veterinario { get; set; }
+        public Paciente Paciente { get; set; }
     }
 }

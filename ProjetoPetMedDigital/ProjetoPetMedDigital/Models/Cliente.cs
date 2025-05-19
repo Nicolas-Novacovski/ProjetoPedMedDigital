@@ -1,4 +1,6 @@
 ﻿using PetMed_Digital.Models;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,5 +21,8 @@ namespace ProjetoPetMedDigital.Models
         public string Endereco { get; set; }
         public string Bairro { get; set; }
         public string Cidade { get; set; }
+
+        // Propriedades de navegação
+        public List<Paciente> Pacientes { get; set; }
     }
 }

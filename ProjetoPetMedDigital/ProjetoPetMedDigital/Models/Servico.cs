@@ -1,3 +1,5 @@
+using PetMed_Digital.Models;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,6 +18,14 @@ namespace ProjetoPetMedDigital.Models
         public long Status { get; set; }
         public decimal PrecoVenda { get; set; }
         public string Descricao { get; set; }
-        public int IdProduto { get; set; }
+        public int IdAgendamento { get; set; } // Chave estrangeira para Agendamento
+        public int IdProduto { get; set; } // Chave estrangeira para ItemEstoque (não estava no SQL, adicionei baseado no Procedimento e Vacina)
+        public int IdValor { get; set; } // Chave estrangeira para Valor
+
+        // Propriedades de navegação
+        public Agendamento Agendamento { get; set; }
+        public Veterinario Veterinario { get; set; }
+        public ItemEstoque ItemEstoque { get; set; }
+        public Valor Valor { get; set; }
     }
 }
