@@ -59,8 +59,9 @@ namespace ProjetoPetMedDigital.Data
                 .OnDelete(DeleteBehavior.Restrict); // Adicionado para evitar exclusão em cascata
 
             // Relacionamento Agendamento para Servico (um para muitos)
+            Func<Agendamento, IEnumerable<TRelatedEntity>?> value = a => a.Servico;
             modelBuilder.Entity<Agendamento>()
-                .HasMany(a => a.Servicos)
+                .HasMany(value)
                 .WithOne(s => s.Agendamento)
                 .HasForeignKey(s => s.IdAgendamento)
                 .OnDelete(DeleteBehavior.Restrict); // Adicionado para evitar exclusão em cascata

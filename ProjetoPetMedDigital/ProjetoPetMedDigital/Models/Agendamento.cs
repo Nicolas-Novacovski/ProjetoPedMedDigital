@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace ProjetoPetMedDigital.Models
 {
     [Table("Agendamento")]
-    public class Agendamento : BaseModel
+    public class Agendamento : PetMed_Digital.Models.BaseModel
     {
         [Key]
         public int IdAgendamento { get; set; }
