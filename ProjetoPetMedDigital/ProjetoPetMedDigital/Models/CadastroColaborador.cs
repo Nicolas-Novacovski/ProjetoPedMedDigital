@@ -1,4 +1,4 @@
-using PetMed_Digital.Models;
+using PetMed_Digital.Models; // Adicionado para BaseModel
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -20,12 +20,12 @@ namespace ProjetoPetMedDigital.Models
         public string Endereco { get; set; }
         public string Bairro { get; set; }
         public string Cidade { get; set; }
-        public long Cargo { get; set; }
-        public long TipoUsuario { get; set; }
-        public string Login { get; set; } // Chave estrangeira para Usuario
+        public int Cargo { get; set; } // Alterado de long para int
+        public int TipoUsuario { get; set; } // Alterado de long para int
+        public string Login { get; set; } // Chave estrangeira para Usuario.Login (PK de Usuario)
 
         // Propriedades de navegação
         public Usuario Usuario { get; set; }
-        public Veterinario Veterinario { get; set; }
+        public Veterinario Veterinario { get; set; } // Se um colaborador PODE ser um veterinário (relação 1-0 ou 1)
     }
 }

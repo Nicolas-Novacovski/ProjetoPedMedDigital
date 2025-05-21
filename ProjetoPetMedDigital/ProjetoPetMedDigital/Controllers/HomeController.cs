@@ -1,6 +1,9 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using ProjetoPetMedDigital.Models;
+using ProjetoPetMedDigital.Models; // Supondo que ErrorViewModel está aqui
+// Adicione ILogger se ainda não estiver globalmente acessível ou via DI
+// using Microsoft.Extensions.Logging;
+
 
 namespace ProjetoPetMedDigital.Controllers
 {

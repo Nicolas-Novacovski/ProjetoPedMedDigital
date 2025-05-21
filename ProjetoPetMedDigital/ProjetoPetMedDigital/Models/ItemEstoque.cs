@@ -1,4 +1,4 @@
-using PetMed_Digital.Models;
+using PetMed_Digital.Models; // Adicionado para BaseModel
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -18,11 +18,11 @@ namespace ProjetoPetMedDigital.Models
         public string UnidadeMedida { get; set; }
         public DateTime? DataValidade { get; set; }
         public string Fornecedor { get; set; }
-        public long? TransacaoDesejada { get; set; }
+        public int? TransacaoDesejada { get; set; } // Alterado de long? para int?
 
-        // Propriedades de navegação
+        // Propriedades de navegação (para relações 1-para-1 onde ItemEstoque é o principal)
         public Vacina Vacina { get; set; }
         public Procedimento Procedimento { get; set; }
-        public Servico Servico { get; set; }
+        public Servico Servico { get; set; } // Se um ItemEstoque está diretamente ligado a um único tipo de serviço
     }
 }

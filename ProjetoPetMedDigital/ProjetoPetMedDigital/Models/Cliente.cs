@@ -1,4 +1,4 @@
-﻿using PetMed_Digital.Models;
+﻿using PetMed_Digital.Models; // Adicionado para BaseModel
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -24,5 +24,6 @@ namespace ProjetoPetMedDigital.Models
 
         // Propriedades de navegação
         public List<Paciente> Pacientes { get; set; }
+        public List<Valor> Valores { get; set; } // Adicionado se Cliente pode ter múltiplos Valores
     }
 }

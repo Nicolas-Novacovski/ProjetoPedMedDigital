@@ -1,4 +1,4 @@
-using PetMed_Digital.Models;
+using PetMed_Digital.Models; // Adicionado para BaseModel
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -12,7 +12,7 @@ namespace ProjetoPetMedDigital.Models
         public string NomeProcedimento { get; set; }
         public string Descricao { get; set; }
         public decimal Valor { get; set; }
-        public int IdProduto { get; set; } // Chave estrangeira para ItemEstoque
+        public int IdProduto { get; set; } // Chave estrangeira para ItemEstoque.IdProduto
 
         // Propriedades de navegação
         public ItemEstoque ItemEstoque { get; set; }

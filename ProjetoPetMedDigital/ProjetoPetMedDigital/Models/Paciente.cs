@@ -1,4 +1,4 @@
-using PetMed_Digital.Models;
+using PetMed_Digital.Models; // Adicionado para BaseModel
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,13 +12,12 @@ namespace ProjetoPetMedDigital.Models
         public int IdPaciente { get; set; }
         public int IdCliente { get; set; }
         public string NomeCachorro { get; set; }
-        public long Estado { get; set; }
+        public int Estado { get; set; } // Alterado de long para int
         public string Problema { get; set; }
-        public long TipoAtendimento { get; set; }
+        public int TipoAtendimento { get; set; } // Alterado de long para int
         public float Peso { get; set; }
         public string SinaisVitais { get; set; }
         public string Recomendacoes { get; set; }
-        // As FKs para Agendamento, Prontuario e Vacina serão tratadas pelas propriedades de navegação
 
         // Propriedades de navegação
         public Cliente Cliente { get; set; }
