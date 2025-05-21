@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using PetMed_Digital.Models; // Adicionado para BaseModel
-using System.Collections.Generic; // Adicionado para List
+using PetMed_Digital.Models;
+using System.Collections.Generic;
 
 namespace ProjetoPetMedDigital.Models
 {
@@ -13,17 +13,14 @@ namespace ProjetoPetMedDigital.Models
         public int IdAgendamento { get; set; }
         public int IdPaciente { get; set; }
         public int IdVeterinario { get; set; }
-        // IdServico removido, pois um agendamento pode ter múltiplos serviços.
-        // A relação será gerenciada por Servico.IdAgendamento
         public DateTime DataAgendamento { get; set; }
-        public DateTime HoraAgendamento { get; set; } // Considerar usar TimeSpan ou apenas DateTime para DataAgendamento completo
-        public string Observacoes { get; set; }
-        // IdProntuario removido, Prontuario terá IdAgendamento para a relação 1-1
+        public DateTime HoraAgendamento { get; set; }
+        public string Observacoes { get; set; } = string.Empty; // Inicializado
 
         // Propriedades de navegação
-        public Paciente Paciente { get; set; }
-        public Veterinario Veterinario { get; set; }
-        public List<Servico> Servicos { get; set; } // Alterado para List<Servico>
-        public Prontuario Prontuario { get; set; }
+        public Paciente Paciente { get; set; } = null!; // EF Core preencherá
+        public Veterinario Veterinario { get; set; } = null!; // EF Core preencherá
+        public List<Servico> Servicos { get; set; } = new List<Servico>(); // Inicializado
+        public Prontuario? Prontuario { get; set; } // Um agendamento pode não ter um prontuário imediatamente
     }
 }

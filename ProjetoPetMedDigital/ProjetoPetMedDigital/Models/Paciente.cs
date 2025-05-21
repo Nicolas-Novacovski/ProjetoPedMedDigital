@@ -1,4 +1,4 @@
-using PetMed_Digital.Models; // Adicionado para BaseModel
+using PetMed_Digital.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,18 +11,18 @@ namespace ProjetoPetMedDigital.Models
         [Key]
         public int IdPaciente { get; set; }
         public int IdCliente { get; set; }
-        public string NomeCachorro { get; set; }
-        public int Estado { get; set; } // Alterado de long para int
-        public string Problema { get; set; }
-        public int TipoAtendimento { get; set; } // Alterado de long para int
+        public string NomeCachorro { get; set; } = null!;
+        public int Estado { get; set; }
+        public string Problema { get; set; } = string.Empty;
+        public int TipoAtendimento { get; set; }
         public float Peso { get; set; }
-        public string SinaisVitais { get; set; }
-        public string Recomendacoes { get; set; }
+        public string SinaisVitais { get; set; } = string.Empty;
+        public string Recomendacoes { get; set; } = string.Empty;
 
         // Propriedades de navegação
-        public Cliente Cliente { get; set; }
-        public List<Agendamento> Agendamentos { get; set; }
-        public List<Prontuario> Prontuarios { get; set; }
-        public List<Vacina> Vacinas { get; set; }
+        public Cliente Cliente { get; set; } = null!;
+        public List<Agendamento> Agendamentos { get; set; } = new List<Agendamento>();
+        public List<Prontuario> Prontuarios { get; set; } = new List<Prontuario>();
+        public List<Vacina> Vacinas { get; set; } = new List<Vacina>();
     }
 }
