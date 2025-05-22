@@ -6,8 +6,8 @@ using System.Collections.Generic;
 
 namespace ProjetoPetMedDigital.Models
 {
-    [Table("Agendamentp")]
-    public class Agendameto : BaseModel
+    [Table("Agendamento")]
+    public class Agendamento : BaseModel
     {
         [Key]
         public int IdAgendamento { get; set; }
@@ -24,4 +24,3 @@ namespace ProjetoPetMedDigital.Models
         public Prontuario? Prontuario { get; set; } // Um agendamento pode não ter um prontuário imediatamente
     }
 }
-```
