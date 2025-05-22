@@ -1,12 +1,12 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using PetMed_Digital.Models;
+using PetMed_Digital.Models; // Certifique-se de que este using está correto
 using System.Collections.Generic;
 
 namespace ProjetoPetMedDigital.Models
 {
-    [Table("Agendamento")]
+    [Table("Agendament")]
     public class Agendamento : BaseModel
     {
         [Key]
@@ -24,3 +24,4 @@ namespace ProjetoPetMedDigital.Models
         public Prontuario? Prontuario { get; set; } // Um agendamento pode não ter um prontuário imediatamente
     }
 }
+```
