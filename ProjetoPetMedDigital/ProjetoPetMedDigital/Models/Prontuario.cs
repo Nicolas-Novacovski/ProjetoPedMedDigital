@@ -10,8 +10,8 @@ namespace ProjetoPetMedDigital.Models
     {
         [Key]
         public int IdProntuario { get; set; }
-        public int? IdAgendamento { get; set; }
-        public int? IdVeterinario { get; set; }
+        public int? IdAgendamento { get; set; } // FK anulável
+        public int? IdVeterinario { get; set; } // FK anulável
         public DateTime DataConsulta { get; set; }
         public string MotivoConsulta { get; set; } = string.Empty;
         public string Diagnostico { get; set; } = string.Empty;
@@ -21,11 +21,11 @@ namespace ProjetoPetMedDigital.Models
         public int? FrequenciaCardiaca { get; set; }
         public int? FrequenciaRespiratoria { get; set; }
         public string Observacoes { get; set; } = string.Empty;
-        public int IdPaciente { get; set; }
+        public int IdPaciente { get; set; } // FK não anulável
 
         // Propriedades de navegação
-        public Agendamento? Agendamento { get; set; } // FK IdAgendamento é anulável
-        public Veterinario? Veterinario { get; set; } // FK IdVeterinario é anulável
-        public Paciente Paciente { get; set; } = null!; // FK IdPaciente não é anulável
+        public Agendamento? Agendamento { get; set; }
+        public Veterinario? Veterinario { get; set; }
+        public Paciente Paciente { get; set; } = null!;
     }
 }

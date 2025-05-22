@@ -6,8 +6,8 @@ using System.Collections.Generic;
 
 namespace ProjetoPetMedDigital.Models
 {
-    [Table("Agendament")]
-    public class Agendamento : BaseModel
+    [Table("Agendamentp")]
+    public class Agendameto : BaseModel
     {
         [Key]
         public int IdAgendamento { get; set; }

@@ -9,7 +9,7 @@ namespace ProjetoPetMedDigital.Models
     public class ItemEstoque : BaseModel
     {
         [Key]
-        public int IdProduto { get; set; }
+        public int IdProduto { get; set; } // Esta será a PK para Vacina, Procedimento, Servico
         public string NomeProduto { get; set; } = null!;
         public string Descricao { get; set; } = string.Empty;
         public int? Quantidade { get; set; }
@@ -20,7 +20,7 @@ namespace ProjetoPetMedDigital.Models
         public string Fornecedor { get; set; } = null!;
         public int? TransacaoDesejada { get; set; }
 
-        // Propriedades de navegação
+        // Propriedades de navegação (One-to-One com chave compartilhada)
         public Vacina? Vacina { get; set; }
         public Procedimento? Procedimento { get; set; }
         public Servico? Servico { get; set; }

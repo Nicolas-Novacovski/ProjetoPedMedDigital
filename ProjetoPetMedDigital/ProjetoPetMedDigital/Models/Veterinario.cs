@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjetoPetMedDigital.Models
 {
-    [Table("Veterinarios")]
+    [Table("Veterinarios")] // Nome da tabela está no plural, mantenha a consistência.
     public class Veterinario : BaseModel
     {
         [Key]
@@ -14,7 +14,7 @@ namespace ProjetoPetMedDigital.Models
         public string Especialidade { get; set; } = null!;
         public string Telefone { get; set; } = null!;
         public string Email { get; set; } = null!;
-        public int IdColaborador { get; set; }
+        public int IdColaborador { get; set; } // FK para CadastroColaborador.IdColaborador
 
         // Propriedades de navegação
         public List<Agendamento> Agendamentos { get; set; } = new List<Agendamento>();

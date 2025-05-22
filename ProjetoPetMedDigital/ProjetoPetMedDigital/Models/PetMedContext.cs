@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjetoPetMedDigital.Models;
+using PetMed_Digital.Models; // Adicionado para BaseModel se necessário para outras entidades
 
 namespace ProjetoPetMedDigital.Data
 {
@@ -26,6 +27,9 @@ namespace ProjetoPetMedDigital.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // As configurações de chave estrangeira e relações estão corretas
+            // baseadas nas propriedades de navegação e FKs que você definiu.
 
             modelBuilder.Entity<Cliente>()
                 .HasMany(c => c.Pacientes)
@@ -89,42 +93,48 @@ namespace ProjetoPetMedDigital.Data
                 .HasForeignKey(s => s.IdVeterinario)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // ItemEstoque com relações One-to-One onde IdProduto é a PK e a FK
             modelBuilder.Entity<ItemEstoque>()
                 .HasOne(ie => ie.Vacina)
                 .WithOne(v => v.ItemEstoque)
-                .HasForeignKey<Vacina>(v => v.IdProduto)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Servico>()
-                .HasOne(s => s.Valor)
-                .WithOne(v => v.Servico)
-                .HasForeignKey<Servico>(s => s.IdValor)
+                .HasForeignKey<Vacina>(v => v.IdProduto) // Vacina.IdProduto é FK e PK de Vacina
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ItemEstoque>()
                 .HasOne(ie => ie.Procedimento)
                 .WithOne(p => p.ItemEstoque)
-                .HasForeignKey<Procedimento>(p => p.IdProduto)
+                .HasForeignKey<Procedimento>(p => p.IdProduto) // Procedimento.IdProduto é FK e PK de Procedimento
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ItemEstoque>()
                 .HasOne(ie => ie.Servico)
                 .WithOne(s => s.ItemEstoque)
-                .HasForeignKey<Servico>(s => s.IdProduto)
+                .HasForeignKey<Servico>(s => s.IdProduto) // Servico.IdProduto é FK e PK de Servico
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Relação entre Servico e Valor (Servico tem uma FK para Valor)
+            modelBuilder.Entity<Servico>()
+                .HasOne(s => s.Valor)
+                .WithOne(v => v.Servico) // Valor tem uma navegação para Servico
+                .HasForeignKey<Servico>(s => s.IdValor) // Servico.IdValor é a FK para Valor.IdValor
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+            // Relação CadastroColaborador e Usuario (Um para Um, com FK em Usuario)
             modelBuilder.Entity<CadastroColaborador>()
                 .HasOne(cc => cc.Usuario)
                 .WithOne(u => u.CadastroColaborador)
-                .HasForeignKey<Usuario>(u => u.IdColaborador)
+                .HasForeignKey<Usuario>(u => u.IdColaborador) // Usuario.IdColaborador é a FK para CadastroColaborador.IdColaborador
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Relação CadastroColaborador e Veterinario (Um para Um, com FK em Veterinario)
             modelBuilder.Entity<CadastroColaborador>()
                 .HasOne(cc => cc.Veterinario)
                 .WithOne(v => v.CadastroColaborador)
-                .HasForeignKey<Veterinario>(v => v.IdColaborador)
+                .HasForeignKey<Veterinario>(v => v.IdColaborador) // Veterinario.IdColaborador é a FK para CadastroColaborador.IdColaborador
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Configuração para Prontuario, com as FKs explicitamente definidas
             modelBuilder.Entity<Prontuario>(entity =>
             {
                 entity.HasOne(p => p.Veterinario)
@@ -138,6 +148,7 @@ namespace ProjetoPetMedDigital.Data
                       .OnDelete(DeleteBehavior.Restrict);
             });
 
+            // Chave Primária composta ou alternativa para Usuario (já estava assim, mantido)
             modelBuilder.Entity<Usuario>()
                 .HasKey(u => u.Login);
         }

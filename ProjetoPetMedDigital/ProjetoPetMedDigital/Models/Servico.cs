@@ -19,8 +19,8 @@ namespace ProjetoPetMedDigital.Models
         public decimal PrecoVenda { get; set; }
         public string Descricao { get; set; } = string.Empty;
         public int IdAgendamento { get; set; }
-        public int IdProduto { get; set; }
-        public int IdValor { get; set; }
+        public int IdProduto { get; set; } // FK para ItemEstoque.IdProduto
+        public int IdValor { get; set; } // FK para Valor.IdValor
 
         // Propriedades de navegação
         public Agendamento Agendamento { get; set; } = null!;

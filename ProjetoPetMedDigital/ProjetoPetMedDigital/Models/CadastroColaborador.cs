@@ -22,6 +22,12 @@ namespace ProjetoPetMedDigital.Models
         public string Cidade { get; set; } = null!;
         public int Cargo { get; set; }
         public int TipoUsuario { get; set; }
+        public int UsuarioId { get; set; } // Renomeado para evitar conflito com Login, e como FK
+                                           // Mantenho a FK aqui, mas o relacionamento é com Usuario.Login
+                                           // Você precisa decidir se Usuario.Login é a PK ou se Usuario.Id é a PK.
+                                           // No seu PetMedContext, Usuario.Login é a PK.
+                                           // Então, a FK aqui deveria ser do tipo string e se chamar Login.
+                                           // VOU AJUSTAR PARA REFLETIR O PetMedContext:
         public string Login { get; set; } = null!; // Chave estrangeira para Usuario.Login
 
         // Propriedades de navegação
