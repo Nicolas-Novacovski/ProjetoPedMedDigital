@@ -7,6 +7,7 @@ using ProjetoPetMedDigital.Models; // Supondo que ErrorViewModel está aqui
 
 namespace ProjetoPetMedDigital.Controllers
 {
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -14,6 +15,11 @@ namespace ProjetoPetMedDigital.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+        }
+
+        public IActionResult Login()
+        {
+            return View();
         }
 
         public IActionResult Index()
