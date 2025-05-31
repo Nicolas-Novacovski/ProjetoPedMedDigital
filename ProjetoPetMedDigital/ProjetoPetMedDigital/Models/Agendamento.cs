@@ -20,7 +20,7 @@ namespace ProjetoPetMedDigital.Models
         // Propriedades de navegação
         public Paciente Paciente { get; set; } = null!; // EF Core preencherá
         public Veterinario Veterinario { get; set; } = null!; // EF Core preencherá
-        public List<Servico> Servicos { get; set; } = new List<Servico>(); // Inicializado
+        public List<Serviços> Servicos { get; set; } = new List<Serviços>(); // Inicializado
         public Prontuario? Prontuario { get; set; } // Um agendamento pode não ter um prontuário imediatamente
     }
 }

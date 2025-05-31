@@ -23,6 +23,6 @@ namespace ProjetoPetMedDigital.Models
         // Propriedades de navegação (One-to-One com chave compartilhada)
         public Vacina? Vacina { get; set; }
         public Procedimento? Procedimento { get; set; }
-        public Servico? Servico { get; set; }
+        public Serviços? Servico { get; set; }
     }
 }

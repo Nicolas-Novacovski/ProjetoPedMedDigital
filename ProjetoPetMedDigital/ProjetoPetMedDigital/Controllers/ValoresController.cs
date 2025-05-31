@@ -10,23 +10,23 @@ using ProjetoPetMedDigital.Models;
 
 namespace ProjetoPetMedDigital.Controllers
 {
-    public class ProcedimentoesController : Controller
+    public class ValoresController : Controller
     {
         private readonly PetMedContext _context;
 
-        public ProcedimentoesController(PetMedContext context)
+        public ValoresController(PetMedContext context)
         {
             _context = context;
         }
 
-        // GET: Procedimentoes
+        // GET: Valors
         public async Task<IActionResult> Index()
         {
-            var petMedContext = _context.Procedimentos.Include(p => p.ItemEstoque);
+            var petMedContext = _context.Valores.Include(v => v.Cliente);
             return View(await petMedContext.ToListAsync());
         }
 
-        // GET: Procedimentoes/Details/5
+        // GET: Valors/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +34,42 @@ namespace ProjetoPetMedDigital.Controllers
                 return NotFound();
             }
 
-            var procedimento = await _context.Procedimentos
-                .Include(p => p.ItemEstoque)
-                .FirstOrDefaultAsync(m => m.IdProcedimento == id);
-            if (procedimento == null)
+            var valor = await _context.Valores
+                .Include(v => v.Cliente)
+                .FirstOrDefaultAsync(m => m.IdValor == id);
+            if (valor == null)
             {
                 return NotFound();
             }
 
-            return View(procedimento);
+            return View(valor);
         }
 
-        // GET: Procedimentoes/Create
+        // GET: Valors/Create
         public IActionResult Create()
         {
-            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "IdProduto");
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "IdCliente");
             return View();
         }
 
-        // POST: Procedimentoes/Create
+        // POST: Valors/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdProcedimento,NomeProcedimento,Descricao,Valor,IdProduto,Id,CreatedAt")] Procedimento procedimento)
+        public async Task<IActionResult> Create([Bind("IdValor,ValorProcedimento,TipoPagamento,ValorReceita,ValorSaida,Salario,CompraProdutos,IdCliente,Id,CreatedAt")] Valor valor)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(procedimento);
+                _context.Add(valor);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "IdProduto", procedimento.IdProduto);
-            return View(procedimento);
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "IdCliente", valor.IdCliente);
+            return View(valor);
         }
 
-        // GET: Procedimentoes/Edit/5
+        // GET: Valors/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +77,23 @@ namespace ProjetoPetMedDigital.Controllers
                 return NotFound();
             }
 
-            var procedimento = await _context.Procedimentos.FindAsync(id);
-            if (procedimento == null)
+            var valor = await _context.Valores.FindAsync(id);
+            if (valor == null)
             {
                 return NotFound();
             }
-            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "IdProduto", procedimento.IdProduto);
-            return View(procedimento);
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "IdCliente", valor.IdCliente);
+            return View(valor);
         }
 
-        // POST: Procedimentoes/Edit/5
+        // POST: Valors/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdProcedimento,NomeProcedimento,Descricao,Valor,IdProduto,Id,CreatedAt")] Procedimento procedimento)
+        public async Task<IActionResult> Edit(int id, [Bind("IdValor,ValorProcedimento,TipoPagamento,ValorReceita,ValorSaida,Salario,CompraProdutos,IdCliente,Id,CreatedAt")] Valor valor)
         {
-            if (id != procedimento.IdProcedimento)
+            if (id != valor.IdValor)
             {
                 return NotFound();
             }
@@ -102,12 +102,12 @@ namespace ProjetoPetMedDigital.Controllers
             {
                 try
                 {
-                    _context.Update(procedimento);
+                    _context.Update(valor);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProcedimentoExists(procedimento.IdProcedimento))
+                    if (!ValorExists(valor.IdValor))
                     {
                         return NotFound();
                     }
@@ -118,11 +118,11 @@ namespace ProjetoPetMedDigital.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "IdProduto", procedimento.IdProduto);
-            return View(procedimento);
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "IdCliente", valor.IdCliente);
+            return View(valor);
         }
 
-        // GET: Procedimentoes/Delete/5
+        // GET: Valors/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,35 +130,35 @@ namespace ProjetoPetMedDigital.Controllers
                 return NotFound();
             }
 
-            var procedimento = await _context.Procedimentos
-                .Include(p => p.ItemEstoque)
-                .FirstOrDefaultAsync(m => m.IdProcedimento == id);
-            if (procedimento == null)
+            var valor = await _context.Valores
+                .Include(v => v.Cliente)
+                .FirstOrDefaultAsync(m => m.IdValor == id);
+            if (valor == null)
             {
                 return NotFound();
             }
 
-            return View(procedimento);
+            return View(valor);
         }
 
-        // POST: Procedimentoes/Delete/5
+        // POST: Valors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var procedimento = await _context.Procedimentos.FindAsync(id);
-            if (procedimento != null)
+            var valor = await _context.Valores.FindAsync(id);
+            if (valor != null)
             {
-                _context.Procedimentos.Remove(procedimento);
+                _context.Valores.Remove(valor);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProcedimentoExists(int id)
+        private bool ValorExists(int id)
         {
-            return _context.Procedimentos.Any(e => e.IdProcedimento == id);
+            return _context.Valores.Any(e => e.IdValor == id);
         }
     }
 }

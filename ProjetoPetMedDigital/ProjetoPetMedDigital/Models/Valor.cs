@@ -18,7 +18,7 @@ namespace ProjetoPetMedDigital.Models
         public int IdCliente { get; set; } // FK para Cliente.IdCliente
 
         // Propriedades de navegação
-        public Servico Servico { get; set; } = null!; // Assumindo que a relação com Servico é obrigatória de um lado
+        public Serviços Servico { get; set; } = null!; // Assumindo que a relação com Servico é obrigatória de um lado
         public Cliente Cliente { get; set; } = null!;
     }
 }

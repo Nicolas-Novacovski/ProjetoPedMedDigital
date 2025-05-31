@@ -16,7 +16,7 @@ namespace ProjetoPetMedDigital.Data
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Paciente> Pacientes { get; set; }
         public DbSet<Procedimento> Procedimentos { get; set; }
-        public DbSet<Servico> Servicos { get; set; }
+        public DbSet<Serviços> Servicos { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Vacina> Vacinas { get; set; }
         public DbSet<Valor> Valores { get; set; }
@@ -109,14 +109,14 @@ namespace ProjetoPetMedDigital.Data
             modelBuilder.Entity<ItemEstoque>()
                 .HasOne(ie => ie.Servico)
                 .WithOne(s => s.ItemEstoque)
-                .HasForeignKey<Servico>(s => s.IdProduto) // Servico.IdProduto é FK e PK de Servico
+                .HasForeignKey<Serviços>(s => s.IdProduto) // Servico.IdProduto é FK e PK de Servico
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Relação entre Servico e Valor (Servico tem uma FK para Valor)
-            modelBuilder.Entity<Servico>()
+            modelBuilder.Entity<Serviços>()
                 .HasOne(s => s.Valor)
                 .WithOne(v => v.Servico) // Valor tem uma navegação para Servico
-                .HasForeignKey<Servico>(s => s.IdValor) // Servico.IdValor é a FK para Valor.IdValor
+                .HasForeignKey<Serviços>(s => s.IdValor) // Servico.IdValor é a FK para Valor.IdValor
                 .OnDelete(DeleteBehavior.Restrict);
 
 

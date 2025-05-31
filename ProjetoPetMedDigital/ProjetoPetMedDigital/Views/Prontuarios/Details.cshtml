@@ -69,19 +69,35 @@
             @Html.DisplayNameFor(model => model.Agendamento)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Agendamento.IdAgendamento)
+            @* CORREÇÃO: Agendamento pode ser nulo *@
+            @(Model.Agendamento?.IdAgendamento)
+            @* Ou, se quiser exibir algo mais, como o ID do agendamento ou "N/A":
+            @Html.DisplayFor(model => model.Agendamento != null ? model.Agendamento.IdAgendamento : (int?)null)
+            OU
+            @if (Model.Agendamento != null) { @Html.DisplayFor(model => model.Agendamento.IdAgendamento) } else { <span>N/A</span> }
+            *@
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Veterinario)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Veterinario.IdVeterinario)
+            @* CORREÇÃO: Veterinario pode ser nulo *@
+            @(Model.Veterinario?.NomeVeterinario) @* Geralmente exibe-se um nome, não o ID aqui *@
+            @* OU para exibir o ID se for o caso: @(Model.Veterinario?.IdVeterinario) *@
+            @* Ou a verificação explícita:
+            @if (Model.Veterinario != null) { @Html.DisplayFor(model => model.Veterinario.NomeVeterinario) } else { <span>N/A</span> }
+            *@
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Paciente)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Paciente.IdPaciente)
+            @* Paciente não é anulável no seu modelo, então esta linha deve estar ok.
+               Se ainda assim der erro, pode ser que o Include para Paciente não esteja no controller,
+               ou que o null-forgiving operator '!' seja necessário se o compilador ainda avisar:
+               @(Model.Paciente!.NomeCachorro) ou @Html.DisplayFor(model => model.Paciente!.NomeCachorro)
+            *@
+            @Html.DisplayFor(model => model.Paciente.NomeCachorro) @* Assumindo que você quer o nome do paciente *
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Id)
@@ -98,6 +114,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.IdProntuario">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.IdProntuario">Edit</a> | @* Usar '?.' para IdProntuario também é uma boa prática *@
     <a asp-action="Index">Back to List</a>
 </div>

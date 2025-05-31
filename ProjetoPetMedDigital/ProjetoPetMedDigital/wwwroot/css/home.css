@@ -1,6 +1,4 @@
-﻿/* Removido: namespace ProjetoPetMedDigital.wwwroot.css { public class home {} } */
-/* Removido: <style> */
-body {
+﻿body {
     margin: 0;
     padding: 0;
     background-color: #F0F4F8;
@@ -55,4 +53,3 @@ body {
         height: auto;
         border-radius: 30px;
     }
-

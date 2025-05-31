@@ -89,13 +89,16 @@
                 @Html.DisplayFor(modelItem => item.Observacoes)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Agendamento.IdAgendamento)
+                @* CORREÇÃO: Agendamento pode ser nulo *@
+                @(item.Agendamento?.IdAgendamento)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Veterinario.IdVeterinario)
+                @* CORREÇÃO: Veterinario pode ser nulo (exibindo o nome) *@
+                @(item.Veterinario?.NomeVeterinario)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Paciente.IdPaciente)
+                @* Paciente não é anulável, esta linha deve estar ok. Assumindo que você quer o nome do paciente. *@
+                @Html.DisplayFor(modelItem => item.Paciente.NomeCachorro)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Id)

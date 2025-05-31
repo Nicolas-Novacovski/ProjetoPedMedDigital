@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace ProjetoPetMedDigital.Models
 {
     [Table("Servico")]
-    public class Servico : BaseModel
+    public class Serviços : BaseModel
     {
         [Key]
         public int IdServico { get; set; }

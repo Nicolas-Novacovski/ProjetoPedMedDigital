@@ -1,13 +1,12 @@
-﻿@model ProjetoPetMedDigital.Models.Servico
+﻿@model ProjetoPetMedDigital.Models.Serviços
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Delete</h1>
+<h1>Details</h1>
 
-<h3>Are you sure you want to delete this?</h3>
 <div>
     <h4>Servico</h4>
     <hr />
@@ -91,10 +90,8 @@
             @Html.DisplayFor(model => model.CreatedAt)
         </dd>
     </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="IdServico" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.IdServico">Edit</a> |
+    <a asp-action="Index">Back to List</a>
 </div>

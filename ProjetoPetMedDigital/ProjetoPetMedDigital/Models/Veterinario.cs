@@ -21,6 +21,6 @@ namespace ProjetoPetMedDigital.Models
         public List<Prontuario> Prontuarios { get; set; } = new List<Prontuario>();
         public List<AgendaVeterinario> AgendaVeterinarios { get; set; } = new List<AgendaVeterinario>();
         public CadastroColaborador CadastroColaborador { get; set; } = null!;
-        public List<Servico> Servicos { get; set; } = new List<Servico>();
+        public List<Serviços> Servicos { get; set; } = new List<Serviços>();
     }
 }
