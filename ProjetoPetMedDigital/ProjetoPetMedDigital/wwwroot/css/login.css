@@ -1,10 +1,5 @@
-﻿namespace ProjetoPetMedDigital.wwwroot.css
-{
-    public class login
-    {
-    }
-}
-<style >
+﻿/* Removido: namespace ProjetoPetMedDigital.wwwroot.css { public class login {} } */
+/* Removido: <style> */
 body {
     background-color: #F0F4F8;
     font-family: 'Poppins', sans-serif;
@@ -87,4 +82,3 @@ body {
             background-color: #e6762f;
         }
 
-</style >
