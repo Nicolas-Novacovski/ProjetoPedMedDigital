@@ -10,11 +10,11 @@ using ProjetoPetMedDigital.Models;
 
 namespace ProjetoPetMedDigital.Controllers
 {
-    public class ServiçosController : Controller
+    public class ServicosController : Controller
     {
         private readonly PetMedContext _context;
 
-        public ServiçosController(PetMedContext context)
+        public ServicosController(PetMedContext context)
         {
             _context = context;
         }

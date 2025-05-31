@@ -10,11 +10,11 @@ using ProjetoPetMedDigital.Models;
 
 namespace ProjetoPetMedDigital.Controllers
 {
-    public class CadastroColaboradorsController : Controller
+    public class CadastroColaboradoresController : Controller
     {
         private readonly PetMedContext _context;
 
-        public CadastroColaboradorsController(PetMedContext context)
+        public CadastroColaboradoresController(PetMedContext context)
         {
             _context = context;
         }
