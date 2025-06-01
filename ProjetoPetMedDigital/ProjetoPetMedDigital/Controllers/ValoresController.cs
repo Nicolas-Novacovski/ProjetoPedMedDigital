@@ -19,14 +19,15 @@ namespace ProjetoPetMedDigital.Controllers
             _context = context;
         }
 
-        // GET: Valors
+        // GET: Valores
         public async Task<IActionResult> Index()
         {
-            var petMedContext = _context.Valores.Include(v => v.Cliente);
+            // Adicionado Include para carregar as propriedades de navegação
+            var petMedContext = _context.Valores.Include(v => v.Cliente).Include(v => v.Servico);
             return View(await petMedContext.ToListAsync());
         }
 
-        // GET: Valors/Details/5
+        // GET: Valores/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -36,6 +37,7 @@ namespace ProjetoPetMedDigital.Controllers
 
             var valor = await _context.Valores
                 .Include(v => v.Cliente)
+                .Include(v => v.Servico)
                 .FirstOrDefaultAsync(m => m.IdValor == id);
             if (valor == null)
             {
@@ -45,16 +47,16 @@ namespace ProjetoPetMedDigital.Controllers
             return View(valor);
         }
 
-        // GET: Valors/Create
+        // GET: Valores/Create
         public IActionResult Create()
         {
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "IdCliente");
+            // Ajustado SelectList para exibir o NomeResponsavel do Cliente e NomeServico
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel");
+            ViewData["IdServico"] = new SelectList(_context.Servicos, "IdServico", "NomeServico"); // Assuming Servicos.NomeServico is the display property
             return View();
         }
 
-        // POST: Valors/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Valores/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdValor,ValorProcedimento,TipoPagamento,ValorReceita,ValorSaida,Salario,CompraProdutos,IdCliente,Id,CreatedAt")] Valor valor)
@@ -65,11 +67,13 @@ namespace ProjetoPetMedDigital.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "IdCliente", valor.IdCliente);
+            // Ajustado SelectList para exibir o NomeResponsavel do Cliente e NomeServico
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel", valor.IdCliente);
+            ViewData["IdServico"] = new SelectList(_context.Servicos, "IdServico", "NomeServico", valor.Servico?.IdServico); // Use valor.Servico?.IdServico se a FK para Servico for IdServico em Valor
             return View(valor);
         }
 
-        // GET: Valors/Edit/5
+        // GET: Valores/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -82,13 +86,13 @@ namespace ProjetoPetMedDigital.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "IdCliente", valor.IdCliente);
+            // Ajustado SelectList para exibir o NomeResponsavel do Cliente e NomeServico
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel", valor.IdCliente);
+            ViewData["IdServico"] = new SelectList(_context.Servicos, "IdServico", "NomeServico", valor.Servico?.IdServico); // Use valor.Servico?.IdServico
             return View(valor);
         }
 
-        // POST: Valors/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Valores/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdValor,ValorProcedimento,TipoPagamento,ValorReceita,ValorSaida,Salario,CompraProdutos,IdCliente,Id,CreatedAt")] Valor valor)
@@ -118,11 +122,13 @@ namespace ProjetoPetMedDigital.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "IdCliente", valor.IdCliente);
+            // Ajustado SelectList para exibir o NomeResponsavel do Cliente e NomeServico
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel", valor.IdCliente);
+            ViewData["IdServico"] = new SelectList(_context.Servicos, "IdServico", "NomeServico", valor.Servico?.IdServico); // Use valor.Servico?.IdServico
             return View(valor);
         }
 
-        // GET: Valors/Delete/5
+        // GET: Valores/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -132,6 +138,7 @@ namespace ProjetoPetMedDigital.Controllers
 
             var valor = await _context.Valores
                 .Include(v => v.Cliente)
+                .Include(v => v.Servico)
                 .FirstOrDefaultAsync(m => m.IdValor == id);
             if (valor == null)
             {
@@ -141,7 +148,7 @@ namespace ProjetoPetMedDigital.Controllers
             return View(valor);
         }
 
-        // POST: Valors/Delete/5
+        // POST: Valores/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

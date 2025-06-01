@@ -1,4 +1,4 @@
-using PetMed_Digital.Models;
+using ProjetoPetMedDigital.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -29,7 +29,7 @@ namespace ProjetoPetMedDigital.Models
         [Display(Name = "ID do Produto")]
         public int IdProduto { get; set; }
 
-        // Propriedades de navegação
-        public ItemEstoque ItemEstoque { get; set; } = null!;
+        // Propriedades de navegação - CORRIGIDA PARA ANULÁVEL (?)
+        public ItemEstoque? ItemEstoque { get; set; } // Agora anulável
     }
 }

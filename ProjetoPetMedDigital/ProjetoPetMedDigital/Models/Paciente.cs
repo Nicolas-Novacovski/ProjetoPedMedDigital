@@ -1,4 +1,4 @@
-using PetMed_Digital.Models;
+using ProjetoPetMedDigital.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -47,7 +47,7 @@ namespace ProjetoPetMedDigital.Models
         [Display(Name = "Recomendações")]
         public string Recomendacoes { get; set; } = string.Empty;
 
-       
+        // Propriedades de navegação - CORRIGIDA PARA ANULÁVEL (?)
         public Cliente? Cliente { get; set; }
 
         public List<Agendamento> Agendamentos { get; set; } = new List<Agendamento>();

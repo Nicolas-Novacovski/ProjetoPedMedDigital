@@ -1,4 +1,4 @@
-using PetMed_Digital.Models;
+using ProjetoPetMedDigital.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -49,8 +49,9 @@ namespace ProjetoPetMedDigital.Models
         [Display(Name = "Cliente")]
         public int IdCliente { get; set; }
 
-        // Propriedades de navegação
-        public Serviços Servico { get; set; } = null!;
-        public Cliente Cliente { get; set; } = null!;
+        // Propriedades de navegação - CORRIGIDAS PARA ANULÁVEIS (?)
+        // Reitero a sugestão de renomear 'Serviços' para 'Servico' para consistência.
+        public Serviços? Servico { get; set; } // Agora anulável
+        public Cliente? Cliente { get; set; }  // Agora anulável
     }
 }

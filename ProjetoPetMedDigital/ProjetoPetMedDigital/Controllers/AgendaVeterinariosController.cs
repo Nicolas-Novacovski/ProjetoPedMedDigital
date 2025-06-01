@@ -22,7 +22,8 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: AgendaVeterinarios
         public async Task<IActionResult> Index()
         {
-            var petMedContext = _context.AgendaVeterinarios.Include(a => a.Veterinario);
+            // Adicionado Include para carregar as propriedades de navegação
+            var petMedContext = _context.AgendaVeterinarios.Include(a => a.Veterinario).Include(a => a.Paciente);
             return View(await petMedContext.ToListAsync());
         }
 
@@ -36,6 +37,7 @@ namespace ProjetoPetMedDigital.Controllers
 
             var agendaVeterinario = await _context.AgendaVeterinarios
                 .Include(a => a.Veterinario)
+                .Include(a => a.Paciente) // Adicionado Include
                 .FirstOrDefaultAsync(m => m.IdAgendaVeterinario == id);
             if (agendaVeterinario == null)
             {
@@ -48,13 +50,13 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: AgendaVeterinarios/Create
         public IActionResult Create()
         {
-            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "IdVeterinario");
+            // Ajustado SelectList para exibir o NomeVeterinario e NomeCachorro
+            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario");
+            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro");
             return View();
         }
 
         // POST: AgendaVeterinarios/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdAgendaVeterinario,IdVeterinario,DataInicio,DataFim,IdPaciente,Id,CreatedAt")] AgendaVeterinario agendaVeterinario)
@@ -65,7 +67,9 @@ namespace ProjetoPetMedDigital.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "IdVeterinario", agendaVeterinario.IdVeterinario);
+            // Ajustado SelectList para exibir o NomeVeterinario e NomeCachorro
+            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", agendaVeterinario.IdVeterinario);
+            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", agendaVeterinario.IdPaciente);
             return View(agendaVeterinario);
         }
 
@@ -82,13 +86,13 @@ namespace ProjetoPetMedDigital.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "IdVeterinario", agendaVeterinario.IdVeterinario);
+            // Ajustado SelectList para exibir o NomeVeterinario e NomeCachorro
+            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", agendaVeterinario.IdVeterinario);
+            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", agendaVeterinario.IdPaciente);
             return View(agendaVeterinario);
         }
 
         // POST: AgendaVeterinarios/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdAgendaVeterinario,IdVeterinario,DataInicio,DataFim,IdPaciente,Id,CreatedAt")] AgendaVeterinario agendaVeterinario)
@@ -118,7 +122,9 @@ namespace ProjetoPetMedDigital.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "IdVeterinario", agendaVeterinario.IdVeterinario);
+            // Ajustado SelectList para exibir o NomeVeterinario e NomeCachorro
+            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", agendaVeterinario.IdVeterinario);
+            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", agendaVeterinario.IdPaciente);
             return View(agendaVeterinario);
         }
 
@@ -132,6 +138,7 @@ namespace ProjetoPetMedDigital.Controllers
 
             var agendaVeterinario = await _context.AgendaVeterinarios
                 .Include(a => a.Veterinario)
+                .Include(a => a.Paciente) // Adicionado Include
                 .FirstOrDefaultAsync(m => m.IdAgendaVeterinario == id);
             if (agendaVeterinario == null)
             {

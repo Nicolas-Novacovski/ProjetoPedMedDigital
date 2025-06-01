@@ -48,13 +48,12 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: Pacientes/Create
         public IActionResult Create()
         {
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "IdCliente");
+            // Ajustado SelectList para exibir o NomeResponsavel do Cliente
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel");
             return View();
         }
 
         // POST: Pacientes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdPaciente,IdCliente,NomeCachorro,Estado,Problema,TipoAtendimento,Peso,SinaisVitais,Recomendacoes,Id,CreatedAt")] Paciente paciente)
@@ -65,7 +64,8 @@ namespace ProjetoPetMedDigital.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "IdCliente", paciente.IdCliente);
+            // Ajustado SelectList para exibir o NomeResponsavel do Cliente
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel", paciente.IdCliente);
             return View(paciente);
         }
 
@@ -82,13 +82,12 @@ namespace ProjetoPetMedDigital.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "IdCliente", paciente.IdCliente);
+            // Ajustado SelectList para exibir o NomeResponsavel do Cliente
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel", paciente.IdCliente);
             return View(paciente);
         }
 
         // POST: Pacientes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdPaciente,IdCliente,NomeCachorro,Estado,Problema,TipoAtendimento,Peso,SinaisVitais,Recomendacoes,Id,CreatedAt")] Paciente paciente)
@@ -118,7 +117,8 @@ namespace ProjetoPetMedDigital.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "IdCliente", paciente.IdCliente);
+            // Ajustado SelectList para exibir o NomeResponsavel do Cliente
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel", paciente.IdCliente);
             return View(paciente);
         }
 

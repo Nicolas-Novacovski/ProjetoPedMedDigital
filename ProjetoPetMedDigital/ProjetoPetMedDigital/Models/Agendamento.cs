@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using PetMed_Digital.Models;
+using ProjetoPetMedDigital.Models;
 using System.Collections.Generic;
 
 namespace ProjetoPetMedDigital.Models

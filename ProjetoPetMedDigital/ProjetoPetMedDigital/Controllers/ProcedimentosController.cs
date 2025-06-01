@@ -22,6 +22,7 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: Procedimentoes
         public async Task<IActionResult> Index()
         {
+            // Adicionado Include para carregar a propriedade de navegação
             var petMedContext = _context.Procedimentos.Include(p => p.ItemEstoque);
             return View(await petMedContext.ToListAsync());
         }
@@ -48,13 +49,12 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: Procedimentoes/Create
         public IActionResult Create()
         {
-            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "IdProduto");
+            // Ajustado SelectList para exibir o NomeProduto do ItemEstoque
+            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto");
             return View();
         }
 
         // POST: Procedimentoes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdProcedimento,NomeProcedimento,Descricao,Valor,IdProduto,Id,CreatedAt")] Procedimento procedimento)
@@ -65,7 +65,8 @@ namespace ProjetoPetMedDigital.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "IdProduto", procedimento.IdProduto);
+            // Ajustado SelectList para exibir o NomeProduto do ItemEstoque
+            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", procedimento.IdProduto);
             return View(procedimento);
         }
 
@@ -82,13 +83,12 @@ namespace ProjetoPetMedDigital.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "IdProduto", procedimento.IdProduto);
+            // Ajustado SelectList para exibir o NomeProduto do ItemEstoque
+            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", procedimento.IdProduto);
             return View(procedimento);
         }
 
         // POST: Procedimentoes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdProcedimento,NomeProcedimento,Descricao,Valor,IdProduto,Id,CreatedAt")] Procedimento procedimento)
@@ -118,7 +118,8 @@ namespace ProjetoPetMedDigital.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "IdProduto", procedimento.IdProduto);
+            // Ajustado SelectList para exibir o NomeProduto do ItemEstoque
+            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", procedimento.IdProduto);
             return View(procedimento);
         }
 

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjetoPetMedDigital.Models;
-using PetMed_Digital.Models; // Adicionado para BaseModel se necessário para outras entidades
 
 namespace ProjetoPetMedDigital.Data
 {

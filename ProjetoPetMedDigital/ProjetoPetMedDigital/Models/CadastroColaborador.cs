@@ -1,4 +1,4 @@
-using PetMed_Digital.Models;
+using ProjetoPetMedDigital.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -27,7 +27,7 @@ namespace ProjetoPetMedDigital.Models
         public string Email { get; set; } = null!;
 
         [Required(ErrorMessage = "O CPF é obrigatório.")]
-        [StringLength(14, MinimumLength = 11, ErrorMessage = "CPF deve ter entre 11 e 14 caracteres (com/sem pontuação).")] // Considere validação mais robusta se for o caso
+        [StringLength(14, MinimumLength = 11, ErrorMessage = "CPF deve ter entre 11 e 14 caracteres (com/sem pontuação).")]
         [Display(Name = "CPF")]
         public string CPF { get; set; } = null!;
 
@@ -47,7 +47,7 @@ namespace ProjetoPetMedDigital.Models
         public string CEP { get; set; } = null!;
 
         [Required(ErrorMessage = "O endereço é obrigatório.")]
-        [StringLength(200, ErrorMessage = "O endereço não pode exceder 200 caracteres.")] // ERRO CORRIGIDO AQUI: ErrorError -> ErrorMessage
+        [StringLength(200, ErrorMessage = "O endereço não pode exceder 200 caracteres.")]
         [Display(Name = "Endereço")]
         public string Endereco { get; set; } = null!;
 
@@ -71,15 +71,14 @@ namespace ProjetoPetMedDigital.Models
         [Display(Name = "Tipo de Usuário")]
         public int TipoUsuario { get; set; }
 
-        public int UsuarioId { get; set; } // Considere remover se 'Login' é a FK para Usuario.Login
 
         [Required(ErrorMessage = "O Login é obrigatório.")]
-        [StringLength(50, ErrorMessage = "Login não pode exceder 50 caracteres.")]
+        [StringLength(50, ErrorMessage = "Login não pode exceder 50 caracteres.")] // Mantido 50, se for a FK para Usuario.Login
         [Display(Name = "Login do Usuário")]
-        public string Login { get; set; } = null!;
+        public string Login { get; set; } = null!; // Chave estrangeira para Usuario.Login
 
-        // Propriedades de navegação
-        public Usuario Usuario { get; set; } = null!;
+        // Propriedades de navegação - CORRIGIDA PARA ANULÁVEL (?)
+        public Usuario? Usuario { get; set; } // AGORA É ANULÁVEL
         public Veterinario? Veterinario { get; set; }
     }
 }

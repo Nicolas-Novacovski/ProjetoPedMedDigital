@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjetoPetMedDigital.Data;
-using ProjetoPetMedDigital.Models;
+using ProjetoPetMedDigital.Models; // Certifique-se que este using está correto
 
 namespace ProjetoPetMedDigital.Controllers
 {
@@ -19,13 +19,14 @@ namespace ProjetoPetMedDigital.Controllers
             _context = context;
         }
 
-        // GET: CadastroColaboradors
+        // GET: CadastroColaboradores
         public async Task<IActionResult> Index()
         {
-            return View(await _context.CadastroColaboradores.ToListAsync());
+            var petMedContext = _context.CadastroColaboradores.Include(c => c.Usuario).Include(c => c.Veterinario);
+            return View(await petMedContext.ToListAsync());
         }
 
-        // GET: CadastroColaboradors/Details/5
+        // GET: CadastroColaboradores/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,6 +35,8 @@ namespace ProjetoPetMedDigital.Controllers
             }
 
             var cadastroColaborador = await _context.CadastroColaboradores
+                .Include(c => c.Usuario)
+                .Include(c => c.Veterinario)
                 .FirstOrDefaultAsync(m => m.IdColaborador == id);
             if (cadastroColaborador == null)
             {
@@ -43,18 +46,18 @@ namespace ProjetoPetMedDigital.Controllers
             return View(cadastroColaborador);
         }
 
-        // GET: CadastroColaboradors/Create
+        // GET: CadastroColaboradores/Create
         public IActionResult Create()
         {
+            ViewData["Login"] = new SelectList(_context.Usuarios, "Login", "Login"); // SelectList para o Login do Usuário
             return View();
         }
 
-        // POST: CadastroColaboradors/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: CadastroColaboradores/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdColaborador,Nome,Telefone,Email,CPF,RG,Dtnascimento,CEP,Endereco,Bairro,Cidade,Cargo,TipoUsuario,UsuarioId,Login,Id,CreatedAt")] CadastroColaborador cadastroColaborador)
+        public async Task<IActionResult> Create([Bind("IdColaborador,Nome,Telefone,Email,CPF,RG,Dtnascimento,CEP,Endereco,Bairro,Cidade,Cargo,TipoUsuario,Login,Id,CreatedAt")] CadastroColaborador cadastroColaborador)
+        //                                                                                                                  ^ Removido "UsuarioId" do Bind
         {
             if (ModelState.IsValid)
             {
@@ -62,10 +65,11 @@ namespace ProjetoPetMedDigital.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Login"] = new SelectList(_context.Usuarios, "Login", "Login", cadastroColaborador.Login);
             return View(cadastroColaborador);
         }
 
-        // GET: CadastroColaboradors/Edit/5
+        // GET: CadastroColaboradores/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,15 +82,15 @@ namespace ProjetoPetMedDigital.Controllers
             {
                 return NotFound();
             }
+            ViewData["Login"] = new SelectList(_context.Usuarios, "Login", "Login", cadastroColaborador.Login);
             return View(cadastroColaborador);
         }
 
-        // POST: CadastroColaboradors/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: CadastroColaboradores/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdColaborador,Nome,Telefone,Email,CPF,RG,Dtnascimento,CEP,Endereco,Bairro,Cidade,Cargo,TipoUsuario,UsuarioId,Login,Id,CreatedAt")] CadastroColaborador cadastroColaborador)
+        public async Task<IActionResult> Edit(int id, [Bind("IdColaborador,Nome,Telefone,Email,CPF,RG,Dtnascimento,CEP,Endereco,Bairro,Cidade,Cargo,TipoUsuario,Login,Id,CreatedAt")] CadastroColaborador cadastroColaborador)
+        //                                                                                                               ^ Removido "UsuarioId" do Bind
         {
             if (id != cadastroColaborador.IdColaborador)
             {
@@ -113,10 +117,11 @@ namespace ProjetoPetMedDigital.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Login"] = new SelectList(_context.Usuarios, "Login", "Login", cadastroColaborador.Login);
             return View(cadastroColaborador);
         }
 
-        // GET: CadastroColaboradors/Delete/5
+        // GET: CadastroColaboradores/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,6 +130,8 @@ namespace ProjetoPetMedDigital.Controllers
             }
 
             var cadastroColaborador = await _context.CadastroColaboradores
+                .Include(c => c.Usuario)
+                .Include(c => c.Veterinario)
                 .FirstOrDefaultAsync(m => m.IdColaborador == id);
             if (cadastroColaborador == null)
             {
@@ -134,7 +141,7 @@ namespace ProjetoPetMedDigital.Controllers
             return View(cadastroColaborador);
         }
 
-        // POST: CadastroColaboradors/Delete/5
+        // POST: CadastroColaboradores/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

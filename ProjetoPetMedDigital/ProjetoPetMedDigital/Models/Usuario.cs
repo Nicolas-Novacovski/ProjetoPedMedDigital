@@ -1,4 +1,4 @@
-using PetMed_Digital.Models;
+using ProjetoPetMedDigital.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,7 +9,6 @@ namespace ProjetoPetMedDigital.Models
     {
         [Key]
         [Required(ErrorMessage = "O Login é obrigatório.")]
-        // CORREÇÃO AQUI: Mude o StringLength para 450
         [StringLength(450, MinimumLength = 3, ErrorMessage = "Login deve ter entre 3 e 450 caracteres.")]
         [Display(Name = "Login do Usuário")]
         public string Login { get; set; } = null!;
@@ -25,6 +24,7 @@ namespace ProjetoPetMedDigital.Models
         public int IdColaborador { get; set; }
 
         // Propriedades de navegação
-        public CadastroColaborador CadastroColaborador { get; set; } = null!;
+        // CORREÇÃO AQUI: Propriedade de navegação 'CadastroColaborador' agora é anulável (?)
+        public CadastroColaborador? CadastroColaborador { get; set; } // AGORA É ANULÁVEL
     }
 }

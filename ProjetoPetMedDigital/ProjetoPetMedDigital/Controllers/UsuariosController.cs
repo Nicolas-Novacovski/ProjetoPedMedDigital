@@ -22,6 +22,7 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: Usuarios
         public async Task<IActionResult> Index()
         {
+            // Adicionado Include para carregar a propriedade de navegação
             var petMedContext = _context.Usuarios.Include(u => u.CadastroColaborador);
             return View(await petMedContext.ToListAsync());
         }
@@ -48,13 +49,12 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: Usuarios/Create
         public IActionResult Create()
         {
-            ViewData["IdColaborador"] = new SelectList(_context.CadastroColaboradores, "IdColaborador", "IdColaborador");
+            // Ajustado SelectList para exibir o Nome do Colaborador
+            ViewData["IdColaborador"] = new SelectList(_context.CadastroColaboradores, "IdColaborador", "Nome");
             return View();
         }
 
         // POST: Usuarios/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Login,Senha,IdColaborador,Id,CreatedAt")] Usuario usuario)
@@ -65,7 +65,8 @@ namespace ProjetoPetMedDigital.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdColaborador"] = new SelectList(_context.CadastroColaboradores, "IdColaborador", "IdColaborador", usuario.IdColaborador);
+            // Ajustado SelectList para exibir o Nome do Colaborador
+            ViewData["IdColaborador"] = new SelectList(_context.CadastroColaboradores, "IdColaborador", "Nome", usuario.IdColaborador);
             return View(usuario);
         }
 
@@ -82,13 +83,12 @@ namespace ProjetoPetMedDigital.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdColaborador"] = new SelectList(_context.CadastroColaboradores, "IdColaborador", "IdColaborador", usuario.IdColaborador);
+            // Ajustado SelectList para exibir o Nome do Colaborador
+            ViewData["IdColaborador"] = new SelectList(_context.CadastroColaboradores, "IdColaborador", "Nome", usuario.IdColaborador);
             return View(usuario);
         }
 
         // POST: Usuarios/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("Login,Senha,IdColaborador,Id,CreatedAt")] Usuario usuario)
@@ -118,7 +118,8 @@ namespace ProjetoPetMedDigital.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdColaborador"] = new SelectList(_context.CadastroColaboradores, "IdColaborador", "IdColaborador", usuario.IdColaborador);
+            // Ajustado SelectList para exibir o Nome do Colaborador
+            ViewData["IdColaborador"] = new SelectList(_context.CadastroColaboradores, "IdColaborador", "Nome", usuario.IdColaborador);
             return View(usuario);
         }
 
