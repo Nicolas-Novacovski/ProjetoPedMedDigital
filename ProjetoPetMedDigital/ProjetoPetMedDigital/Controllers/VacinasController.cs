@@ -49,14 +49,13 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: Vacinas/Create
         public IActionResult Create()
         {
-            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "IdProduto");
-            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "IdPaciente");
+            // Ajustado SelectList para exibir NomeProduto do ItemEstoque e NomeCachorro do Paciente
+            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto");
+            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro");
             return View();
         }
 
         // POST: Vacinas/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdVacina,NomeVacina,Descricao,Duracao,IdProduto,IdPaciente,Id,CreatedAt")] Vacina vacina)
@@ -67,8 +66,9 @@ namespace ProjetoPetMedDigital.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "IdProduto", vacina.IdProduto);
-            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "IdPaciente", vacina.IdPaciente);
+            // Ajustado SelectList para exibir NomeProduto do ItemEstoque e NomeCachorro do Paciente
+            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", vacina.IdProduto);
+            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", vacina.IdPaciente);
             return View(vacina);
         }
 
@@ -85,14 +85,13 @@ namespace ProjetoPetMedDigital.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "IdProduto", vacina.IdProduto);
-            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "IdPaciente", vacina.IdPaciente);
+            // Ajustado SelectList para exibir NomeProduto do ItemEstoque e NomeCachorro do Paciente
+            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", vacina.IdProduto);
+            ViewData["IdPaciente"] = new SelectList(_context.Context.Pacientes, "IdPaciente", "NomeCachorro", vacina.IdPaciente);
             return View(vacina);
         }
 
         // POST: Vacinas/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdVacina,NomeVacina,Descricao,Duracao,IdProduto,IdPaciente,Id,CreatedAt")] Vacina vacina)
@@ -122,8 +121,9 @@ namespace ProjetoPetMedDigital.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "IdProduto", vacina.IdProduto);
-            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "IdPaciente", vacina.IdPaciente);
+            // Ajustado SelectList para exibir NomeProduto do ItemEstoque e NomeCachorro do Paciente
+            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", vacina.IdProduto);
+            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", vacina.IdPaciente);
             return View(vacina);
         }
 

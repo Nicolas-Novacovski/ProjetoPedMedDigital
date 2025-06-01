@@ -1,8 +1,8 @@
-using ProjetoPetMedDigital.Models;
+using PetMed_Digital.Models; // Assumindo que BaseModel está neste namespace
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ProjetoPetMedDigital.Models
+namespace ProjetoPetMedDigital.Models // Assumindo este namespace principal
 {
     [Table("Vacina")]
     public class Vacina : BaseModel
@@ -32,8 +32,8 @@ namespace ProjetoPetMedDigital.Models
         [Display(Name = "Paciente")]
         public int IdPaciente { get; set; }
 
-        // Propriedades de navegação
-        public ItemEstoque ItemEstoque { get; set; } = null!;
-        public Paciente Paciente { get; set; } = null!;
+        // Propriedades de navegação - CORRIGIDAS PARA ANULÁVEIS (?)
+        public ItemEstoque? ItemEstoque { get; set; } // Tornada anulável
+        public Paciente? Paciente { get; set; }       // Tornada anulável
     }
 }

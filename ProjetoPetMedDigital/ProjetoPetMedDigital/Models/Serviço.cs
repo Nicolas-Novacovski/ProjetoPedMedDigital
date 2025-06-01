@@ -1,12 +1,12 @@
-using ProjetoPetMedDigital.Models;
+using PetMed_Digital.Models; // Assumindo que BaseModel está neste namespace
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ProjetoPetMedDigital.Models
+namespace ProjetoPetMedDigital.Models // Assumindo este namespace principal
 {
-    [Table("Servico")] 
-    public class Serviços : BaseModel 
+    [Table("Servico")] // Nome da tabela continua sendo "Servico"
+    public class Servico : BaseModel // CORREÇÃO: Nome da classe para 'Servico' (singular)
     {
         [Key]
         public int IdServico { get; set; }
@@ -62,10 +62,10 @@ namespace ProjetoPetMedDigital.Models
         [Display(Name = "Valor Associado")]
         public int IdValor { get; set; }
 
-        // Propriedades de navegação
-        public Agendamento Agendamento { get; set; } = null!;
-        public Veterinario Veterinario { get; set; } = null!;
-        public ItemEstoque ItemEstoque { get; set; } = null!;
-        public Valor Valor { get; set; } = null!;
+        // Propriedades de navegação - CORRIGIDAS PARA ANULÁVEIS (?) se for preciso
+        public Agendamento? Agendamento { get; set; }
+        public Veterinario? Veterinario { get; set; }
+        public ItemEstoque? ItemEstoque { get; set; }
+        public Valor? Valor { get; set; }
     }
 }

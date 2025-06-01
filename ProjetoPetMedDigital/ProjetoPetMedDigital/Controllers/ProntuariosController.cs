@@ -50,28 +50,46 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: Prontuarios/Create
         public IActionResult Create()
         {
-            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "IdAgendamento");
-            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "IdPaciente");
-            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "IdVeterinario");
+            // Ajustado SelectList para exibir o ID (ou Nome/Data se preferir)
+            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento"); // Exibir a data do agendamento
+            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro"); // Exibir o nome do paciente
+            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario"); // Exibir o nome do veterinário
             return View();
         }
 
         // POST: Prontuarios/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdProntuario,IdAgendamento,IdVeterinario,DataConsulta,MotivoConsulta,Diagnostico,Tratamento,Peso,Temperatura,FrequenciaCardiaca,FrequenciaRespiratoria,Observacoes,IdPaciente,Id,CreatedAt")] Prontuario prontuario)
         {
             if (ModelState.IsValid)
             {
+                // *** Exemplo de LÓGICA DE NEGÓCIO AQUI (se desejar implementar) ***
+                // Exemplo: Validação customizada - Data de Consulta não pode ser no futuro
+                if (prontuario.DataConsulta.Date > DateTime.Today)
+                {
+                    ModelState.AddModelError("DataConsulta", "A data da consulta não pode ser no futuro.");
+                }
+
+                // Se houver erros customizados, retorne a view para exibir a mensagem
+                if (!ModelState.IsValid)
+                {
+                    // Re-popule ViewDatas para dropdowns antes de retornar a View
+                    ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento", prontuario.IdAgendamento);
+                    ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", prontuario.IdPaciente);
+                    ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", prontuario.IdVeterinario);
+                    return View(prontuario);
+                }
+                // *** FIM DA LÓGICA DE NEGÓCIO ***
+
                 _context.Add(prontuario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "IdAgendamento", prontuario.IdAgendamento);
-            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "IdPaciente", prontuario.IdPaciente);
-            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "IdVeterinario", prontuario.IdVeterinario);
+            // Se ModelState.IsValid foi falso inicialmente (por Data Annotations), re-popule ViewDatas
+            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento", prontuario.IdAgendamento);
+            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", prontuario.IdPaciente);
+            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", prontuario.IdVeterinario);
             return View(prontuario);
         }
 
@@ -88,15 +106,13 @@ namespace ProjetoPetMedDigital.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "IdAgendamento", prontuario.IdAgendamento);
-            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "IdPaciente", prontuario.IdPaciente);
-            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "IdVeterinario", prontuario.IdVeterinario);
+            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento", prontuario.IdAgendamento);
+            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", prontuario.IdPaciente);
+            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", prontuario.IdVeterinario);
             return View(prontuario);
         }
 
         // POST: Prontuarios/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdProntuario,IdAgendamento,IdVeterinario,DataConsulta,MotivoConsulta,Diagnostico,Tratamento,Peso,Temperatura,FrequenciaCardiaca,FrequenciaRespiratoria,Observacoes,IdPaciente,Id,CreatedAt")] Prontuario prontuario)
@@ -126,9 +142,9 @@ namespace ProjetoPetMedDigital.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "IdAgendamento", prontuario.IdAgendamento);
-            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "IdPaciente", prontuario.IdPaciente);
-            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "IdVeterinario", prontuario.IdVeterinario);
+            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento", prontuario.IdAgendamento);
+            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", prontuario.IdPaciente);
+            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", prontuario.IdVeterinario);
             return View(prontuario);
         }
 

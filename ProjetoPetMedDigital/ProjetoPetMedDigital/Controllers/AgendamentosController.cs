@@ -19,14 +19,14 @@ namespace ProjetoPetMedDigital.Controllers
             _context = context;
         }
 
-        // GET: Agendamentoes
+        // GET: Agendamentos
         public async Task<IActionResult> Index()
         {
             var petMedContext = _context.Agendamentos.Include(a => a.Paciente).Include(a => a.Veterinario);
             return View(await petMedContext.ToListAsync());
         }
 
-        // GET: Agendamentoes/Details/5
+        // GET: Agendamentos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,17 +46,16 @@ namespace ProjetoPetMedDigital.Controllers
             return View(agendamento);
         }
 
-        // GET: Agendamentoes/Create
+        // GET: Agendamentos/Create
         public IActionResult Create()
         {
-            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "IdPaciente");
-            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "IdVeterinario");
+            // Ajustado SelectList para exibir NomeCachorro do Paciente e NomeVeterinario
+            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro");
+            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario");
             return View();
         }
 
-        // POST: Agendamentoes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Agendamentos/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdAgendamento,IdPaciente,IdVeterinario,DataAgendamento,HoraAgendamento,Observacoes,Id,CreatedAt")] Agendamento agendamento)
@@ -67,12 +66,13 @@ namespace ProjetoPetMedDigital.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "IdPaciente", agendamento.IdPaciente);
-            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "IdVeterinario", agendamento.IdVeterinario);
+            // Ajustado SelectList para exibir NomeCachorro do Paciente e NomeVeterinario
+            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", agendamento.IdPaciente);
+            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", agendamento.IdVeterinario);
             return View(agendamento);
         }
 
-        // GET: Agendamentoes/Edit/5
+        // GET: Agendamentos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -85,14 +85,13 @@ namespace ProjetoPetMedDigital.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "IdPaciente", agendamento.IdPaciente);
-            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "IdVeterinario", agendamento.IdVeterinario);
+            // Ajustado SelectList para exibir NomeCachorro do Paciente e NomeVeterinario
+            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", agendamento.IdPaciente);
+            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", agendamento.IdVeterinario);
             return View(agendamento);
         }
 
-        // POST: Agendamentoes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Agendamentos/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdAgendamento,IdPaciente,IdVeterinario,DataAgendamento,HoraAgendamento,Observacoes,Id,CreatedAt")] Agendamento agendamento)
@@ -122,12 +121,13 @@ namespace ProjetoPetMedDigital.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "IdPaciente", agendamento.IdPaciente);
-            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "IdVeterinario", agendamento.IdVeterinario);
+            // Ajustado SelectList para exibir NomeCachorro do Paciente e NomeVeterinario
+            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", agendamento.IdPaciente);
+            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", agendamento.IdVeterinario);
             return View(agendamento);
         }
 
-        // GET: Agendamentoes/Delete/5
+        // GET: Agendamentos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -147,7 +147,7 @@ namespace ProjetoPetMedDigital.Controllers
             return View(agendamento);
         }
 
-        // POST: Agendamentoes/Delete/5
+        // POST: Agendamentos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

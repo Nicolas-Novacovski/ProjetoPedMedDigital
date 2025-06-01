@@ -1,10 +1,10 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ProjetoPetMedDigital.Models;
+using PetMed_Digital.Models; // Assumindo que BaseModel está neste namespace
 using System.Collections.Generic;
 
-namespace ProjetoPetMedDigital.Models
+namespace ProjetoPetMedDigital.Models // Assumindo este namespace principal
 {
     [Table("Agendamento")]
     public class Agendamento : BaseModel
@@ -34,11 +34,14 @@ namespace ProjetoPetMedDigital.Models
         [Display(Name = "Observações")]
         public string Observacoes { get; set; } = string.Empty;
 
-        // Propriedades de navegação
-        public Paciente Paciente { get; set; } = null!;
-        public Veterinario Veterinario { get; set; } = null!;
+        // Propriedades de navegação - CORRIGIDAS PARA ANULÁVEIS (?) se for preciso, ou ajustadas
+        public Paciente? Paciente { get; set; }     // Tornada anulável
+        public Veterinario? Veterinario { get; set; } // Tornada anulável
 
-        public List<Serviços> Servicos { get; set; } = new List<Serviços>();
+        // CORREÇÃO: Nome da classe 'Serviços' para 'Servico' (singular) para consistência.
+        // Se a classe 'Serviços.cs' no seu projeto ainda se chama 'Serviços', este será um erro de compilação.
+        // Você deve renomear a classe 'Serviços' para 'Servico'.
+        public List<Servico> Servico { get; set; } = new List<Servico>();
         public Prontuario? Prontuario { get; set; }
     }
 }

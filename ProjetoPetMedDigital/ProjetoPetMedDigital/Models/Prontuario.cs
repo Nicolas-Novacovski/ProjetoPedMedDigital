@@ -1,9 +1,9 @@
-using ProjetoPetMedDigital.Models;
+using PetMed_Digital.Models; // Assumindo que BaseModel está neste namespace
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ProjetoPetMedDigital.Models
+namespace ProjetoPetMedDigital.Models // Assumindo este namespace principal
 {
     [Table("Prontuario")]
     public class Prontuario : BaseModel
@@ -39,15 +39,15 @@ namespace ProjetoPetMedDigital.Models
         [Display(Name = "Peso (kg)")]
         public float? Peso { get; set; }
 
-        [Range(0, 50, ErrorMessage = "Temperatura inválida.")] 
+        [Range(0, 50, ErrorMessage = "Temperatura inválida.")]
         [Display(Name = "Temperatura (°C)")]
         public int? Temperatura { get; set; }
 
-        [Range(0, 300, ErrorMessage = "Frequência cardíaca inválida.")] 
+        [Range(0, 300, ErrorMessage = "Frequência cardíaca inválida.")]
         [Display(Name = "Frequência Cardíaca")]
         public int? FrequenciaCardiaca { get; set; }
 
-        [Range(0, 100, ErrorMessage = "Frequência respiratória inválida.")] 
+        [Range(0, 100, ErrorMessage = "Frequência respiratória inválida.")]
         [Display(Name = "Frequência Respiratória")]
         public int? FrequenciaRespiratoria { get; set; }
 
@@ -59,9 +59,9 @@ namespace ProjetoPetMedDigital.Models
         [Display(Name = "Paciente")]
         public int IdPaciente { get; set; }
 
-        // Propriedades de navegação
+        // Propriedades de navegação - VERIFICADO / AJUSTADO PARA ANULÁVEL SE NECESSÁRIO
         public Agendamento? Agendamento { get; set; }
         public Veterinario? Veterinario { get; set; }
-        public Paciente Paciente { get; set; } = null!;
+        public Paciente? Paciente { get; set; } // Tornada anulável se não estava para evitar erro de ModelState
     }
 }

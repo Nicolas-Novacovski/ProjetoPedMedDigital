@@ -42,6 +42,6 @@ namespace ProjetoPetMedDigital.Models
 
         public CadastroColaborador? CadastroColaborador { get; set; }
 
-        public List<Serviços> Servicos { get; set; } = new List<Serviços>();
+        public List<Serviços> Servico { get; set; } = new List<Serviço>();
     }
 }
