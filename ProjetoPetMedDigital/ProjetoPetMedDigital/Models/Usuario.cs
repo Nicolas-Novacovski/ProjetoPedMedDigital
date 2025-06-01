@@ -9,7 +9,8 @@ namespace ProjetoPetMedDigital.Models
     {
         [Key]
         [Required(ErrorMessage = "O Login é obrigatório.")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Login deve ter entre 3 e 50 caracteres.")]
+        // CORREÇÃO AQUI: Mude o StringLength para 450
+        [StringLength(450, MinimumLength = 3, ErrorMessage = "Login deve ter entre 3 e 450 caracteres.")]
         [Display(Name = "Login do Usuário")]
         public string Login { get; set; } = null!;
 

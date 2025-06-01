@@ -47,8 +47,9 @@ namespace ProjetoPetMedDigital.Models
         [Display(Name = "Recomendações")]
         public string Recomendacoes { get; set; } = string.Empty;
 
-        // Propriedades de navegação
-        public Cliente Cliente { get; set; } = null!;
+       
+        public Cliente? Cliente { get; set; }
+
         public List<Agendamento> Agendamentos { get; set; } = new List<Agendamento>();
         public List<Prontuario> Prontuarios { get; set; } = new List<Prontuario>();
         public List<Vacina> Vacinas { get; set; } = new List<Vacina>();
