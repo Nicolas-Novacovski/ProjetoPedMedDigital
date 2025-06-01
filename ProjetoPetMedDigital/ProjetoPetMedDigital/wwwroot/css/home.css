@@ -1,59 +1,71 @@
+/* Este arquivo deve conter APENAS CSS. */
+
+/* Removidas as regras de display flex, justify-content, align-items e height: 100vh do body
+   para que a navbar não seja centralizada. */
 body {
-  margin: 0;
-  padding: 0;
-  background-color: #F0F4F8;
-  font-family: 'Poppins', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #F0F4F8;
+    font-family: 'Poppins', sans-serif;
 }
 
-.container {
-  display: flex;
-  align-items: center;
-  gap: 90px;
+/* Novo estilo para um container principal na página Home/Index,
+   para aplicar a centralização ao conteúdo específico desta página. */
+.home-main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 100px); /* Ajuste a altura para considerar o header/footer */
+    /* O 100px é um valor estimado para a altura da navbar + footer.
+     Você pode precisar ajustar isso para que o conteúdo não fique sobreposto ou com rolagem desnecessária. */
+}
+
+
+.container { /* O container original que envolve as colunas e a imagem */
+    display: flex;
+    align-items: center;
+    gap: 40px; /* Reduzido o gap para tentar caber melhor na tela, ajuste se necessário */
 }
 
 .coluna-esquerda,
 .coluna-direita {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
 }
 
-/* Estilo original para os parágrafos dentro das colunas */
-.coluna-esquerda p,
-.coluna-direita p {
-  background-color: #FA7D30; /* laranja */
-  color: #ffffff;
-  padding: 20px 50px;
-  border-radius: 40px;
-  text-align: center;
-  font-weight: bold;
-  font-size: 30px;
-  cursor: pointer;
-  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
-}
+    /* Estilo original para os parágrafos dentro das colunas */
+    .coluna-esquerda p,
+    .coluna-direita p {
+        background-color: #FA7D30; /* laranja */
+        color: #ffffff;
+        padding: 20px 50px;
+        border-radius: 40px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 30px;
+        cursor: pointer;
+        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease;
+    }
 
-.coluna-esquerda p:hover,
-.coluna-direita p:hover {
-  transform: scale(1.05);
-}
+        .coluna-esquerda p:hover,
+        .coluna-direita p:hover {
+            transform: scale(1.05);
+        }
 
 .imagem-centro {
-  background-color: #DDF6EC; /* verde claro */
-  padding: 40px;
-  border-radius: 40px;
-  box-shadow: 6px 6px 14px rgba(0, 0, 0, 0.15);
+    background-color: #DDF6EC; /* verde claro */
+    padding: 40px;
+    border-radius: 40px;
+    box-shadow: 6px 6px 14px rgba(0, 0, 0, 0.15);
 }
 
-.imagem-centro img {
-  width: 400px;
-  height: auto;
-  border-radius: 30px;
-}
+    .imagem-centro img {
+        width: 400px;
+        height: auto;
+        border-radius: 30px;
+    }
 
 /* NOVOS ESTILOS para os links na página Home/Index,
    para manter o visual de botão mesmo sendo um <a>
@@ -64,22 +76,21 @@ body {
     display: block; /* Faz o link ocupar toda a largura disponível, como um bloco */
 }
 
-/* Aplica o estilo original do parágrafo (que agora está dentro do <a>) */
-.home-link p {
-    background-color: #FA7D30;
-    color: #ffffff;
-    padding: 20px 50px;
-    border-radius: 40px;
-    text-align: center;
-    font-weight: bold;
-    font-size: 30px;
-    cursor: pointer;
-    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease;
-    margin: 0; /* Remove a margem padrão do parágrafo para que o link controle o espaçamento */
-}
+    /* Aplica o estilo original do parágrafo (que agora está dentro do <a>) */
+    .home-link p {
+        background-color: #FA7D30;
+        color: #ffffff;
+        padding: 20px 50px;
+        border-radius: 40px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 30px;
+        cursor: pointer;
+        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease;
+        margin: 0; /* Remove a margem padrão do parágrafo para que o link controle o espaçamento */
+    }
 
-/* Aplica o efeito hover ao parágrafo quando o link é hoverado */
-.home-link:hover p {
-    transform: scale(1.05);
-}
+    .home-link:hover p {
+        transform: scale(1.05);
+    }
