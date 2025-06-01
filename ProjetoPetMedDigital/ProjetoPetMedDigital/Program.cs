@@ -1,5 +1,11 @@
 ﻿using ProjetoPetMedDigital.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder; 
+using Microsoft.AspNetCore.Hosting; 
+using Microsoft.Extensions.Configuration; 
+using Microsoft.Extensions.DependencyInjection; 
+using Microsoft.Extensions.Hosting; 
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,15 +26,18 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+
+app.UseStaticFiles(); // ESSA LINHA PRECISA ESTAR AQUI para servir CSS, JS, Imagens da wwwroot
+
 app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapStaticAssets();
+
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
