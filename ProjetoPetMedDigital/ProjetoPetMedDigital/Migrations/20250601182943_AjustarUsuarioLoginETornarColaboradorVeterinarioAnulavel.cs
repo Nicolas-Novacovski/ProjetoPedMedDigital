@@ -75,7 +75,7 @@ namespace ProjetoPetMedDigital.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "TipoVenda",
-                table: "Servico",
+                table: "servico",
                 type: "nvarchar(50)",
                 maxLength: 50,
                 nullable: false,
@@ -83,8 +83,8 @@ namespace ProjetoPetMedDigital.Migrations
                 oldType: "nvarchar(max)");
 
             migrationBuilder.AlterColumn<string>(
-                name: "NomeServico",
-                table: "Servico",
+                name: "Nomeservico",
+                table: "servico",
                 type: "nvarchar(150)",
                 maxLength: 150,
                 nullable: false,
@@ -93,7 +93,7 @@ namespace ProjetoPetMedDigital.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "Descricao",
-                table: "Servico",
+                table: "servico",
                 type: "nvarchar(500)",
                 maxLength: 500,
                 nullable: false,
@@ -439,7 +439,7 @@ namespace ProjetoPetMedDigital.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "TipoVenda",
-                table: "Servico",
+                table: "servico",
                 type: "nvarchar(max)",
                 nullable: false,
                 oldClrType: typeof(string),
@@ -447,8 +447,8 @@ namespace ProjetoPetMedDigital.Migrations
                 oldMaxLength: 50);
 
             migrationBuilder.AlterColumn<string>(
-                name: "NomeServico",
-                table: "Servico",
+                name: "Nomeservico",
+                table: "servico",
                 type: "nvarchar(max)",
                 nullable: false,
                 oldClrType: typeof(string),
@@ -457,7 +457,7 @@ namespace ProjetoPetMedDigital.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "Descricao",
-                table: "Servico",
+                table: "servico",
                 type: "nvarchar(max)",
                 nullable: false,
                 oldClrType: typeof(string),

@@ -50,8 +50,8 @@ namespace ProjetoPetMedDigital.Models
         public int IdCliente { get; set; }
 
         // Propriedades de navegação - CORRIGIDAS PARA ANULÁVEIS (?)
-        // Reitero a sugestão de renomear 'Serviços' para 'Servico' para consistência.
-        public Serviço? Servico { get; set; } // Agora anulável
+        // Reitero a sugestão de renomear 'servico' para 'servico' para consistência.
+        public servico? servico { get; set; } // Agora anulável
         public Cliente? Cliente { get; set; }  // Agora anulável
     }
 }

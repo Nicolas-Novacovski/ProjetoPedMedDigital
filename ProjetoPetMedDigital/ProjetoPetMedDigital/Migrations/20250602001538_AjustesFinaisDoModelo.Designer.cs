@@ -12,8 +12,8 @@ using ProjetoPetMedDigital.Data;
 namespace ProjetoPetMedDigital.Migrations
 {
     [DbContext(typeof(PetMedContext))]
-    [Migration("20250522010308_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250602001538_AjustesFinaisDoModelo")]
+    partial class AjustesFinaisDoModelo
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,7 +51,7 @@ namespace ProjetoPetMedDigital.Migrations
                     b.Property<int>("IdVeterinario")
                         .HasColumnType("int");
 
-                    b.Property<int>("PacienteIdPaciente")
+                    b.Property<int?>("PacienteIdPaciente")
                         .HasColumnType("int");
 
                     b.HasKey("IdAgendaVeterinario");
@@ -91,7 +91,8 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.Property<string>("Observacoes")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("IdAgendamento");
 
@@ -112,22 +113,26 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.Property<string>("Bairro")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("CEP")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)");
 
                     b.Property<string>("CPF")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
 
                     b.Property<int>("Cargo")
                         .HasColumnType("int");
 
                     b.Property<string>("Cidade")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -141,31 +146,32 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.Property<string>("Endereco")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<string>("Login")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("RG")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("Telefone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TipoUsuario")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
                     b.HasKey("IdColaborador");
@@ -183,19 +189,23 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.Property<string>("Bairro")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("CEP")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)");
 
                     b.Property<string>("CPF")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
 
                     b.Property<string>("Cidade")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -209,18 +219,21 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.Property<string>("Endereco")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<string>("NomeResponsavel")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("RG")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Telefone")
                         .IsRequired()
@@ -247,18 +260,21 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Fornecedor")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<string>("NomeProduto")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<decimal?>("PrecoCusto")
                         .HasColumnType("decimal(18,2)");
@@ -274,7 +290,8 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.Property<string>("UnidadeMedida")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("IdProduto");
 
@@ -303,22 +320,26 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.Property<string>("NomeCachorro")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<float>("Peso")
                         .HasColumnType("real");
 
                     b.Property<string>("Problema")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Recomendacoes")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("SinaisVitais")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("TipoAtendimento")
                         .HasColumnType("int");
@@ -343,7 +364,8 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("Id")
                         .HasColumnType("int");
@@ -353,7 +375,8 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.Property<string>("NomeProcedimento")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<decimal>("Valor")
                         .HasColumnType("decimal(18,2)");
@@ -382,7 +405,8 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.Property<string>("Diagnostico")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<int?>("FrequenciaCardiaca")
                         .HasColumnType("int");
@@ -404,11 +428,13 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.Property<string>("MotivoConsulta")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Observacoes")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<float?>("Peso")
                         .HasColumnType("real");
@@ -418,7 +444,8 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.Property<string>("Tratamento")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.HasKey("IdProntuario");
 
@@ -433,74 +460,10 @@ namespace ProjetoPetMedDigital.Migrations
                     b.ToTable("Prontuario");
                 });
 
-            modelBuilder.Entity("ProjetoPetMedDigital.Models.servico", b =>
-                {
-                    b.Property<int>("Idservico")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Idservico"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Data")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Hora")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdAgendamento")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdProduto")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdValor")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdVeterinario")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Nomeservico")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("PrecoVenda")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TipoVenda")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Idservico");
-
-                    b.HasIndex("IdAgendamento");
-
-                    b.HasIndex("IdProduto")
-                        .IsUnique();
-
-                    b.HasIndex("IdValor")
-                        .IsUnique();
-
-                    b.HasIndex("IdVeterinario");
-
-                    b.ToTable("servico");
-                });
-
             modelBuilder.Entity("ProjetoPetMedDigital.Models.Usuario", b =>
                 {
                     b.Property<string>("Login")
+                        .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -514,7 +477,8 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.Property<string>("Senha")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Login");
 
@@ -537,11 +501,13 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Duracao")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("Id")
                         .HasColumnType("int");
@@ -554,7 +520,8 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.Property<string>("NomeVacina")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.HasKey("IdVacina");
 
@@ -591,7 +558,8 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.Property<string>("TipoPagamento")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("ValorProcedimento")
                         .HasColumnType("decimal(18,2)");
@@ -626,7 +594,8 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.Property<string>("Especialidade")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("Id")
                         .HasColumnType("int");
@@ -636,7 +605,8 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.Property<string>("NomeVeterinario")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Telefone")
                         .IsRequired()
@@ -650,6 +620,74 @@ namespace ProjetoPetMedDigital.Migrations
                     b.ToTable("Veterinarios");
                 });
 
+            modelBuilder.Entity("ProjetoPetMedDigital.Models.servico", b =>
+                {
+                    b.Property<int>("Idservico")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Idservico"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("Hora")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdAgendamento")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdProduto")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdValor")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdVeterinario")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nomeservico")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<decimal>("PrecoVenda")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TipoVenda")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Idservico");
+
+                    b.HasIndex("IdAgendamento");
+
+                    b.HasIndex("IdProduto")
+                        .IsUnique();
+
+                    b.HasIndex("IdValor")
+                        .IsUnique();
+
+                    b.HasIndex("IdVeterinario");
+
+                    b.ToTable("servico");
+                });
+
             modelBuilder.Entity("ProjetoPetMedDigital.Models.AgendaVeterinario", b =>
                 {
                     b.HasOne("ProjetoPetMedDigital.Models.Veterinario", "Veterinario")
@@ -660,9 +698,7 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.HasOne("ProjetoPetMedDigital.Models.Paciente", "Paciente")
                         .WithMany()
-                        .HasForeignKey("PacienteIdPaciente")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PacienteIdPaciente");
 
                     b.Navigation("Paciente");
 
@@ -735,41 +771,6 @@ namespace ProjetoPetMedDigital.Migrations
                     b.Navigation("Veterinario");
                 });
 
-            modelBuilder.Entity("ProjetoPetMedDigital.Models.servico", b =>
-                {
-                    b.HasOne("ProjetoPetMedDigital.Models.Agendamento", "Agendamento")
-                        .WithMany("servico")
-                        .HasForeignKey("IdAgendamento")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ProjetoPetMedDigital.Models.ItemEstoque", "ItemEstoque")
-                        .WithOne("servico")
-                        .HasForeignKey("ProjetoPetMedDigital.Models.servico", "IdProduto")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ProjetoPetMedDigital.Models.Valor", "Valor")
-                        .WithOne("servico")
-                        .HasForeignKey("ProjetoPetMedDigital.Models.servico", "IdValor")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ProjetoPetMedDigital.Models.Veterinario", "Veterinario")
-                        .WithMany("servico")
-                        .HasForeignKey("IdVeterinario")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Agendamento");
-
-                    b.Navigation("ItemEstoque");
-
-                    b.Navigation("Valor");
-
-                    b.Navigation("Veterinario");
-                });
-
             modelBuilder.Entity("ProjetoPetMedDigital.Models.Usuario", b =>
                 {
                     b.HasOne("ProjetoPetMedDigital.Models.CadastroColaborador", "CadastroColaborador")
@@ -822,6 +823,41 @@ namespace ProjetoPetMedDigital.Migrations
                     b.Navigation("CadastroColaborador");
                 });
 
+            modelBuilder.Entity("ProjetoPetMedDigital.Models.servico", b =>
+                {
+                    b.HasOne("ProjetoPetMedDigital.Models.Agendamento", "Agendamento")
+                        .WithMany("servico")
+                        .HasForeignKey("IdAgendamento")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ProjetoPetMedDigital.Models.ItemEstoque", "ItemEstoque")
+                        .WithOne("servico")
+                        .HasForeignKey("ProjetoPetMedDigital.Models.servico", "IdProduto")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ProjetoPetMedDigital.Models.Valor", "Valor")
+                        .WithOne("servico")
+                        .HasForeignKey("ProjetoPetMedDigital.Models.servico", "IdValor")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ProjetoPetMedDigital.Models.Veterinario", "Veterinario")
+                        .WithMany("servico")
+                        .HasForeignKey("IdVeterinario")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Agendamento");
+
+                    b.Navigation("ItemEstoque");
+
+                    b.Navigation("Valor");
+
+                    b.Navigation("Veterinario");
+                });
+
             modelBuilder.Entity("ProjetoPetMedDigital.Models.Agendamento", b =>
                 {
                     b.Navigation("Prontuario");
@@ -831,8 +867,7 @@ namespace ProjetoPetMedDigital.Migrations
 
             modelBuilder.Entity("ProjetoPetMedDigital.Models.CadastroColaborador", b =>
                 {
-                    b.Navigation("Usuario")
-                        .IsRequired();
+                    b.Navigation("Usuario");
 
                     b.Navigation("Veterinario");
                 });
@@ -848,9 +883,9 @@ namespace ProjetoPetMedDigital.Migrations
                 {
                     b.Navigation("Procedimento");
 
-                    b.Navigation("servico");
-
                     b.Navigation("Vacina");
+
+                    b.Navigation("servico");
                 });
 
             modelBuilder.Entity("ProjetoPetMedDigital.Models.Paciente", b =>
@@ -864,8 +899,7 @@ namespace ProjetoPetMedDigital.Migrations
 
             modelBuilder.Entity("ProjetoPetMedDigital.Models.Valor", b =>
                 {
-                    b.Navigation("servico")
-                        .IsRequired();
+                    b.Navigation("servico");
                 });
 
             modelBuilder.Entity("ProjetoPetMedDigital.Models.Veterinario", b =>

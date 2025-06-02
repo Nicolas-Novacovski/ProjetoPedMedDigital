@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using PetMed_Digital.Models; // Assumindo que BaseModel está neste namespace
+using ProjetoPetMedDigital.Models; // Assumindo que BaseModel está neste namespace
 using System.Collections.Generic;
 
 namespace ProjetoPetMedDigital.Models // Assumindo este namespace principal
@@ -38,10 +38,10 @@ namespace ProjetoPetMedDigital.Models // Assumindo este namespace principal
         public Paciente? Paciente { get; set; }     // Tornada anulável
         public Veterinario? Veterinario { get; set; } // Tornada anulável
 
-        // CORREÇÃO: Nome da classe 'Serviços' para 'Servico' (singular) para consistência.
-        // Se a classe 'Serviços.cs' no seu projeto ainda se chama 'Serviços', este será um erro de compilação.
-        // Você deve renomear a classe 'Serviços' para 'Servico'.
-        public List<Servico> Servico { get; set; } = new List<Servico>();
+        // CORREÇÃO: Nome da classe 'servico' para 'servico' (singular) para consistência.
+        // Se a classe 'servico.cs' no seu projeto ainda se chama 'servico', este será um erro de compilação.
+        // Você deve renomear a classe 'servico' para 'servico'.
+        public List<servico> servico { get; set; } = new List<servico>();
         public Prontuario? Prontuario { get; set; }
     }
 }

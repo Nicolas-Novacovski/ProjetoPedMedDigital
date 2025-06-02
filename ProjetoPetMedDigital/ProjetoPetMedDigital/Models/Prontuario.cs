@@ -1,4 +1,4 @@
-using PetMed_Digital.Models; // Assumindo que BaseModel está neste namespace
+using ProjetoPetMedDigital.Models; // Assumindo que BaseModel está neste namespace
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

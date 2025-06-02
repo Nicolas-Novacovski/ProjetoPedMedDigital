@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ProjetoPetMedDigital.Models.Serviços>
+﻿@model IEnumerable<ProjetoPetMedDigital.Models.servico>
 
 @{
     ViewData["Title"] = "Index";
@@ -17,7 +17,7 @@
                 @Html.DisplayNameFor(model => model.TipoVenda)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NomeServico)
+                @Html.DisplayNameFor(model => model.Nomeservico)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Data)
@@ -62,7 +62,7 @@
                 @Html.DisplayFor(modelItem => item.TipoVenda)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NomeServico)
+                @Html.DisplayFor(modelItem => item.Nomeservico)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Data)
@@ -98,9 +98,9 @@
                 @Html.DisplayFor(modelItem => item.CreatedAt)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.IdServico">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdServico">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdServico">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Idservico">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Idservico">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Idservico">Delete</a>
             </td>
         </tr>
 }

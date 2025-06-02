@@ -23,7 +23,7 @@ namespace ProjetoPetMedDigital.Controllers
         public async Task<IActionResult> Index()
         {
             // Adicionado Include para carregar as propriedades de navegação
-            var petMedContext = _context.Valores.Include(v => v.Cliente).Include(v => v.Servico);
+            var petMedContext = _context.Valores.Include(v => v.Cliente).Include(v => v.servico);
             return View(await petMedContext.ToListAsync());
         }
 
@@ -37,7 +37,7 @@ namespace ProjetoPetMedDigital.Controllers
 
             var valor = await _context.Valores
                 .Include(v => v.Cliente)
-                .Include(v => v.Servico)
+                .Include(v => v.servico)
                 .FirstOrDefaultAsync(m => m.IdValor == id);
             if (valor == null)
             {
@@ -50,9 +50,9 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: Valores/Create
         public IActionResult Create()
         {
-            // Ajustado SelectList para exibir o NomeResponsavel do Cliente e NomeServico
+            // Ajustado SelectList para exibir o NomeResponsavel do Cliente e Nomeservico
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel");
-            ViewData["IdServico"] = new SelectList(_context.Servicos, "IdServico", "NomeServico"); // Assuming Servicos.NomeServico is the display property
+            ViewData["Idservico"] = new SelectList(_context.servico, "Idservico", "Nomeservico"); // Assuming servico.Nomeservico is the display property
             return View();
         }
 
@@ -67,9 +67,9 @@ namespace ProjetoPetMedDigital.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            // Ajustado SelectList para exibir o NomeResponsavel do Cliente e NomeServico
+            // Ajustado SelectList para exibir o NomeResponsavel do Cliente e Nomeservico
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel", valor.IdCliente);
-            ViewData["IdServico"] = new SelectList(_context.Servicos, "IdServico", "NomeServico", valor.Servico?.IdServico); // Use valor.Servico?.IdServico se a FK para Servico for IdServico em Valor
+            ViewData["Idservico"] = new SelectList(_context.servico, "Idservico", "Nomeservico", valor.servico?.Idservico); // Use valor.servico?.Idservico se a FK para servico for Idservico em Valor
             return View(valor);
         }
 
@@ -86,9 +86,9 @@ namespace ProjetoPetMedDigital.Controllers
             {
                 return NotFound();
             }
-            // Ajustado SelectList para exibir o NomeResponsavel do Cliente e NomeServico
+            // Ajustado SelectList para exibir o NomeResponsavel do Cliente e Nomeservico
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel", valor.IdCliente);
-            ViewData["IdServico"] = new SelectList(_context.Servicos, "IdServico", "NomeServico", valor.Servico?.IdServico); // Use valor.Servico?.IdServico
+            ViewData["Idservico"] = new SelectList(_context.servico, "Idservico", "Nomeservico", valor.servico?.Idservico); // Use valor.servico?.Idservico
             return View(valor);
         }
 
@@ -122,9 +122,9 @@ namespace ProjetoPetMedDigital.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            // Ajustado SelectList para exibir o NomeResponsavel do Cliente e NomeServico
+            // Ajustado SelectList para exibir o NomeResponsavel do Cliente e Nomeservico
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel", valor.IdCliente);
-            ViewData["IdServico"] = new SelectList(_context.Servicos, "IdServico", "NomeServico", valor.Servico?.IdServico); // Use valor.Servico?.IdServico
+            ViewData["Idservico"] = new SelectList(_context.servico, "Idservico", "Nomeservico", valor.servico?.Idservico); // Use valor.servico?.Idservico
             return View(valor);
         }
 
@@ -138,7 +138,7 @@ namespace ProjetoPetMedDigital.Controllers
 
             var valor = await _context.Valores
                 .Include(v => v.Cliente)
-                .Include(v => v.Servico)
+                .Include(v => v.servico)
                 .FirstOrDefaultAsync(m => m.IdValor == id);
             if (valor == null)
             {

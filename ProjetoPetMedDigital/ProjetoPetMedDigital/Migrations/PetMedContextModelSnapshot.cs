@@ -457,74 +457,6 @@ namespace ProjetoPetMedDigital.Migrations
                     b.ToTable("Prontuario");
                 });
 
-            modelBuilder.Entity("ProjetoPetMedDigital.Models.Serviços", b =>
-                {
-                    b.Property<int>("IdServico")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdServico"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Data")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<DateTime>("Hora")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdAgendamento")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdProduto")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdValor")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdVeterinario")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NomeServico")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<decimal>("PrecoVenda")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TipoVenda")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("IdServico");
-
-                    b.HasIndex("IdAgendamento");
-
-                    b.HasIndex("IdProduto")
-                        .IsUnique();
-
-                    b.HasIndex("IdValor")
-                        .IsUnique();
-
-                    b.HasIndex("IdVeterinario");
-
-                    b.ToTable("Servico");
-                });
-
             modelBuilder.Entity("ProjetoPetMedDigital.Models.Usuario", b =>
                 {
                     b.Property<string>("Login")
@@ -685,6 +617,74 @@ namespace ProjetoPetMedDigital.Migrations
                     b.ToTable("Veterinarios");
                 });
 
+            modelBuilder.Entity("ProjetoPetMedDigital.Models.servico", b =>
+                {
+                    b.Property<int>("Idservico")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Idservico"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("Hora")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdAgendamento")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdProduto")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdValor")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdVeterinario")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nomeservico")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<decimal>("PrecoVenda")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TipoVenda")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Idservico");
+
+                    b.HasIndex("IdAgendamento");
+
+                    b.HasIndex("IdProduto")
+                        .IsUnique();
+
+                    b.HasIndex("IdValor")
+                        .IsUnique();
+
+                    b.HasIndex("IdVeterinario");
+
+                    b.ToTable("servico");
+                });
+
             modelBuilder.Entity("ProjetoPetMedDigital.Models.AgendaVeterinario", b =>
                 {
                     b.HasOne("ProjetoPetMedDigital.Models.Veterinario", "Veterinario")
@@ -768,41 +768,6 @@ namespace ProjetoPetMedDigital.Migrations
                     b.Navigation("Veterinario");
                 });
 
-            modelBuilder.Entity("ProjetoPetMedDigital.Models.Serviços", b =>
-                {
-                    b.HasOne("ProjetoPetMedDigital.Models.Agendamento", "Agendamento")
-                        .WithMany("Servicos")
-                        .HasForeignKey("IdAgendamento")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ProjetoPetMedDigital.Models.ItemEstoque", "ItemEstoque")
-                        .WithOne("Servico")
-                        .HasForeignKey("ProjetoPetMedDigital.Models.Serviços", "IdProduto")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ProjetoPetMedDigital.Models.Valor", "Valor")
-                        .WithOne("Servico")
-                        .HasForeignKey("ProjetoPetMedDigital.Models.Serviços", "IdValor")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ProjetoPetMedDigital.Models.Veterinario", "Veterinario")
-                        .WithMany("Servicos")
-                        .HasForeignKey("IdVeterinario")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Agendamento");
-
-                    b.Navigation("ItemEstoque");
-
-                    b.Navigation("Valor");
-
-                    b.Navigation("Veterinario");
-                });
-
             modelBuilder.Entity("ProjetoPetMedDigital.Models.Usuario", b =>
                 {
                     b.HasOne("ProjetoPetMedDigital.Models.CadastroColaborador", "CadastroColaborador")
@@ -855,11 +820,46 @@ namespace ProjetoPetMedDigital.Migrations
                     b.Navigation("CadastroColaborador");
                 });
 
+            modelBuilder.Entity("ProjetoPetMedDigital.Models.servico", b =>
+                {
+                    b.HasOne("ProjetoPetMedDigital.Models.Agendamento", "Agendamento")
+                        .WithMany("servico")
+                        .HasForeignKey("IdAgendamento")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ProjetoPetMedDigital.Models.ItemEstoque", "ItemEstoque")
+                        .WithOne("servico")
+                        .HasForeignKey("ProjetoPetMedDigital.Models.servico", "IdProduto")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ProjetoPetMedDigital.Models.Valor", "Valor")
+                        .WithOne("servico")
+                        .HasForeignKey("ProjetoPetMedDigital.Models.servico", "IdValor")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ProjetoPetMedDigital.Models.Veterinario", "Veterinario")
+                        .WithMany("servico")
+                        .HasForeignKey("IdVeterinario")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Agendamento");
+
+                    b.Navigation("ItemEstoque");
+
+                    b.Navigation("Valor");
+
+                    b.Navigation("Veterinario");
+                });
+
             modelBuilder.Entity("ProjetoPetMedDigital.Models.Agendamento", b =>
                 {
                     b.Navigation("Prontuario");
 
-                    b.Navigation("Servicos");
+                    b.Navigation("servico");
                 });
 
             modelBuilder.Entity("ProjetoPetMedDigital.Models.CadastroColaborador", b =>
@@ -880,9 +880,9 @@ namespace ProjetoPetMedDigital.Migrations
                 {
                     b.Navigation("Procedimento");
 
-                    b.Navigation("Servico");
-
                     b.Navigation("Vacina");
+
+                    b.Navigation("servico");
                 });
 
             modelBuilder.Entity("ProjetoPetMedDigital.Models.Paciente", b =>
@@ -896,7 +896,7 @@ namespace ProjetoPetMedDigital.Migrations
 
             modelBuilder.Entity("ProjetoPetMedDigital.Models.Valor", b =>
                 {
-                    b.Navigation("Servico");
+                    b.Navigation("servico");
                 });
 
             modelBuilder.Entity("ProjetoPetMedDigital.Models.Veterinario", b =>
@@ -907,7 +907,7 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.Navigation("Prontuarios");
 
-                    b.Navigation("Servicos");
+                    b.Navigation("servico");
                 });
 #pragma warning restore 612, 618
         }

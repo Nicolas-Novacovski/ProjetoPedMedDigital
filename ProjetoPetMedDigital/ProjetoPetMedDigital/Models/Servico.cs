@@ -1,25 +1,25 @@
-using PetMed_Digital.Models; // Assumindo que BaseModel está neste namespace
+using ProjetoPetMedDigital.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjetoPetMedDigital.Models // Assumindo este namespace principal
 {
-    [Table("Servico")] // Nome da tabela continua sendo "Servico"
-    public class Servico : BaseModel // CORREÇÃO: Nome da classe para 'Servico' (singular)
+    [Table("servico")] // Nome da tabela continua sendo "servico"
+    public class servico : BaseModel // CORREÇÃO: Nome da classe para 'servico' (singular)
     {
         [Key]
-        public int IdServico { get; set; }
+        public int Idservico { get; set; }
 
         [Required(ErrorMessage = "O tipo de venda é obrigatório.")]
         [StringLength(50, ErrorMessage = "Tipo de venda não pode exceder 50 caracteres.")]
         [Display(Name = "Tipo de Venda")]
         public string TipoVenda { get; set; } = null!;
 
-        [Required(ErrorMessage = "O nome do serviço é obrigatório.")]
-        [StringLength(150, ErrorMessage = "Nome do serviço não pode exceder 150 caracteres.")]
-        [Display(Name = "Nome do Serviço")]
-        public string NomeServico { get; set; } = null!;
+        [Required(ErrorMessage = "O nome do servico é obrigatório.")]
+        [StringLength(150, ErrorMessage = "Nome do servico não pode exceder 150 caracteres.")]
+        [Display(Name = "Nome do servico")]
+        public string Nomeservico { get; set; } = null!;
 
         [Required(ErrorMessage = "O veterinário é obrigatório.")]
         [Display(Name = "Veterinário")]
@@ -27,12 +27,12 @@ namespace ProjetoPetMedDigital.Models // Assumindo este namespace principal
 
         [Required(ErrorMessage = "A data é obrigatória.")]
         [DataType(DataType.Date)]
-        [Display(Name = "Data do Serviço")]
+        [Display(Name = "Data do servico")]
         public DateTime Data { get; set; }
 
         [Required(ErrorMessage = "A hora é obrigatória.")]
         [DataType(DataType.Time)]
-        [Display(Name = "Hora do Serviço")]
+        [Display(Name = "Hora do servico")]
         public DateTime Hora { get; set; }
 
         [Required(ErrorMessage = "O status é obrigatório.")]
