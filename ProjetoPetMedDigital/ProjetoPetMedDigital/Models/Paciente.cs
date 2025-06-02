@@ -1,14 +1,15 @@
-using ProjetoPetMedDigital.Models;
+// Removida: using PetMed_Digital.Models; - pois BaseModel estará em ProjetoPetMedDigital.Models
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ProjetoPetMedDigital.Models
+namespace ProjetoPetMedDigital.Models // NAMESPACE PADRONIZADO
 {
     [Table("Paciente")]
     public class Paciente : BaseModel
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdPaciente { get; set; }
 
         [Required(ErrorMessage = "O cliente responsável é obrigatório.")]
@@ -47,9 +48,8 @@ namespace ProjetoPetMedDigital.Models
         [Display(Name = "Recomendações")]
         public string Recomendacoes { get; set; } = string.Empty;
 
-        // Propriedades de navegação - CORRIGIDA PARA ANULÁVEL (?)
+        // Propriedades de navegação
         public Cliente? Cliente { get; set; }
-
         public List<Agendamento> Agendamentos { get; set; } = new List<Agendamento>();
         public List<Prontuario> Prontuarios { get; set; } = new List<Prontuario>();
         public List<Vacina> Vacinas { get; set; } = new List<Vacina>();

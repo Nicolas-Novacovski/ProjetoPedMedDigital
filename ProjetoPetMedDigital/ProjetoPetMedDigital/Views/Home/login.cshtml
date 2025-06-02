@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = null; // Esta View não usa o _Layout.cshtml, por ser uma página de login independente
+    Layout = null;
 }
 <!DOCTYPE html>
 <html>
@@ -17,15 +17,12 @@
     <div class="login-box">
         <h2>Petmed Digital</h2>
 
-        @* Exibe a mensagem de erro se existir *@
         @if (TempData["ErrorMessage"] != null)
         {
             <p style="color: red; margin-bottom: 15px;">@TempData["ErrorMessage"]</p>
         }
 
-        @* O formulário agora envia dados para a ação Login do HomeController via POST *@
         <form asp-action="Login" method="post">
-            @* name="usuario" e name="senha" correspondem aos parâmetros da ação Login(string usuario, string senha) no controller *@
             <input type="text" name="usuario" placeholder="Usuário" style="text-align: left;" /><br />
             <input type="password" name="senha" placeholder="Senha" style="text-align: left;" /><br />
             <input type="submit" value="Entrar" />

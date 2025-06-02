@@ -15,7 +15,7 @@ namespace ProjetoPetMedDigital.Data
 		public DbSet<Cliente> Clientes { get; set; }
 		public DbSet<Paciente> Pacientes { get; set; }
 		public DbSet<Procedimento> Procedimentos { get; set; }
-		public DbSet<servico> servico { get; set; } // Renomeado de 'servico' para 'servico'
+		public DbSet<Servico> Servico { get; set; } // Renomeado de 'Servico' para 'Servico'
 		public DbSet<Usuario> Usuarios { get; set; }
 		public DbSet<Vacina> Vacinas { get; set; }
 		public DbSet<Valor> Valores { get; set; }
@@ -60,7 +60,7 @@ namespace ProjetoPetMedDigital.Data
 				.OnDelete(DeleteBehavior.Restrict);
 
 			modelBuilder.Entity<Agendamento>()
-				.HasMany(a => a.servico)
+				.HasMany(a => a.Servico)
 				.WithOne(s => s.Agendamento)
 				.HasForeignKey(s => s.IdAgendamento)
 				.OnDelete(DeleteBehavior.Restrict);
@@ -84,7 +84,7 @@ namespace ProjetoPetMedDigital.Data
 				.OnDelete(DeleteBehavior.Restrict);
 
 			modelBuilder.Entity<Veterinario>()
-				.HasMany(v => v.servico)
+				.HasMany(v => v.Servico)
 				.WithOne(s => s.Veterinario)
 				.HasForeignKey(s => s.IdVeterinario)
 				.OnDelete(DeleteBehavior.Restrict);
@@ -97,10 +97,10 @@ namespace ProjetoPetMedDigital.Data
 				.OnDelete(DeleteBehavior.Restrict);
 
 			// CORREÇÃO AQUI: Adicionado '!' para resolver o erro "must be a reference type"
-			modelBuilder.Entity<servico>() // Renomeado de 'servico' para 'servico'
+			modelBuilder.Entity<Servico>() // Renomeado de 'Servico' para 'Servico'
 				.HasOne(s => s.Valor!) // Adicionado '!'
-				.WithOne(v => v.servico)
-				.HasForeignKey<servico>(s => s.IdValor)
+				.WithOne(v => v.Servico)
+				.HasForeignKey<Servico>(s => s.IdValor)
 				.OnDelete(DeleteBehavior.Restrict);
 
 			// CORREÇÃO AQUI: Adicionado '!' para resolver o erro "must be a reference type"
@@ -112,9 +112,9 @@ namespace ProjetoPetMedDigital.Data
 
 			// CORREÇÃO AQUI: Adicionado '!' para resolver o erro "must be a reference type"
 			modelBuilder.Entity<ItemEstoque>()
-				.HasOne(ie => ie.servico!) // Adicionado '!' (e a classe servico agora é singular)
+				.HasOne(ie => ie.Servico!) // Adicionado '!' (e a classe Servico agora é singular)
 				.WithOne(s => s.ItemEstoque)
-				.HasForeignKey<servico>(s => s.IdProduto)
+				.HasForeignKey<Servico>(s => s.IdProduto)
 				.OnDelete(DeleteBehavior.Restrict);
 
 			modelBuilder.Entity<CadastroColaborador>()

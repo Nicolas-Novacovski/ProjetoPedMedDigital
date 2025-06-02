@@ -1,21 +1,22 @@
-using ProjetoPetMedDigital.Models; // Assumindo que BaseModel está neste namespace
+// Removida: using PetMed_Digital.Models; - pois BaseModel estará em ProjetoPetMedDigital.Models
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ProjetoPetMedDigital.Models // Assumindo este namespace principal
+namespace ProjetoPetMedDigital.Models // NAMESPACE PADRONIZADO
 {
     [Table("Prontuario")]
     public class Prontuario : BaseModel
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdProntuario { get; set; }
 
         [Display(Name = "Agendamento (Opcional)")]
-        public int? IdAgendamento { get; set; } // FK anulável
+        public int? IdAgendamento { get; set; }
 
         [Display(Name = "Veterinário (Opcional)")]
-        public int? IdVeterinario { get; set; } // FK anulável
+        public int? IdVeterinario { get; set; }
 
         [Required(ErrorMessage = "A data da consulta é obrigatória.")]
         [DataType(DataType.DateTime)]
@@ -59,9 +60,9 @@ namespace ProjetoPetMedDigital.Models // Assumindo este namespace principal
         [Display(Name = "Paciente")]
         public int IdPaciente { get; set; }
 
-        // Propriedades de navegação - VERIFICADO / AJUSTADO PARA ANULÁVEL SE NECESSÁRIO
+        // Propriedades de navegação
         public Agendamento? Agendamento { get; set; }
         public Veterinario? Veterinario { get; set; }
-        public Paciente? Paciente { get; set; } // Tornada anulável se não estava para evitar erro de ModelState
+        public Paciente? Paciente { get; set; }
     }
 }

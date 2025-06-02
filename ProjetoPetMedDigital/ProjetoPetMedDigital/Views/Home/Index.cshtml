@@ -4,18 +4,15 @@
 
 <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
 
-<div class="home-main-content"> @* NOVA DIV ADICIONADA AQUI *@
+<div class="home-main-content">
     <div class="container">
         <div class="coluna-esquerda">
-            @* Minha Agenda -> Agendamentos/Index *@
             <a class="home-link" asp-controller="Agendamentos" asp-action="Index">
                 <p>Minha Agenda</p>
             </a>
-            @* Vacinas em estoque -> Vacinas/Index *@
             <a class="home-link" asp-controller="Vacinas" asp-action="Index">
                 <p>Vacinas em estoque</p>
             </a>
-            @* Últimos Atendimentos -> Prontuarios/Index (ou Agendamentos concluídos, dependendo da sua lógica) *@
             <a class="home-link" asp-controller="Prontuarios" asp-action="Index">
                 <p>Últimos Atendimentos</p>
             </a>
@@ -24,15 +21,12 @@
             <img src="~/images/dog com lingua .png" alt="Imagem do Centro" />
         </div>
         <div class="coluna-direita">
-            @* Novo Atendimento -> Agendamentos/Create ou Prontuarios/Create *@
             <a class="home-link" asp-controller="Agendamentos" asp-action="Create">
                 <p>Novo Atendimento</p>
             </a>
-            @* Medicamentos em estoque -> ItemEstoques/Index (ou um filtro específico) *@
             <a class="home-link" asp-controller="ItemEstoques" asp-action="Index">
                 <p>Medicamentos em estoque</p>
             </a>
-            @* Fila de espera -> Pacientes/Index (ou uma view específica para fila) *@
             <a class="home-link" asp-controller="Pacientes" asp-action="Index">
                 <p>Fila de espera</p>
             </a>

@@ -11,25 +11,25 @@ using ProjetoPetMedDigital.Models; // Certifique-se que este using está correto
 namespace ProjetoPetMedDigital.Controllers
 {
     // O nome da classe do Controller geralmente é o plural do modelo.
-    // Se você renomeou o modelo de 'servico' para 'servico', este controller continua sendo 'servicoController'.
-    public class servicoController : Controller
+    // Se você renomeou o modelo de 'Servico' para 'Servico', este controller continua sendo 'ServicoController'.
+    public class ServicoController : Controller
     {
         private readonly PetMedContext _context;
 
-        public servicoController(PetMedContext context)
+        public ServicoController(PetMedContext context)
         {
             _context = context;
         }
 
-        // GET: servico
+        // GET: Servico
         public async Task<IActionResult> Index()
         {
             // Adicionado Include para carregar as propriedades de navegação
-            var petMedContext = _context.servico.Include(s => s.Agendamento).Include(s => s.ItemEstoque).Include(s => s.Valor).Include(s => s.Veterinario);
+            var petMedContext = _context.Servico.Include(s => s.Agendamento).Include(s => s.ItemEstoque).Include(s => s.Valor).Include(s => s.Veterinario);
             return View(await petMedContext.ToListAsync());
         }
 
-        // GET: servico/Details/5
+        // GET: Servico/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -37,21 +37,21 @@ namespace ProjetoPetMedDigital.Controllers
                 return NotFound();
             }
 
-            var servico = await _context.servico
+            var Servico = await _context.Servico
                 .Include(s => s.Agendamento)
                 .Include(s => s.ItemEstoque)
                 .Include(s => s.Valor)
                 .Include(s => s.Veterinario)
-                .FirstOrDefaultAsync(m => m.Idservico == id);
-            if (servico == null)
+                .FirstOrDefaultAsync(m => m.IdServico == id);
+            if (Servico == null)
             {
                 return NotFound();
             }
 
-            return View(servico);
+            return View(Servico);
         }
 
-        // GET: servico/Create
+        // GET: Servico/Create
         public IActionResult Create()
         {
             // Ajustado SelectList para exibir nomes em vez de IDs
@@ -62,26 +62,26 @@ namespace ProjetoPetMedDigital.Controllers
             return View();
         }
 
-        // POST: servico/Create
+        // POST: Servico/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Idservico,TipoVenda,Nomeservico,IdVeterinario,Data,Hora,Status,PrecoVenda,Descricao,IdAgendamento,IdProduto,IdValor,Id,CreatedAt")] servico servico) // Mude 'servico' para 'servico' aqui
+        public async Task<IActionResult> Create([Bind("IdServico,TipoVenda,NomeServico,IdVeterinario,Data,Hora,Status,PrecoVenda,Descricao,IdAgendamento,IdProduto,IdValor,Id,CreatedAt")] Servico Servico) // Mude 'Servico' para 'Servico' aqui
         {
             if (ModelState.IsValid)
             {
-                _context.Add(servico);
+                _context.Add(Servico);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             // Ajustado SelectList para exibir nomes em vez de IDs
-            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento", servico.IdAgendamento);
-            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", servico.IdProduto);
-            ViewData["IdValor"] = new SelectList(_context.Valores, "IdValor", "ValorProcedimento", servico.IdValor);
-            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", servico.IdVeterinario);
-            return View(servico);
+            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento", Servico.IdAgendamento);
+            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", Servico.IdProduto);
+            ViewData["IdValor"] = new SelectList(_context.Valores, "IdValor", "ValorProcedimento", Servico.IdValor);
+            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", Servico.IdVeterinario);
+            return View(Servico);
         }
 
-        // GET: servico/Edit/5
+        // GET: Servico/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -89,25 +89,25 @@ namespace ProjetoPetMedDigital.Controllers
                 return NotFound();
             }
 
-            var servico = await _context.servico.FindAsync(id);
-            if (servico == null)
+            var Servico = await _context.Servico.FindAsync(id);
+            if (Servico == null)
             {
                 return NotFound();
             }
             // Ajustado SelectList para exibir nomes em vez de IDs
-            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento", servico.IdAgendamento);
-            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", servico.IdProduto);
-            ViewData["IdValor"] = new SelectList(_context.Valores, "IdValor", "ValorProcedimento", servico.IdValor);
-            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", servico.IdVeterinario);
-            return View(servico);
+            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento", Servico.IdAgendamento);
+            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", Servico.IdProduto);
+            ViewData["IdValor"] = new SelectList(_context.Valores, "IdValor", "ValorProcedimento", Servico.IdValor);
+            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", Servico.IdVeterinario);
+            return View(Servico);
         }
 
-        // POST: servico/Edit/5
+        // POST: Servico/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Idservico,TipoVenda,Nomeservico,IdVeterinario,Data,Hora,Status,PrecoVenda,Descricao,IdAgendamento,IdProduto,IdValor,Id,CreatedAt")] servico servico) // Mude 'servico' para 'servico' aqui
+        public async Task<IActionResult> Edit(int id, [Bind("IdServico,TipoVenda,NomeServico,IdVeterinario,Data,Hora,Status,PrecoVenda,Descricao,IdAgendamento,IdProduto,IdValor,Id,CreatedAt")] Servico Servico) // Mude 'Servico' para 'Servico' aqui
         {
-            if (id != servico.Idservico)
+            if (id != Servico.IdServico)
             {
                 return NotFound();
             }
@@ -116,12 +116,12 @@ namespace ProjetoPetMedDigital.Controllers
             {
                 try
                 {
-                    _context.Update(servico);
+                    _context.Update(Servico);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!servicoExists(servico.Idservico))
+                    if (!ServicoExists(Servico.IdServico))
                     {
                         return NotFound();
                     }
@@ -133,14 +133,14 @@ namespace ProjetoPetMedDigital.Controllers
                 return RedirectToAction(nameof(Index));
             }
             // Ajustado SelectList para exibir nomes em vez de IDs
-            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento", servico.IdAgendamento);
-            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", servico.IdProduto);
-            ViewData["IdValor"] = new SelectList(_context.Valores, "IdValor", "ValorProcedimento", servico.IdValor);
-            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", servico.IdVeterinario);
-            return View(servico);
+            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento", Servico.IdAgendamento);
+            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", Servico.IdProduto);
+            ViewData["IdValor"] = new SelectList(_context.Valores, "IdValor", "ValorProcedimento", Servico.IdValor);
+            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", Servico.IdVeterinario);
+            return View(Servico);
         }
 
-        // GET: servico/Delete/5
+        // GET: Servico/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -148,38 +148,38 @@ namespace ProjetoPetMedDigital.Controllers
                 return NotFound();
             }
 
-            var servico = await _context.servico
+            var Servico = await _context.Servico
                 .Include(s => s.Agendamento)
                 .Include(s => s.ItemEstoque)
                 .Include(s => s.Valor)
                 .Include(s => s.Veterinario)
-                .FirstOrDefaultAsync(m => m.Idservico == id);
-            if (servico == null)
+                .FirstOrDefaultAsync(m => m.IdServico == id);
+            if (Servico == null)
             {
                 return NotFound();
             }
 
-            return View(servico);
+            return View(Servico);
         }
 
-        // POST: servico/Delete/5
+        // POST: Servico/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var servico = await _context.servico.FindAsync(id);
-            if (servico != null)
+            var Servico = await _context.Servico.FindAsync(id);
+            if (Servico != null)
             {
-                _context.servico.Remove(servico);
+                _context.Servico.Remove(Servico);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool servicoExists(int id)
+        private bool ServicoExists(int id)
         {
-            return _context.servico.Any(e => e.Idservico == id);
+            return _context.Servico.Any(e => e.IdServico == id);
         }
     }
 }

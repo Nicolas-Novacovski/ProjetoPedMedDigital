@@ -1,14 +1,15 @@
-using ProjetoPetMedDigital.Models;
+// Removida: using PetMed_Digital.Models; - pois BaseModel estará em ProjetoPetMedDigital.Models
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ProjetoPetMedDigital.Models
+namespace ProjetoPetMedDigital.Models // NAMESPACE PADRONIZADO
 {
     [Table("ItemEstoque")]
     public class ItemEstoque : BaseModel
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdProduto { get; set; }
 
         [Required(ErrorMessage = "O nome do produto é obrigatório.")]
@@ -48,12 +49,12 @@ namespace ProjetoPetMedDigital.Models
         [Display(Name = "Fornecedor")]
         public string Fornecedor { get; set; } = null!;
 
-        [Display(Name = "Transação Desejada")]
+        [Display(Name = "Transacao Desejada")]
         public int? TransacaoDesejada { get; set; }
 
-        // Propriedades de navegação (One-to-One com chave compartilhada)
+        // Propriedades de navegação
         public Vacina? Vacina { get; set; }
         public Procedimento? Procedimento { get; set; }
-        public servico? servico { get; set; }
+        public Servico? Servico { get; set; } // Referência a Servico (singular)
     }
 }

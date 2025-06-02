@@ -1,14 +1,15 @@
-using ProjetoPetMedDigital.Models;
+// Removida: using PetMed_Digital.Models; - pois BaseModel estará em ProjetoPetMedDigital.Models
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ProjetoPetMedDigital.Models
+namespace ProjetoPetMedDigital.Models // NAMESPACE PADRONIZADO
 {
     [Table("CadastroColaborador")]
     public class CadastroColaborador : BaseModel
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdColaborador { get; set; }
 
         [Required(ErrorMessage = "O nome é obrigatório.")]
@@ -71,14 +72,15 @@ namespace ProjetoPetMedDigital.Models
         [Display(Name = "Tipo de Usuário")]
         public int TipoUsuario { get; set; }
 
+        // PROPRIEDADE REMOVIDA: public int UsuarioId { get; set; }
 
         [Required(ErrorMessage = "O Login é obrigatório.")]
-        [StringLength(50, ErrorMessage = "Login não pode exceder 50 caracteres.")] // Mantido 50, se for a FK para Usuario.Login
+        [StringLength(50, ErrorMessage = "Login não pode exceder 50 caracteres.")]
         [Display(Name = "Login do Usuário")]
-        public string Login { get; set; } = null!; // Chave estrangeira para Usuario.Login
+        public string Login { get; set; } = null!;
 
-        // Propriedades de navegação - CORRIGIDA PARA ANULÁVEL (?)
-        public Usuario? Usuario { get; set; } // AGORA É ANULÁVEL
+        // Propriedades de navegação
+        public Usuario? Usuario { get; set; }
         public Veterinario? Veterinario { get; set; }
     }
 }

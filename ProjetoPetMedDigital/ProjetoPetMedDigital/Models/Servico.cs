@@ -1,25 +1,26 @@
-using ProjetoPetMedDigital.Models;
+// Removida: using PetMed_Digital.Models; - pois BaseModel estará em ProjetoPetMedDigital.Models
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ProjetoPetMedDigital.Models // Assumindo este namespace principal
+namespace ProjetoPetMedDigital.Models // NAMESPACE PADRONIZADO
 {
-    [Table("servico")] // Nome da tabela continua sendo "servico"
-    public class servico : BaseModel // CORREÇÃO: Nome da classe para 'servico' (singular)
+    [Table("Servico")]
+    public class Servico : BaseModel // NOME DA CLASSE CORRIGIDO PARA 'Servico' (singular)
     {
         [Key]
-        public int Idservico { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int IdServico { get; set; }
 
         [Required(ErrorMessage = "O tipo de venda é obrigatório.")]
         [StringLength(50, ErrorMessage = "Tipo de venda não pode exceder 50 caracteres.")]
         [Display(Name = "Tipo de Venda")]
         public string TipoVenda { get; set; } = null!;
 
-        [Required(ErrorMessage = "O nome do servico é obrigatório.")]
-        [StringLength(150, ErrorMessage = "Nome do servico não pode exceder 150 caracteres.")]
-        [Display(Name = "Nome do servico")]
-        public string Nomeservico { get; set; } = null!;
+        [Required(ErrorMessage = "O nome do serviço é obrigatório.")]
+        [StringLength(150, ErrorMessage = "Nome do serviço não pode exceder 150 caracteres.")]
+        [Display(Name = "Nome do Serviço")]
+        public string NomeServico { get; set; } = null!;
 
         [Required(ErrorMessage = "O veterinário é obrigatório.")]
         [Display(Name = "Veterinário")]
@@ -27,12 +28,12 @@ namespace ProjetoPetMedDigital.Models // Assumindo este namespace principal
 
         [Required(ErrorMessage = "A data é obrigatória.")]
         [DataType(DataType.Date)]
-        [Display(Name = "Data do servico")]
+        [Display(Name = "Data do Serviço")]
         public DateTime Data { get; set; }
 
         [Required(ErrorMessage = "A hora é obrigatória.")]
         [DataType(DataType.Time)]
-        [Display(Name = "Hora do servico")]
+        [Display(Name = "Hora do Serviço")]
         public DateTime Hora { get; set; }
 
         [Required(ErrorMessage = "O status é obrigatório.")]
@@ -62,7 +63,7 @@ namespace ProjetoPetMedDigital.Models // Assumindo este namespace principal
         [Display(Name = "Valor Associado")]
         public int IdValor { get; set; }
 
-        // Propriedades de navegação - CORRIGIDAS PARA ANULÁVEIS (?) se for preciso
+        // Propriedades de navegação
         public Agendamento? Agendamento { get; set; }
         public Veterinario? Veterinario { get; set; }
         public ItemEstoque? ItemEstoque { get; set; }

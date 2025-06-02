@@ -1,15 +1,16 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ProjetoPetMedDigital.Models; // Assumindo que BaseModel está neste namespace
+// Removida: using PetMed_Digital.Models; - pois BaseModel estará em ProjetoPetMedDigital.Models
 using System.Collections.Generic;
 
-namespace ProjetoPetMedDigital.Models // Assumindo este namespace principal
+namespace ProjetoPetMedDigital.Models // NAMESPACE PADRONIZADO
 {
     [Table("Agendamento")]
     public class Agendamento : BaseModel
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdAgendamento { get; set; }
 
         [Required(ErrorMessage = "O paciente é obrigatório.")]
@@ -34,14 +35,10 @@ namespace ProjetoPetMedDigital.Models // Assumindo este namespace principal
         [Display(Name = "Observações")]
         public string Observacoes { get; set; } = string.Empty;
 
-        // Propriedades de navegação - CORRIGIDAS PARA ANULÁVEIS (?) se for preciso, ou ajustadas
-        public Paciente? Paciente { get; set; }     // Tornada anulável
-        public Veterinario? Veterinario { get; set; } // Tornada anulável
-
-        // CORREÇÃO: Nome da classe 'servico' para 'servico' (singular) para consistência.
-        // Se a classe 'servico.cs' no seu projeto ainda se chama 'servico', este será um erro de compilação.
-        // Você deve renomear a classe 'servico' para 'servico'.
-        public List<servico> servico { get; set; } = new List<servico>();
+        // Propriedades de navegação
+        public Paciente? Paciente { get; set; }
+        public Veterinario? Veterinario { get; set; }
+        public List<Servico> Servicos { get; set; } = new List<Servico>(); // Referência a Servico (singular)
         public Prontuario? Prontuario { get; set; }
     }
 }

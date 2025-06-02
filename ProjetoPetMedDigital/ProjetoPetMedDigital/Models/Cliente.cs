@@ -1,15 +1,16 @@
-﻿using ProjetoPetMedDigital.Models;
+﻿// Removida: using PetMed_Digital.Models; - pois BaseModel estará em ProjetoPetMedDigital.Models
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ProjetoPetMedDigital.Models
+namespace ProjetoPetMedDigital.Models // NAMESPACE PADRONIZADO
 {
     [Table("Cliente")]
     public class Cliente : BaseModel
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdCliente { get; set; }
 
         [Required(ErrorMessage = "O nome do responsável é obrigatório.")]
@@ -33,7 +34,7 @@ namespace ProjetoPetMedDigital.Models
         public string CPF { get; set; } = null!;
 
         [Required(ErrorMessage = "O RG é obrigatório.")]
-        [StringLength(20, ErrorMessage = "RG não pode ter mais de 20 caracteres.")] // Ajustei um tamanho razoável
+        [StringLength(20, ErrorMessage = "RG não pode ter mais de 20 caracteres.")]
         [Display(Name = "RG")]
         public string RG { get; set; } = null!;
 
@@ -48,17 +49,17 @@ namespace ProjetoPetMedDigital.Models
         public string CEP { get; set; } = null!;
 
         [Required(ErrorMessage = "O endereço é obrigatório.")]
-        [StringLength(200, ErrorMessage = "O endereço não pode ter mais de 200 caracteres.")]
+        [StringLength(200, ErrorMessage = "O endereço não pode exceder 200 caracteres.")]
         [Display(Name = "Endereço")]
         public string Endereco { get; set; } = null!;
 
         [Required(ErrorMessage = "O bairro é obrigatório.")]
-        [StringLength(100, ErrorMessage = "O bairro não pode ter mais de 100 caracteres.")]
+        [StringLength(100, ErrorMessage = "O bairro não pode exceder 100 caracteres.")]
         [Display(Name = "Bairro")]
         public string Bairro { get; set; } = null!;
 
         [Required(ErrorMessage = "A cidade é obrigatória.")]
-        [StringLength(100, ErrorMessage = "A cidade não pode ter mais de 100 caracteres.")]
+        [StringLength(100, ErrorMessage = "A cidade não pode exceder 100 caracteres.")]
         [Display(Name = "Cidade")]
         public string Cidade { get; set; } = null!;
 

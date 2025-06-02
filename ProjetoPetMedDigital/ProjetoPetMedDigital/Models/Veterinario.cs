@@ -1,14 +1,15 @@
-using ProjetoPetMedDigital.Models;
+// Removida: using PetMed_Digital.Models; - pois BaseModel estará em ProjetoPetMedDigital.Models
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ProjetoPetMedDigital.Models
+namespace ProjetoPetMedDigital.Models // NAMESPACE PADRONIZADO
 {
-    [Table("Veterinarios")] // Nome da tabela está no plural, mantenha a consistência.
+    [Table("Veterinarios")]
     public class Veterinario : BaseModel
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdVeterinario { get; set; }
 
         [Required(ErrorMessage = "O nome do veterinário é obrigatório.")]
@@ -39,9 +40,7 @@ namespace ProjetoPetMedDigital.Models
         public List<Agendamento> Agendamentos { get; set; } = new List<Agendamento>();
         public List<Prontuario> Prontuarios { get; set; } = new List<Prontuario>();
         public List<AgendaVeterinario> AgendaVeterinarios { get; set; } = new List<AgendaVeterinario>();
-
         public CadastroColaborador? CadastroColaborador { get; set; }
-
-        public List<servico> servico { get; set; } = new List<servico>();
+        public List<Servico> Servicos { get; set; } = new List<Servico>(); // Referência a Servico (singular)
     }
 }

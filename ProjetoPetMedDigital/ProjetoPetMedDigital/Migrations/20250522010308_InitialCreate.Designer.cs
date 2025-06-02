@@ -433,13 +433,13 @@ namespace ProjetoPetMedDigital.Migrations
                     b.ToTable("Prontuario");
                 });
 
-            modelBuilder.Entity("ProjetoPetMedDigital.Models.servico", b =>
+            modelBuilder.Entity("ProjetoPetMedDigital.Models.Servico", b =>
                 {
-                    b.Property<int>("Idservico")
+                    b.Property<int>("IdServico")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Idservico"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdServico"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -469,7 +469,7 @@ namespace ProjetoPetMedDigital.Migrations
                     b.Property<int>("IdVeterinario")
                         .HasColumnType("int");
 
-                    b.Property<string>("Nomeservico")
+                    b.Property<string>("NomeServico")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -483,7 +483,7 @@ namespace ProjetoPetMedDigital.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Idservico");
+                    b.HasKey("IdServico");
 
                     b.HasIndex("IdAgendamento");
 
@@ -495,7 +495,7 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.HasIndex("IdVeterinario");
 
-                    b.ToTable("servico");
+                    b.ToTable("Servico");
                 });
 
             modelBuilder.Entity("ProjetoPetMedDigital.Models.Usuario", b =>
@@ -735,28 +735,28 @@ namespace ProjetoPetMedDigital.Migrations
                     b.Navigation("Veterinario");
                 });
 
-            modelBuilder.Entity("ProjetoPetMedDigital.Models.servico", b =>
+            modelBuilder.Entity("ProjetoPetMedDigital.Models.Servico", b =>
                 {
                     b.HasOne("ProjetoPetMedDigital.Models.Agendamento", "Agendamento")
-                        .WithMany("servico")
+                        .WithMany("Servico")
                         .HasForeignKey("IdAgendamento")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("ProjetoPetMedDigital.Models.ItemEstoque", "ItemEstoque")
-                        .WithOne("servico")
-                        .HasForeignKey("ProjetoPetMedDigital.Models.servico", "IdProduto")
+                        .WithOne("Servico")
+                        .HasForeignKey("ProjetoPetMedDigital.Models.Servico", "IdProduto")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("ProjetoPetMedDigital.Models.Valor", "Valor")
-                        .WithOne("servico")
-                        .HasForeignKey("ProjetoPetMedDigital.Models.servico", "IdValor")
+                        .WithOne("Servico")
+                        .HasForeignKey("ProjetoPetMedDigital.Models.Servico", "IdValor")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("ProjetoPetMedDigital.Models.Veterinario", "Veterinario")
-                        .WithMany("servico")
+                        .WithMany("Servico")
                         .HasForeignKey("IdVeterinario")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -826,7 +826,7 @@ namespace ProjetoPetMedDigital.Migrations
                 {
                     b.Navigation("Prontuario");
 
-                    b.Navigation("servico");
+                    b.Navigation("Servico");
                 });
 
             modelBuilder.Entity("ProjetoPetMedDigital.Models.CadastroColaborador", b =>
@@ -848,7 +848,7 @@ namespace ProjetoPetMedDigital.Migrations
                 {
                     b.Navigation("Procedimento");
 
-                    b.Navigation("servico");
+                    b.Navigation("Servico");
 
                     b.Navigation("Vacina");
                 });
@@ -864,7 +864,7 @@ namespace ProjetoPetMedDigital.Migrations
 
             modelBuilder.Entity("ProjetoPetMedDigital.Models.Valor", b =>
                 {
-                    b.Navigation("servico")
+                    b.Navigation("Servico")
                         .IsRequired();
                 });
 
@@ -876,7 +876,7 @@ namespace ProjetoPetMedDigital.Migrations
 
                     b.Navigation("Prontuarios");
 
-                    b.Navigation("servico");
+                    b.Navigation("Servico");
                 });
 #pragma warning restore 612, 618
         }

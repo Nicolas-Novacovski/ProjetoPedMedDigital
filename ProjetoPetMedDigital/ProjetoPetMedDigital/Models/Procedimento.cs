@@ -1,13 +1,14 @@
-using ProjetoPetMedDigital.Models;
+// Removida: using PetMed_Digital.Models; - pois BaseModel estará em ProjetoPetMedDigital.Models
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ProjetoPetMedDigital.Models
+namespace ProjetoPetMedDigital.Models // NAMESPACE PADRONIZADO
 {
     [Table("Procedimento")]
     public class Procedimento : BaseModel
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdProcedimento { get; set; }
 
         [Required(ErrorMessage = "O nome do procedimento é obrigatório.")]
@@ -29,7 +30,7 @@ namespace ProjetoPetMedDigital.Models
         [Display(Name = "ID do Produto")]
         public int IdProduto { get; set; }
 
-        // Propriedades de navegação - CORRIGIDA PARA ANULÁVEL (?)
-        public ItemEstoque? ItemEstoque { get; set; } // Agora anulável
+        // Propriedades de navegação
+        public ItemEstoque? ItemEstoque { get; set; }
     }
 }

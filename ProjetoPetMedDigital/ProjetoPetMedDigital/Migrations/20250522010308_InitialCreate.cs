@@ -349,13 +349,13 @@ namespace ProjetoPetMedDigital.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "servico",
+                name: "Servico",
                 columns: table => new
                 {
-                    Idservico = table.Column<int>(type: "int", nullable: false)
+                    IdServico = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TipoVenda = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Nomeservico = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NomeServico = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IdVeterinario = table.Column<int>(type: "int", nullable: false),
                     Data = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Hora = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -370,27 +370,27 @@ namespace ProjetoPetMedDigital.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_servico", x => x.Idservico);
+                    table.PrimaryKey("PK_Servico", x => x.IdServico);
                     table.ForeignKey(
-                        name: "FK_servico_Agendamento_IdAgendamento",
+                        name: "FK_Servico_Agendamento_IdAgendamento",
                         column: x => x.IdAgendamento,
                         principalTable: "Agendamento",
                         principalColumn: "IdAgendamento",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_servico_ItemEstoque_IdProduto",
+                        name: "FK_Servico_ItemEstoque_IdProduto",
                         column: x => x.IdProduto,
                         principalTable: "ItemEstoque",
                         principalColumn: "IdProduto",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_servico_Valor_IdValor",
+                        name: "FK_Servico_Valor_IdValor",
                         column: x => x.IdValor,
                         principalTable: "Valor",
                         principalColumn: "IdValor",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_servico_Veterinarios_IdVeterinario",
+                        name: "FK_Servico_Veterinarios_IdVeterinario",
                         column: x => x.IdVeterinario,
                         principalTable: "Veterinarios",
                         principalColumn: "IdVeterinario",
@@ -446,25 +446,25 @@ namespace ProjetoPetMedDigital.Migrations
                 column: "IdVeterinario");
 
             migrationBuilder.CreateIndex(
-                name: "IX_servico_IdAgendamento",
-                table: "servico",
+                name: "IX_Servico_IdAgendamento",
+                table: "Servico",
                 column: "IdAgendamento");
 
             migrationBuilder.CreateIndex(
-                name: "IX_servico_IdProduto",
-                table: "servico",
+                name: "IX_Servico_IdProduto",
+                table: "Servico",
                 column: "IdProduto",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_servico_IdValor",
-                table: "servico",
+                name: "IX_Servico_IdValor",
+                table: "Servico",
                 column: "IdValor",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_servico_IdVeterinario",
-                table: "servico",
+                name: "IX_Servico_IdVeterinario",
+                table: "Servico",
                 column: "IdVeterinario");
 
             migrationBuilder.CreateIndex(
@@ -509,7 +509,7 @@ namespace ProjetoPetMedDigital.Migrations
                 name: "Prontuario");
 
             migrationBuilder.DropTable(
-                name: "servico");
+                name: "Servico");
 
             migrationBuilder.DropTable(
                 name: "Usuario");

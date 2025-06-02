@@ -1,4 +1,4 @@
-﻿@model ProjetoPetMedDigital.Models.servico
+﻿@model ProjetoPetMedDigital.Models.Servico
 
 @{
     ViewData["Title"] = "Details";
@@ -8,7 +8,7 @@
 <h1>Details</h1>
 
 <div>
-    <h4>servico</h4>
+    <h4>Servico</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -18,10 +18,10 @@
             @Html.DisplayFor(model => model.TipoVenda)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nomeservico)
+            @Html.DisplayNameFor(model => model.NomeServico)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nomeservico)
+            @Html.DisplayFor(model => model.NomeServico)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Data)
@@ -92,6 +92,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Idservico">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.IdServico">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

@@ -1,15 +1,15 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ProjetoPetMedDigital.Models;
-using ProjetoPetMedDigital.Models;
+// Removida: using PetMed_Digital.Models; - pois BaseModel estará em ProjetoPetMedDigital.Models
 
-namespace ProjetoPetMedDigital.Models
+namespace ProjetoPetMedDigital.Models // NAMESPACE PADRONIZADO
 {
     [Table("AgendaVeterinario")]
     public class AgendaVeterinario : BaseModel
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdAgendaVeterinario { get; set; }
 
         [Required(ErrorMessage = "O veterinário é obrigatório.")]
@@ -30,8 +30,8 @@ namespace ProjetoPetMedDigital.Models
         [Display(Name = "Paciente")]
         public int IdPaciente { get; set; }
 
-        // Propriedades de navegação - CORRIGIDAS PARA ANULÁVEIS (?)
-        public Veterinario? Veterinario { get; set; } // Agora anulável
-        public Paciente? Paciente { get; set; }       // Agora anulável
+        // Propriedades de navegação
+        public Veterinario? Veterinario { get; set; }
+        public Paciente? Paciente { get; set; }
     }
 }

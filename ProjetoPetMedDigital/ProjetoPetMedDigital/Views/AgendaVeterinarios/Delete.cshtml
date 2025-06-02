@@ -12,46 +12,41 @@
     <h4>AgendaVeterinario</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DataInicio)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DataInicio)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DataFim)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DataFim)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdPaciente)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdPaciente)
-        </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Veterinario)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Veterinario.IdVeterinario)
+        <dd class="col-sm-10">
+            @(Model.Veterinario?.NomeVeterinario)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Paciente)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id)
+        <dd class="col-sm-10">
+            @(Model.Paciente?.NomeCachorro)
         </dd>
-        <dt class = "col-sm-2">
+        @* REMOVIDO: Campo Id (BaseModel) *@
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CreatedAt)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CreatedAt)
         </dd>
     </dl>
-    
+
     <form asp-action="Delete">
-        <input type="hidden" asp-for="IdAgendaVeterinario" />
+        <input type="hidden" asp-for="IdAgendaVeterinario" /> @* MANTIDO: PK como hidden *@
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>

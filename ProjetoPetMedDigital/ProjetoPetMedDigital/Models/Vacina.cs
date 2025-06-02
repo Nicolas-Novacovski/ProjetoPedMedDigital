@@ -1,13 +1,14 @@
-using ProjetoPetMedDigital.Models; // Assumindo que BaseModel está neste namespace
+// Removida: using PetMed_Digital.Models; - pois BaseModel estará em ProjetoPetMedDigital.Models
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ProjetoPetMedDigital.Models // Assumindo este namespace principal
+namespace ProjetoPetMedDigital.Models // NAMESPACE PADRONIZADO
 {
     [Table("Vacina")]
     public class Vacina : BaseModel
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdVacina { get; set; }
 
         [Required(ErrorMessage = "O nome da vacina é obrigatório.")]
@@ -32,8 +33,8 @@ namespace ProjetoPetMedDigital.Models // Assumindo este namespace principal
         [Display(Name = "Paciente")]
         public int IdPaciente { get; set; }
 
-        // Propriedades de navegação - CORRIGIDAS PARA ANULÁVEIS (?)
-        public ItemEstoque? ItemEstoque { get; set; } // Tornada anulável
-        public Paciente? Paciente { get; set; }       // Tornada anulável
+        // Propriedades de navegação
+        public ItemEstoque? ItemEstoque { get; set; }
+        public Paciente? Paciente { get; set; }
     }
 }
