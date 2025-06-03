@@ -38,7 +38,7 @@ namespace ProjetoPetMedDigital.Models // NAMESPACE PADRONIZADO
         // Propriedades de navegação
         public Paciente? Paciente { get; set; }
         public Veterinario? Veterinario { get; set; }
-        public List<Servico> Servicos { get; set; } = new List<Servico>(); // Referência a Servico (singular)
+        public List<Servico> Servico { get; set; } = new List<Servico>(); // Referência a Servico (singular)
         public Prontuario? Prontuario { get; set; }
     }
 }

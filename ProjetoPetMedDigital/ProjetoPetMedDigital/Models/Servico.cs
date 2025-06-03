@@ -17,9 +17,9 @@ namespace ProjetoPetMedDigital.Models // NAMESPACE PADRONIZADO
         [Display(Name = "Tipo de Venda")]
         public string TipoVenda { get; set; } = null!;
 
-        [Required(ErrorMessage = "O nome do serviço é obrigatório.")]
-        [StringLength(150, ErrorMessage = "Nome do serviço não pode exceder 150 caracteres.")]
-        [Display(Name = "Nome do Serviço")]
+        [Required(ErrorMessage = "O nome do Servico é obrigatório.")]
+        [StringLength(150, ErrorMessage = "Nome do Servico não pode exceder 150 caracteres.")]
+        [Display(Name = "Nome do Servico")]
         public string NomeServico { get; set; } = null!;
 
         [Required(ErrorMessage = "O veterinário é obrigatório.")]
@@ -28,12 +28,12 @@ namespace ProjetoPetMedDigital.Models // NAMESPACE PADRONIZADO
 
         [Required(ErrorMessage = "A data é obrigatória.")]
         [DataType(DataType.Date)]
-        [Display(Name = "Data do Serviço")]
+        [Display(Name = "Data do Servico")]
         public DateTime Data { get; set; }
 
         [Required(ErrorMessage = "A hora é obrigatória.")]
         [DataType(DataType.Time)]
-        [Display(Name = "Hora do Serviço")]
+        [Display(Name = "Hora do Servico")]
         public DateTime Hora { get; set; }
 
         [Required(ErrorMessage = "O status é obrigatório.")]

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ProjetoPetMedDigital.Models.Servico>
+﻿@model IEnumerable<ProjetoPetMedDigital.Models.Servico> @* MODEL AGORA É 'Servico' (singular) *@
 
 @{
     ViewData["Title"] = "Index";
@@ -38,17 +38,15 @@
                 @Html.DisplayNameFor(model => model.Agendamento)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Veterinario)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.ItemEstoque)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Valor)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                @Html.DisplayNameFor(model => model.Veterinario)
             </th>
+            @* REMOVIDO: Campo Id (BaseModel) *@
             <th>
                 @Html.DisplayNameFor(model => model.CreatedAt)
             </th>
@@ -80,20 +78,18 @@
                 @Html.DisplayFor(modelItem => item.Descricao)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Agendamento.IdAgendamento)
+                @(item.Agendamento?.IdAgendamento)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Veterinario.IdVeterinario)
+                @(item.ItemEstoque?.NomeProduto)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ItemEstoque.IdProduto)
+                @(item.Valor?.ValorProcedimento)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Valor.IdValor)
+                @(item.Veterinario?.NomeVeterinario)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
+            @* REMOVIDO: Campo Id (BaseModel) *@
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)
             </td>

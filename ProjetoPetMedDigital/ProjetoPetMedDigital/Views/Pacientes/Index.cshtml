@@ -37,9 +37,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Cliente)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
+            @* REMOVIDO: Campo Id (BaseModel) *@
             <th>
                 @Html.DisplayNameFor(model => model.CreatedAt)
             </th>
@@ -47,44 +45,43 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NomeCachorro)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estado)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Problema)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TipoAtendimento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Peso)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SinaisVitais)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Recomendacoes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cliente.IdCliente)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdPaciente">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdPaciente">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdPaciente">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomeCachorro)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estado)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Problema)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipoAtendimento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Peso)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SinaisVitais)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Recomendacoes)
+                </td>
+                <td>
+                    @(item.Cliente?.NomeResponsavel)
+                </td>
+                @* REMOVIDO: Campo Id (BaseModel) *@
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdPaciente">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.IdPaciente">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdPaciente">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

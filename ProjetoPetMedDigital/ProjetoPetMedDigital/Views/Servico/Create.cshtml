@@ -1,4 +1,4 @@
-﻿@model ProjetoPetMedDigital.Models.Servico
+﻿@model ProjetoPetMedDigital.Models.Servico @* MODEL AGORA É 'Servico' (singular) *@
 
 @{
     ViewData["Title"] = "Create";
@@ -7,12 +7,13 @@
 
 <h1>Create</h1>
 
-<h4>Servico</h4>
+<h4>Servico</h4> @* Título da entidade *@
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @* REMOVIDO: Campo IdServico (PK) *@
             <div class="form-group">
                 <label asp-for="TipoVenda" class="control-label"></label>
                 <input asp-for="TipoVenda" class="form-control" />
@@ -26,6 +27,7 @@
             <div class="form-group">
                 <label asp-for="IdVeterinario" class="control-label"></label>
                 <select asp-for="IdVeterinario" class ="form-control" asp-items="ViewBag.IdVeterinario"></select>
+                <span asp-validation-for="IdVeterinario" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Data" class="control-label"></label>
@@ -55,25 +57,20 @@
             <div class="form-group">
                 <label asp-for="IdAgendamento" class="control-label"></label>
                 <select asp-for="IdAgendamento" class ="form-control" asp-items="ViewBag.IdAgendamento"></select>
+                <span asp-validation-for="IdAgendamento" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdProduto" class="control-label"></label>
                 <select asp-for="IdProduto" class ="form-control" asp-items="ViewBag.IdProduto"></select>
+                <span asp-validation-for="IdProduto" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdValor" class="control-label"></label>
                 <select asp-for="IdValor" class ="form-control" asp-items="ViewBag.IdValor"></select>
+                <span asp-validation-for="IdValor" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
-            </div>
+            @* REMOVIDO: Campo Id (BaseModel) *@
+            @* REMOVIDO: Campo CreatedAt *@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

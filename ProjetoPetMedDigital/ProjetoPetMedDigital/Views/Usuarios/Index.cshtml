@@ -14,41 +14,50 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Login)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Senha)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CadastroColaborador)
+                @Html.DisplayNameFor(model => model.IdColaborador)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
+            @* REMOVIDO: Campo Id (BaseModel) *@
             <th>
                 @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CadastroColaborador)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Senha)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CadastroColaborador.IdColaborador)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Login">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Login">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Login">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Login)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Senha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdColaborador)
+                </td>
+                @* REMOVIDO: Campo Id (BaseModel) *@
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+                <td>
+                    @(item.CadastroColaborador?.Nome) @* Exibe o nome do colaborador, se existir *@
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Login">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Login">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Login">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

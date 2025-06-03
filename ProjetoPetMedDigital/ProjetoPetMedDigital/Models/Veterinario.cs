@@ -41,6 +41,6 @@ namespace ProjetoPetMedDigital.Models // NAMESPACE PADRONIZADO
         public List<Prontuario> Prontuarios { get; set; } = new List<Prontuario>();
         public List<AgendaVeterinario> AgendaVeterinarios { get; set; } = new List<AgendaVeterinario>();
         public CadastroColaborador? CadastroColaborador { get; set; }
-        public List<Servico> Servicos { get; set; } = new List<Servico>(); // Referência a Servico (singular)
+        public List<Servico> Servico { get; set; } = new List<Servico>(); // Referência a Servico (singular)
     }
 }

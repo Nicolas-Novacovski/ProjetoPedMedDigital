@@ -13,13 +13,19 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @* REMOVED: Field for IdAgendamento (PK, auto-generated) *@
+            @* REMOVED: Field for Id (BaseModel) *@
+            @* REMOVED: Field for CreatedAt *@
+
             <div class="form-group">
                 <label asp-for="IdPaciente" class="control-label"></label>
-                <select asp-for="IdPaciente" class ="form-control" asp-items="ViewBag.IdPaciente"></select>
+                <select asp-for="IdPaciente" class="form-control" asp-items="ViewBag.IdPaciente"></select>
+                <span asp-validation-for="IdPaciente" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdVeterinario" class="control-label"></label>
-                <select asp-for="IdVeterinario" class ="form-control" asp-items="ViewBag.IdVeterinario"></select>
+                <select asp-for="IdVeterinario" class="form-control" asp-items="ViewBag.IdVeterinario"></select>
+                <span asp-validation-for="IdVeterinario" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DataAgendamento" class="control-label"></label>
@@ -37,16 +43,6 @@
                 <span asp-validation-for="Observacoes" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -58,5 +54,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

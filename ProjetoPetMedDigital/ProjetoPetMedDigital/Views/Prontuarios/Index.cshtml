@@ -49,9 +49,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Paciente)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
+            @* REMOVIDO: Campo Id (BaseModel) *@
             <th>
                 @Html.DisplayNameFor(model => model.CreatedAt)
             </th>
@@ -59,59 +57,55 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataConsulta)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MotivoConsulta)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Diagnostico)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tratamento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Peso)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Temperatura)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FrequenciaCardiaca)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FrequenciaRespiratoria)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Observacoes)
-            </td>
-            <td>
-                @* CORREÇÃO: Agendamento pode ser nulo *@
-                @(item.Agendamento?.IdAgendamento)
-            </td>
-            <td>
-                @* CORREÇÃO: Veterinario pode ser nulo (exibindo o nome) *@
-                @(item.Veterinario?.NomeVeterinario)
-            </td>
-            <td>
-                @* Paciente não é anulável, esta linha deve estar ok. Assumindo que você quer o nome do paciente. *@
-                @Html.DisplayFor(modelItem => item.Paciente.NomeCachorro)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdProntuario">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdProntuario">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdProntuario">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataConsulta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MotivoConsulta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Diagnostico)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tratamento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Peso)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Temperatura)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FrequenciaCardiaca)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FrequenciaRespiratoria)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Observacoes)
+                </td>
+                <td>
+                    @(item.Agendamento?.IdAgendamento)
+                </td>
+                <td>
+                    @(item.Veterinario?.NomeVeterinario)
+                </td>
+                <td>
+                    @(item.Paciente?.NomeCachorro)
+                </td>
+                @* REMOVIDO: Campo Id (BaseModel) *@
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdProntuario">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.IdProntuario">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdProntuario">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

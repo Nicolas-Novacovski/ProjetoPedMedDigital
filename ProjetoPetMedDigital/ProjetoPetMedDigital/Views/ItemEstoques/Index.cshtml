@@ -40,9 +40,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.TransacaoDesejada)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
+            @* REMOVIDO: Campo Id (BaseModel) *@
             <th>
                 @Html.DisplayNameFor(model => model.CreatedAt)
             </th>
@@ -50,47 +48,46 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NomeProduto)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descricao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantidade)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrecoCusto)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrecoVenda)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnidadeMedida)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataValidade)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fornecedor)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TransacaoDesejada)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdProduto">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdProduto">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdProduto">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomeProduto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantidade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrecoCusto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrecoVenda)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnidadeMedida)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataValidade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fornecedor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TransacaoDesejada)
+                </td>
+                @* REMOVIDO: Campo Id (BaseModel) *@
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdProduto">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.IdProduto">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdProduto">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
