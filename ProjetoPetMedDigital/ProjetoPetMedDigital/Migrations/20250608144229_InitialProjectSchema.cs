@@ -6,37 +6,48 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProjetoPetMedDigital.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialProjectSchema : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "CadastroColaborador",
+                name: "AspNetRoles",
                 columns: table => new
                 {
-                    IdColaborador = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Telefone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CPF = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RG = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Dtnascimento = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CEP = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Endereco = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Bairro = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Cidade = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Cargo = table.Column<int>(type: "int", nullable: false),
-                    TipoUsuario = table.Column<int>(type: "int", nullable: false),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false),
-                    Login = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CadastroColaborador", x => x.IdColaborador);
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -45,16 +56,16 @@ namespace ProjetoPetMedDigital.Migrations
                 {
                     IdCliente = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NomeResponsavel = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NomeResponsavel = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Telefone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CPF = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RG = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CPF = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
+                    RG = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     DtNascimento = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CEP = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Endereco = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Bairro = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Cidade = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CEP = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false),
+                    Endereco = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Bairro = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Cidade = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -69,14 +80,14 @@ namespace ProjetoPetMedDigital.Migrations
                 {
                     IdProduto = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NomeProduto = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NomeProduto = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Descricao = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Quantidade = table.Column<int>(type: "int", nullable: true),
                     PrecoCusto = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     PrecoVenda = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    UnidadeMedida = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UnidadeMedida = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     DataValidade = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Fornecedor = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Fornecedor = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     TransacaoDesejada = table.Column<int>(type: "int", nullable: true),
                     Id = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -87,48 +98,141 @@ namespace ProjetoPetMedDigital.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Usuario",
+                name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Login = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Senha = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdColaborador = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Usuario", x => x.Login);
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Usuario_CadastroColaborador_IdColaborador",
-                        column: x => x.IdColaborador,
-                        principalTable: "CadastroColaborador",
-                        principalColumn: "IdColaborador",
-                        onDelete: ReferentialAction.Restrict);
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Veterinarios",
+                name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    IdVeterinario = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NomeVeterinario = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Especialidade = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CadastroColaborador",
+                columns: table => new
+                {
+                    IdColaborador = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nome = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Telefone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdColaborador = table.Column<int>(type: "int", nullable: false),
+                    CPF = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
+                    RG = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    Dtnascimento = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CEP = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false),
+                    Endereco = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Bairro = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Cidade = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Cargo = table.Column<int>(type: "int", nullable: false),
+                    TipoUsuario = table.Column<int>(type: "int", nullable: false),
+                    IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Veterinarios", x => x.IdVeterinario);
+                    table.PrimaryKey("PK_CadastroColaborador", x => x.IdColaborador);
                     table.ForeignKey(
-                        name: "FK_Veterinarios_CadastroColaborador_IdColaborador",
-                        column: x => x.IdColaborador,
-                        principalTable: "CadastroColaborador",
-                        principalColumn: "IdColaborador",
+                        name: "FK_CadastroColaborador_AspNetUsers_IdentityUserId",
+                        column: x => x.IdentityUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -139,13 +243,13 @@ namespace ProjetoPetMedDigital.Migrations
                     IdPaciente = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IdCliente = table.Column<int>(type: "int", nullable: false),
-                    NomeCachorro = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NomeCachorro = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Estado = table.Column<int>(type: "int", nullable: false),
-                    Problema = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Problema = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     TipoAtendimento = table.Column<int>(type: "int", nullable: false),
                     Peso = table.Column<float>(type: "real", nullable: false),
-                    SinaisVitais = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Recomendacoes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SinaisVitais = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Recomendacoes = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -167,7 +271,7 @@ namespace ProjetoPetMedDigital.Migrations
                     IdValor = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ValorProcedimento = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TipoPagamento = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TipoPagamento = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ValorReceita = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ValorSaida = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Salario = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -193,8 +297,8 @@ namespace ProjetoPetMedDigital.Migrations
                 {
                     IdProcedimento = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NomeProcedimento = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NomeProcedimento = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Descricao = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Valor = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IdProduto = table.Column<int>(type: "int", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false),
@@ -212,6 +316,62 @@ namespace ProjetoPetMedDigital.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Veterinarios",
+                columns: table => new
+                {
+                    IdVeterinario = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NomeVeterinario = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Especialidade = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Telefone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IdColaborador = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Veterinarios", x => x.IdVeterinario);
+                    table.ForeignKey(
+                        name: "FK_Veterinarios_CadastroColaborador_IdColaborador",
+                        column: x => x.IdColaborador,
+                        principalTable: "CadastroColaborador",
+                        principalColumn: "IdColaborador",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Vacina",
+                columns: table => new
+                {
+                    IdVacina = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NomeVacina = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Descricao = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Duracao = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    IdProduto = table.Column<int>(type: "int", nullable: false),
+                    IdPaciente = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Vacina", x => x.IdVacina);
+                    table.ForeignKey(
+                        name: "FK_Vacina_ItemEstoque_IdProduto",
+                        column: x => x.IdProduto,
+                        principalTable: "ItemEstoque",
+                        principalColumn: "IdProduto",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Vacina_Paciente_IdPaciente",
+                        column: x => x.IdPaciente,
+                        principalTable: "Paciente",
+                        principalColumn: "IdPaciente",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Agendamento",
                 columns: table => new
                 {
@@ -221,7 +381,7 @@ namespace ProjetoPetMedDigital.Migrations
                     IdVeterinario = table.Column<int>(type: "int", nullable: false),
                     DataAgendamento = table.Column<DateTime>(type: "datetime2", nullable: false),
                     HoraAgendamento = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Observacoes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Observacoes = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -252,7 +412,7 @@ namespace ProjetoPetMedDigital.Migrations
                     DataInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DataFim = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IdPaciente = table.Column<int>(type: "int", nullable: false),
-                    PacienteIdPaciente = table.Column<int>(type: "int", nullable: false),
+                    PacienteIdPaciente = table.Column<int>(type: "int", nullable: true),
                     Id = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -263,45 +423,13 @@ namespace ProjetoPetMedDigital.Migrations
                         name: "FK_AgendaVeterinario_Paciente_PacienteIdPaciente",
                         column: x => x.PacienteIdPaciente,
                         principalTable: "Paciente",
-                        principalColumn: "IdPaciente",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "IdPaciente");
                     table.ForeignKey(
                         name: "FK_AgendaVeterinario_Veterinarios_IdVeterinario",
                         column: x => x.IdVeterinario,
                         principalTable: "Veterinarios",
                         principalColumn: "IdVeterinario",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Vacina",
-                columns: table => new
-                {
-                    IdVacina = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NomeVacina = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Duracao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdProduto = table.Column<int>(type: "int", nullable: false),
-                    IdPaciente = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Vacina", x => x.IdVacina);
-                    table.ForeignKey(
-                        name: "FK_Vacina_ItemEstoque_IdProduto",
-                        column: x => x.IdProduto,
-                        principalTable: "ItemEstoque",
-                        principalColumn: "IdProduto",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Vacina_Paciente_IdPaciente",
-                        column: x => x.IdPaciente,
-                        principalTable: "Paciente",
-                        principalColumn: "IdPaciente",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -313,14 +441,14 @@ namespace ProjetoPetMedDigital.Migrations
                     IdAgendamento = table.Column<int>(type: "int", nullable: true),
                     IdVeterinario = table.Column<int>(type: "int", nullable: true),
                     DataConsulta = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MotivoConsulta = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Diagnostico = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Tratamento = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MotivoConsulta = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Diagnostico = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    Tratamento = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     Peso = table.Column<float>(type: "real", nullable: true),
                     Temperatura = table.Column<int>(type: "int", nullable: true),
                     FrequenciaCardiaca = table.Column<int>(type: "int", nullable: true),
                     FrequenciaRespiratoria = table.Column<int>(type: "int", nullable: true),
-                    Observacoes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Observacoes = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     IdPaciente = table.Column<int>(type: "int", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -339,7 +467,7 @@ namespace ProjetoPetMedDigital.Migrations
                         column: x => x.IdPaciente,
                         principalTable: "Paciente",
                         principalColumn: "IdPaciente",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Prontuario_Veterinarios_IdVeterinario",
                         column: x => x.IdVeterinario,
@@ -354,14 +482,14 @@ namespace ProjetoPetMedDigital.Migrations
                 {
                     IdServico = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TipoVenda = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NomeServico = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TipoVenda = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    NomeServico = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     IdVeterinario = table.Column<int>(type: "int", nullable: false),
                     Data = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Hora = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     PrecoVenda = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descricao = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     IdAgendamento = table.Column<int>(type: "int", nullable: false),
                     IdProduto = table.Column<int>(type: "int", nullable: false),
                     IdValor = table.Column<int>(type: "int", nullable: false),
@@ -418,6 +546,51 @@ namespace ProjetoPetMedDigital.Migrations
                 column: "PacienteIdPaciente");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetRoleClaims_RoleId",
+                table: "AspNetRoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "AspNetRoles",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleId",
+                table: "AspNetUserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "AspNetUsers",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "AspNetUsers",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CadastroColaborador_IdentityUserId",
+                table: "CadastroColaborador",
+                column: "IdentityUserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Paciente_IdCliente",
                 table: "Paciente",
                 column: "IdCliente");
@@ -468,12 +641,6 @@ namespace ProjetoPetMedDigital.Migrations
                 column: "IdVeterinario");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Usuario_IdColaborador",
-                table: "Usuario",
-                column: "IdColaborador",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Vacina_IdPaciente",
                 table: "Vacina",
                 column: "IdPaciente");
@@ -503,6 +670,21 @@ namespace ProjetoPetMedDigital.Migrations
                 name: "AgendaVeterinario");
 
             migrationBuilder.DropTable(
+                name: "AspNetRoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
                 name: "Procedimento");
 
             migrationBuilder.DropTable(
@@ -512,10 +694,10 @@ namespace ProjetoPetMedDigital.Migrations
                 name: "Servico");
 
             migrationBuilder.DropTable(
-                name: "Usuario");
+                name: "Vacina");
 
             migrationBuilder.DropTable(
-                name: "Vacina");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Agendamento");
@@ -537,6 +719,9 @@ namespace ProjetoPetMedDigital.Migrations
 
             migrationBuilder.DropTable(
                 name: "CadastroColaborador");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

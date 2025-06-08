@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore; // NECESSÁRIO
-using Microsoft.AspNetCore.Identity; // NECESSÁRIO
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using ProjetoPetMedDigital.Models; // Seu namespace principal de modelos
 
-namespace ProjetoPetMedDigital.Models // <<< NAMESPACE CORRETO PARA ESTE ARQUIVO (PetMedContext)
+namespace ProjetoPetMedDigital.Models // NAMESPACE CORRETO PARA PetMedContext
 {
     public class PetMedContext : IdentityDbContext<IdentityUser>
     {
@@ -10,16 +11,14 @@ namespace ProjetoPetMedDigital.Models // <<< NAMESPACE CORRETO PARA ESTE ARQUIVO
         {
         }
 
-        // SEUS DBSETS EXISTENTES
+        // Seus DbSets existentes
         public DbSet<Agendamento> Agendamentos { get; set; }
         public DbSet<AgendaVeterinario> AgendaVeterinarios { get; set; }
         public DbSet<CadastroColaborador> CadastroColaboradores { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Paciente> Pacientes { get; set; }
         public DbSet<Procedimento> Procedimentos { get; set; }
-        public DbSet<Servico> Servico { get; set; } // <<< DbSet é 'Servico' (singular)
-        // REMOVIDO: public DbSet<Usuario> Usuarios { get; set; } // REMOVIDO AQUI
-
+        public DbSet<Servico> Servico { get; set; } // Ajustado para 'Servico' (singular)
         public DbSet<Vacina> Vacinas { get; set; }
         public DbSet<Valor> Valores { get; set; }
         public DbSet<Veterinario> Veterinarios { get; set; }
@@ -28,15 +27,28 @@ namespace ProjetoPetMedDigital.Models // <<< NAMESPACE CORRETO PARA ESTE ARQUIVO
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder); // CRÍTICO: Chame o base.OnModelCreating primeiro para Identity
+            // CRUCIAL: Chame o base.OnModelCreating primeiro para configurar o Identity
+            base.OnModelCreating(modelBuilder);
 
             // Mapeamento de CadastroColaborador para IdentityUser (AspNetUsers)
             modelBuilder.Entity<CadastroColaborador>()
-                .HasOne(cc => cc.IdentityUser) // Propriedade de navegação em CadastroColaborador
+                .HasOne(cc => cc.IdentityUser)
                 .WithOne()
-                .HasForeignKey<CadastroColaborador>(cc => cc.IdentityUserId) // A FK é IdentityUserId
+                .HasForeignKey<CadastroColaborador>(cc => cc.IdentityUserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // *** CORREÇÃO AQUI: Mapeamento da relação 1:1 entre Veterinario e CadastroColaborador ***
+            // Definimos que Veterinario é o lado dependente e IdColaborador é a FK em Veterinario.
+            // Um Veterinário tem UM CadastroColaborador
+            // Um CadastroColaborador PODE TER UM Veterinario (opcional, por isso o ! no WithOne)
+            modelBuilder.Entity<Veterinario>()
+                .HasOne(v => v.CadastroColaborador) // Veterinario tem um CadastroColaborador
+                .WithOne(cc => cc.Veterinario!)     // CadastroColaborador tem um Veterinario (o '!' indica que é obrigatório para o EF)
+                .HasForeignKey<Veterinario>(v => v.IdColaborador) // A FK está em Veterinario e é IdColaborador
+                .IsRequired()                       // A FK é obrigatória (todo Veterinario deve ter um CadastroColaborador)
+                .OnDelete(DeleteBehavior.Cascade);  // Se o CadastroColaborador for deletado, o Veterinario também é (ou Restrict se preferir)
+
 
             // Mantenha todos os seus outros mapeamentos existentes aqui
             modelBuilder.Entity<Cliente>()

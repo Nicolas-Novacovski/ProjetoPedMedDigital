@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ProjetoPetMedDigital.Models;
+using ProjetoPetMedDigital.Models; // Certifique-se que este using está correto
 
 namespace ProjetoPetMedDigital.Controllers
 {
@@ -64,7 +64,7 @@ namespace ProjetoPetMedDigital.Controllers
 
                 // Exemplo: Verificar se há estoque suficiente do produto
                 var itemEstoque = await _context.ItensEstoque.FirstOrDefaultAsync(i => i.IdProduto == vacina.IdProduto);
-                if (itemEstoque == null || itemEstoque.Quantidade <= 0)
+                if (itemEstoque == null || (itemEstoque.Quantidade.HasValue && itemEstoque.Quantidade.Value <= 0)) // Check for null quantity
                 {
                     ModelState.AddModelError("IdProduto", "Produto sem estoque ou não encontrado.");
                 }
@@ -121,7 +121,7 @@ namespace ProjetoPetMedDigital.Controllers
                 // *** INÍCIO DA LÓGICA DE NEGÓCIO PARA EDIT ***
                 // Exemplo: Verificar se há estoque suficiente do produto (igual ao Create)
                 var itemEstoque = await _context.ItensEstoque.FirstOrDefaultAsync(i => i.IdProduto == vacina.IdProduto);
-                if (itemEstoque == null || itemEstoque.Quantidade <= 0)
+                if (itemEstoque == null || (itemEstoque.Quantidade.HasValue && itemEstoque.Quantidade.Value <= 0))
                 {
                     ModelState.AddModelError("IdProduto", "Produto sem estoque ou não encontrado.");
                 }
