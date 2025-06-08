@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<ProjetoPetMedDigital.Models.Cliente>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Clientes";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1 class="mb-4">Lista de Clientes</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Novo Cliente</a>
 </p>
-<table class="table">
+<table class="table table-hover table-striped">
     <thead>
         <tr>
             <th>
@@ -51,49 +51,48 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NomeResponsavel)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Telefone)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CPF)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RG)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DtNascimento)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CEP)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Endereco)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Bairro)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Cidade)
-                </td>
-                @* REMOVIDO: Campo Id (BaseModel) *@
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedAt)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.IdCliente">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.IdCliente">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.IdCliente">Delete</a>
-                </td>
-            </tr>
-        }
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NomeResponsavel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CPF)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RG)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DtNascimento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CEP)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Endereco)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bairro)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cidade)
+            </td>
+            @* REMOVIDO: Campo Id (BaseModel) *@
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdCliente" class="btn btn-sm btn-info">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.IdCliente" class="btn btn-sm btn-secondary">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdCliente" class="btn btn-sm btn-danger">Excluir</a>
+            </td>
+        </tr>
+}
     </tbody>
 </table>

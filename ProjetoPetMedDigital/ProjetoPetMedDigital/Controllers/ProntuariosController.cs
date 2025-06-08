@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ProjetoPetMedDigital.Data;
 using ProjetoPetMedDigital.Models;
 
 namespace ProjetoPetMedDigital.Controllers
@@ -50,10 +49,9 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: Prontuarios/Create
         public IActionResult Create()
         {
-            // Ajustado SelectList para exibir o ID (ou Nome/Data se preferir)
-            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento"); // Exibir a data do agendamento
-            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro"); // Exibir o nome do paciente
-            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario"); // Exibir o nome do veterinário
+            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento");
+            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro");
+            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario");
             return View();
         }
 
@@ -64,29 +62,35 @@ namespace ProjetoPetMedDigital.Controllers
         {
             if (ModelState.IsValid)
             {
-                // *** Exemplo de LÓGICA DE NEGÓCIO AQUI (se desejar implementar) ***
-                // Exemplo: Validação customizada - Data de Consulta não pode ser no futuro
+                // *** INÍCIO DA LÓGICA DE NEGÓCIO ***
+
+                // Validação: Data de Consulta não pode ser no futuro
                 if (prontuario.DataConsulta.Date > DateTime.Today)
                 {
                     ModelState.AddModelError("DataConsulta", "A data da consulta não pode ser no futuro.");
                 }
 
-                // Se houver erros customizados, retorne a view para exibir a mensagem
+                // Validação: Peso do animal deve ser positivo (além do Range na Model)
+                if (prontuario.Peso.HasValue && prontuario.Peso.Value <= 0)
+                {
+                    ModelState.AddModelError("Peso", "O peso deve ser um valor positivo.");
+                }
+
+                // Se alguma validação customizada falhou, retorne a View para exibir a mensagem de erro
                 if (!ModelState.IsValid)
                 {
-                    // Re-popule ViewDatas para dropdowns antes de retornar a View
                     ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento", prontuario.IdAgendamento);
                     ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", prontuario.IdPaciente);
                     ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", prontuario.IdVeterinario);
                     return View(prontuario);
                 }
+
                 // *** FIM DA LÓGICA DE NEGÓCIO ***
 
                 _context.Add(prontuario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            // Se ModelState.IsValid foi falso inicialmente (por Data Annotations), re-popule ViewDatas
             ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento", prontuario.IdAgendamento);
             ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", prontuario.IdPaciente);
             ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", prontuario.IdVeterinario);
@@ -124,6 +128,29 @@ namespace ProjetoPetMedDigital.Controllers
 
             if (ModelState.IsValid)
             {
+                // *** INÍCIO DA LÓGICA DE NEGÓCIO PARA EDIT ***
+                // Validação: Data de Consulta não pode ser no futuro (igual ao Create)
+                if (prontuario.DataConsulta.Date > DateTime.Today)
+                {
+                    ModelState.AddModelError("DataConsulta", "A data da consulta não pode ser no futuro.");
+                }
+
+                // Validação: Peso do animal deve ser positivo (igual ao Create)
+                if (prontuario.Peso.HasValue && prontuario.Peso.Value <= 0)
+                {
+                    ModelState.AddModelError("Peso", "O peso do animal deve ser um valor positivo.");
+                }
+
+                // Se alguma validação customizada falhou, retorne a View
+                if (!ModelState.IsValid)
+                {
+                    ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento", prontuario.IdAgendamento);
+                    ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", prontuario.IdPaciente);
+                    ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", prontuario.IdVeterinario);
+                    return View(prontuario);
+                }
+                // *** FIM DA LÓGICA DE NEGÓCIO PARA EDIT ***
+
                 try
                 {
                     _context.Update(prontuario);

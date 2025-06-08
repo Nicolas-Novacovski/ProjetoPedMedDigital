@@ -1,9 +1,10 @@
-// Removida: using PetMed_Digital.Models; - pois BaseModel estará em ProjetoPetMedDigital.Models
+using ProjetoPetMedDigital.Models; // <<< DEVE SER ESTE NAMESPACE
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity; // <<< NECESSÁRIO
 
-namespace ProjetoPetMedDigital.Models // NAMESPACE PADRONIZADO
+namespace ProjetoPetMedDigital.Models
 {
     [Table("CadastroColaborador")]
     public class CadastroColaborador : BaseModel
@@ -72,15 +73,15 @@ namespace ProjetoPetMedDigital.Models // NAMESPACE PADRONIZADO
         [Display(Name = "Tipo de Usuário")]
         public int TipoUsuario { get; set; }
 
-        // PROPRIEDADE REMOVIDA: public int UsuarioId { get; set; }
+        // PROPRIEDADES REMOVIDAS: UsuarioId e Login (antigas)
+        // NOVO: Propriedade para a FK do IdentityUser (AspNetUsers.Id)
+        [Required(ErrorMessage = "O ID do usuário Identity é obrigatório.")]
+        [Display(Name = "ID do Usuário (Identity)")]
+        public string IdentityUserId { get; set; } = null!;
 
-        [Required(ErrorMessage = "O Login é obrigatório.")]
-        [StringLength(50, ErrorMessage = "Login não pode exceder 50 caracteres.")]
-        [Display(Name = "Login do Usuário")]
-        public string Login { get; set; } = null!;
+        // NOVO: Propriedade de navegação para IdentityUser
+        public IdentityUser? IdentityUser { get; set; }
 
-        // Propriedades de navegação
-        public Usuario? Usuario { get; set; }
         public Veterinario? Veterinario { get; set; }
     }
 }

@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<ProjetoPetMedDigital.Models.AgendaVeterinario>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Agenda Veterinários";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1 class="mb-4">Agenda Veterinários</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Nova Agenda</a>
 </p>
-<table class="table">
+<table class="table table-hover table-striped">
     <thead>
         <tr>
             <th>
@@ -33,31 +33,30 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DataInicio)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DataFim)
-                </td>
-                <td>
-                    @(item.Veterinario?.NomeVeterinario)
-                </td>
-                <td>
-                    @(item.Paciente?.NomeCachorro)
-                </td>
-                @* REMOVIDO: Campo Id (BaseModel) *@
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedAt)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.IdAgendaVeterinario">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.IdAgendaVeterinario">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.IdAgendaVeterinario">Delete</a>
-                </td>
-            </tr>
-        }
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataInicio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataFim)
+            </td>
+            <td>
+                @(item.Veterinario?.NomeVeterinario)
+            </td>
+            <td>
+                @(item.Paciente?.NomeCachorro)
+            </td>
+            @* REMOVIDO: Campo Id (BaseModel) *@
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdAgendaVeterinario" class="btn btn-sm btn-info">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.IdAgendaVeterinario" class="btn btn-sm btn-secondary">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdAgendaVeterinario" class="btn btn-sm btn-danger">Excluir</a>
+            </td>
+        </tr>
+}
     </tbody>
 </table>

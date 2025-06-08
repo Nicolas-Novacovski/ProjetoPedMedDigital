@@ -5,29 +5,36 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ProjetoPetMedDigital.Data;
-using ProjetoPetMedDigital.Models;
+using Microsoft.AspNetCore.Identity; // NECESSÁRIO
+using ProjetoPetMedDigital.Models; // NECESSÁRIO para outros modelos como CadastroColaborador
 
 namespace ProjetoPetMedDigital.Controllers
 {
     public class UsuariosController : Controller
     {
         private readonly PetMedContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public UsuariosController(PetMedContext context)
+        public UsuariosController(PetMedContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        // GET: Usuarios
+        // GET: Usuarios (Lista todos os IdentityUsers)
         public async Task<IActionResult> Index()
         {
-            // Adicionado Include para carregar a propriedade de navegação
-            var petMedContext = _context.Usuarios.Include(u => u.CadastroColaborador);
-            return View(await petMedContext.ToListAsync());
+            var usuariosComColaboradores = await _context.Users
+                .GroupJoin(_context.CadastroColaboradores,
+                    user => user.Id, // PK do IdentityUser
+                    colaborador => colaborador.IdentityUserId, // FK em CadastroColaborador
+                    (user, colaboradores) => new { User = user, Colaborador = colaboradores.FirstOrDefault() })
+                .ToListAsync();
+
+            return View(usuariosComColaboradores);
         }
 
-        // GET: Usuarios/Details/5
+        // GET: Usuarios/Details/id (Detalhes de um IdentityUser)
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -35,131 +42,54 @@ namespace ProjetoPetMedDigital.Controllers
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios
-                .Include(u => u.CadastroColaborador)
-                .FirstOrDefaultAsync(m => m.Login == id);
-            if (usuario == null)
+            var identityUser = await _userManager.FindByIdAsync(id);
+            if (identityUser == null)
             {
                 return NotFound();
             }
 
-            return View(usuario);
+            var colaboradorAssociado = await _context.CadastroColaboradores.FirstOrDefaultAsync(cc => cc.IdentityUserId == id);
+            ViewBag.ColaboradorAssociado = colaboradorAssociado;
+
+            return View(identityUser);
         }
 
-        // GET: Usuarios/Create
-        public IActionResult Create()
-        {
-            // Ajustado SelectList para exibir o Nome do Colaborador
-            ViewData["IdColaborador"] = new SelectList(_context.CadastroColaboradores, "IdColaborador", "Nome");
-            return View();
-        }
+        // Redireciona para as páginas Identity para Create/Edit/Delete
+        public IActionResult Create() { return Redirect("/Identity/Account/Register"); }
+        public async Task<IActionResult> Edit(string id) { return Redirect("/Identity/Account/Manage"); } // Removed unused parameter 'id' warning
 
-        // POST: Usuarios/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Login,Senha,IdColaborador,Id,CreatedAt")] Usuario usuario)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(usuario);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            // Ajustado SelectList para exibir o Nome do Colaborador
-            ViewData["IdColaborador"] = new SelectList(_context.CadastroColaboradores, "IdColaborador", "Nome", usuario.IdColaborador);
-            return View(usuario);
-        }
-
-        // GET: Usuarios/Edit/5
-        public async Task<IActionResult> Edit(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var usuario = await _context.Usuarios.FindAsync(id);
-            if (usuario == null)
-            {
-                return NotFound();
-            }
-            // Ajustado SelectList para exibir o Nome do Colaborador
-            ViewData["IdColaborador"] = new SelectList(_context.CadastroColaboradores, "IdColaborador", "Nome", usuario.IdColaborador);
-            return View(usuario);
-        }
-
-        // POST: Usuarios/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Login,Senha,IdColaborador,Id,CreatedAt")] Usuario usuario)
-        {
-            if (id != usuario.Login)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(usuario);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UsuarioExists(usuario.Login))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            // Ajustado SelectList para exibir o Nome do Colaborador
-            ViewData["IdColaborador"] = new SelectList(_context.CadastroColaboradores, "IdColaborador", "Nome", usuario.IdColaborador);
-            return View(usuario);
-        }
-
-        // GET: Usuarios/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) { return NotFound(); }
+            var identityUser = await _userManager.FindByIdAsync(id);
+            if (identityUser == null) { return NotFound(); }
 
-            var usuario = await _context.Usuarios
-                .Include(u => u.CadastroColaborador)
-                .FirstOrDefaultAsync(m => m.Login == id);
-            if (usuario == null)
-            {
-                return NotFound();
-            }
+            var colaboradorAssociado = await _context.CadastroColaboradores.FirstOrDefaultAsync(cc => cc.IdentityUserId == id);
+            ViewBag.ColaboradorAssociado = colaboradorAssociado;
 
-            return View(usuario);
+            return View(identityUser);
         }
 
-        // POST: Usuarios/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var usuario = await _context.Usuarios.FindAsync(id);
-            if (usuario != null)
+            var identityUser = await _userManager.FindByIdAsync(id);
+            if (identityUser != null)
             {
-                _context.Usuarios.Remove(usuario);
+                var result = await _userManager.DeleteAsync(identityUser);
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError("", "Erro ao excluir usuário Identity.");
+                    return View(identityUser);
+                }
             }
-
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool UsuarioExists(string id)
         {
-            return _context.Usuarios.Any(e => e.Login == id);
+            return _context.Users.Any(e => e.Id == id);
         }
     }
 }

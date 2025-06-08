@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ProjetoPetMedDigital.Data;
 using ProjetoPetMedDigital.Models;
 
 namespace ProjetoPetMedDigital.Controllers
@@ -22,7 +21,8 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: ItemEstoques
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ItensEstoque.ToListAsync());
+            var petMedContext = _context.ItensEstoque.Include(i => i.Vacina).Include(i => i.Procedimento).Include(i => i.Servico);
+            return View(await petMedContext.ToListAsync());
         }
 
         // GET: ItemEstoques/Details/5
@@ -34,6 +34,9 @@ namespace ProjetoPetMedDigital.Controllers
             }
 
             var itemEstoque = await _context.ItensEstoque
+                .Include(i => i.Vacina)
+                .Include(i => i.Procedimento)
+                .Include(i => i.Servico)
                 .FirstOrDefaultAsync(m => m.IdProduto == id);
             if (itemEstoque == null)
             {
@@ -46,18 +49,41 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: ItemEstoques/Create
         public IActionResult Create()
         {
+            ViewData["IdProduto"] = new SelectList(_context.Vacinas, "IdVacina", "NomeVacina"); // Exemplo se ItemEstoque tiver relação 1:1 com Vacina, etc.
             return View();
         }
 
         // POST: ItemEstoques/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdProduto,NomeProduto,Descricao,Quantidade,PrecoCusto,PrecoVenda,UnidadeMedida,DataValidade,Fornecedor,TransacaoDesejada,Id,CreatedAt")] ItemEstoque itemEstoque)
         {
             if (ModelState.IsValid)
             {
+                // *** INÍCIO DA LÓGICA DE NEGÓCIO ***
+
+                // Validação: Data de validade não pode ser no passado (se fornecida)
+                if (itemEstoque.DataValidade.HasValue && itemEstoque.DataValidade.Value.Date < DateTime.Today)
+                {
+                    ModelState.AddModelError("DataValidade", "A data de validade não pode ser no passado.");
+                }
+
+                // Validação: Preço de venda não pode ser menor que preço de custo
+                if (itemEstoque.PrecoVenda.HasValue && itemEstoque.PrecoCusto.HasValue &&
+                    itemEstoque.PrecoVenda.Value < itemEstoque.PrecoCusto.Value)
+                {
+                    ModelState.AddModelError("PrecoVenda", "O preço de venda não pode ser menor que o preço de custo.");
+                }
+
+                // Se alguma validação customizada falhou, retorne a View
+                if (!ModelState.IsValid)
+                {
+                    // Re-popule os ViewDatas para dropdowns aqui, se for o caso
+                    return View(itemEstoque);
+                }
+
+                // *** FIM DA LÓGICA DE NEGÓCIO ***
+
                 _context.Add(itemEstoque);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -82,8 +108,6 @@ namespace ProjetoPetMedDigital.Controllers
         }
 
         // POST: ItemEstoques/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdProduto,NomeProduto,Descricao,Quantidade,PrecoCusto,PrecoVenda,UnidadeMedida,DataValidade,Fornecedor,TransacaoDesejada,Id,CreatedAt")] ItemEstoque itemEstoque)
@@ -95,6 +119,27 @@ namespace ProjetoPetMedDigital.Controllers
 
             if (ModelState.IsValid)
             {
+                // *** INÍCIO DA LÓGICA DE NEGÓCIO PARA EDIT ***
+                // Validação: Data de validade não pode ser no passado (igual ao Create)
+                if (itemEstoque.DataValidade.HasValue && itemEstoque.DataValidade.Value.Date < DateTime.Today)
+                {
+                    ModelState.AddModelError("DataValidade", "A data de validade não pode ser no passado.");
+                }
+
+                // Validação: Preço de venda não pode ser menor que preço de custo (igual ao Create)
+                if (itemEstoque.PrecoVenda.HasValue && itemEstoque.PrecoCusto.HasValue &&
+                    itemEstoque.PrecoVenda.Value < itemEstoque.PrecoCusto.Value)
+                {
+                    ModelState.AddModelError("PrecoVenda", "O preço de venda não pode ser menor que o preço de custo.");
+                }
+
+                // Se alguma validação customizada falhou, retorne a View
+                if (!ModelState.IsValid)
+                {
+                    return View(itemEstoque);
+                }
+                // *** FIM DA LÓGICA DE NEGÓCIO PARA EDIT ***
+
                 try
                 {
                     _context.Update(itemEstoque);
@@ -125,6 +170,9 @@ namespace ProjetoPetMedDigital.Controllers
             }
 
             var itemEstoque = await _context.ItensEstoque
+                .Include(i => i.Vacina)
+                .Include(i => i.Procedimento)
+                .Include(i => i.Servico)
                 .FirstOrDefaultAsync(m => m.IdProduto == id);
             if (itemEstoque == null)
             {

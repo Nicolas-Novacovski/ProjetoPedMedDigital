@@ -1,44 +1,55 @@
-﻿@model ProjetoPetMedDigital.Models.Usuario
+﻿@model Microsoft.AspNetCore.Identity.IdentityUser
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes do Usuário";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1 class="mb-3">Detalhes do Usuário</h1>
 
 <div>
-    <h4>Usuario</h4>
+    <h4>IdentityUser</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Login)
+        <dt class = "col-sm-2">
+            Login (UserName)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Login)
+        <dd class = "col-sm-10">
+            @Model.UserName
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Senha)
+        <dt class = "col-sm-2">
+            Email
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Senha)
+        <dd class = "col-sm-10">
+            @Model.Email
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CadastroColaborador)
+        <dt class = "col-sm-2">
+            Telefone
         </dt>
-        <dd class="col-sm-10">
-            @(Model.CadastroColaborador?.Nome) @* Exibir o nome do colaborador *@
+        <dd class = "col-sm-10">
+            @Model.PhoneNumber
         </dd>
-        @* REMOVIDO: Campo Id (BaseModel) *@
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
+        <dt class = "col-sm-2">
+            Email Confirmado
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EmailConfirmed)
+        </dd>
+        <dt class = "col-sm-2">
+            ID do Usuário
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.Id
+        </dd>
+        <dt class = "col-sm-2">
+            Colaborador Associado
+        </dt>
+        <dd class = "col-sm-10">
+            @(ViewBag.ColaboradorAssociado?.Nome ?? "N/A")
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Login">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="mt-4">
+    <a href="/Identity/Account/Manage" class="btn btn-warning">Gerenciar Perfil</a> |
+    <a asp-action="Index" class="btn btn-secondary">Voltar para a Lista</a>
 </div>

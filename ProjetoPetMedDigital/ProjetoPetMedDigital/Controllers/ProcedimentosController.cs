@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ProjetoPetMedDigital.Data;
 using ProjetoPetMedDigital.Models;
 
 namespace ProjetoPetMedDigital.Controllers
@@ -19,15 +18,14 @@ namespace ProjetoPetMedDigital.Controllers
             _context = context;
         }
 
-        // GET: Procedimentoes
+        // GET: Procedimentos
         public async Task<IActionResult> Index()
         {
-            // Adicionado Include para carregar a propriedade de navegação
             var petMedContext = _context.Procedimentos.Include(p => p.ItemEstoque);
             return View(await petMedContext.ToListAsync());
         }
 
-        // GET: Procedimentoes/Details/5
+        // GET: Procedimentos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,31 +44,47 @@ namespace ProjetoPetMedDigital.Controllers
             return View(procedimento);
         }
 
-        // GET: Procedimentoes/Create
+        // GET: Procedimentos/Create
         public IActionResult Create()
         {
-            // Ajustado SelectList para exibir o NomeProduto do ItemEstoque
-            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto");
+            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto"); // Exibe o nome do produto
             return View();
         }
 
-        // POST: Procedimentoes/Create
+        // POST: Procedimentos/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdProcedimento,NomeProcedimento,Descricao,Valor,IdProduto,Id,CreatedAt")] Procedimento procedimento)
         {
             if (ModelState.IsValid)
             {
+                // *** INÍCIO DA LÓGICA DE NEGÓCIO ***
+
+                // Exemplo: Verificar se o ItemEstoque associado não está vencido (se relevante para o procedimento)
+                var itemEstoqueAssociado = await _context.ItensEstoque.FirstOrDefaultAsync(i => i.IdProduto == procedimento.IdProduto);
+                if (itemEstoqueAssociado != null && itemEstoqueAssociado.DataValidade.HasValue && itemEstoqueAssociado.DataValidade.Value.Date < DateTime.Today)
+                {
+                    ModelState.AddModelError("IdProduto", "O produto associado a este procedimento está vencido.");
+                }
+
+                // Se alguma validação customizada falhou, retorne a View
+                if (!ModelState.IsValid)
+                {
+                    ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", procedimento.IdProduto);
+                    return View(procedimento);
+                }
+
+                // *** FIM DA LÓGICA DE NEGÓCIO ***
+
                 _context.Add(procedimento);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            // Ajustado SelectList para exibir o NomeProduto do ItemEstoque
             ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", procedimento.IdProduto);
             return View(procedimento);
         }
 
-        // GET: Procedimentoes/Edit/5
+        // GET: Procedimentos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,12 +97,11 @@ namespace ProjetoPetMedDigital.Controllers
             {
                 return NotFound();
             }
-            // Ajustado SelectList para exibir o NomeProduto do ItemEstoque
             ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", procedimento.IdProduto);
             return View(procedimento);
         }
 
-        // POST: Procedimentoes/Edit/5
+        // POST: Procedimentos/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdProcedimento,NomeProcedimento,Descricao,Valor,IdProduto,Id,CreatedAt")] Procedimento procedimento)
@@ -100,6 +113,22 @@ namespace ProjetoPetMedDigital.Controllers
 
             if (ModelState.IsValid)
             {
+                // *** INÍCIO DA LÓGICA DE NEGÓCIO PARA EDIT ***
+                // Exemplo: Verificar se o ItemEstoque associado não está vencido (igual ao Create)
+                var itemEstoqueAssociado = await _context.ItensEstoque.FirstOrDefaultAsync(i => i.IdProduto == procedimento.IdProduto);
+                if (itemEstoqueAssociado != null && itemEstoqueAssociado.DataValidade.HasValue && itemEstoqueAssociado.DataValidade.Value.Date < DateTime.Today)
+                {
+                    ModelState.AddModelError("IdProduto", "O produto associado a este procedimento está vencido.");
+                }
+
+                // Se alguma validação customizada falhou, retorne a View
+                if (!ModelState.IsValid)
+                {
+                    ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", procedimento.IdProduto);
+                    return View(procedimento);
+                }
+                // *** FIM DA LÓGICA DE NEGÓCIO PARA EDIT ***
+
                 try
                 {
                     _context.Update(procedimento);
@@ -118,12 +147,11 @@ namespace ProjetoPetMedDigital.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            // Ajustado SelectList para exibir o NomeProduto do ItemEstoque
             ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", procedimento.IdProduto);
             return View(procedimento);
         }
 
-        // GET: Procedimentoes/Delete/5
+        // GET: Procedimentos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -142,7 +170,7 @@ namespace ProjetoPetMedDigital.Controllers
             return View(procedimento);
         }
 
-        // POST: Procedimentoes/Delete/5
+        // POST: Procedimentos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

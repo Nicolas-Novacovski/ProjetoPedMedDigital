@@ -1,74 +1,74 @@
 ﻿@model ProjetoPetMedDigital.Models.Valor
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes do Valor";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1 class="mb-3">Detalhes do Valor</h1>
 
 <div>
     <h4>Valor</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ValorProcedimento)
         </dt>
-        <dd class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.ValorProcedimento)
         </dd>
-        <dt class="col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.TipoPagamento)
         </dt>
-        <dd class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.TipoPagamento)
         </dd>
-        <dt class="col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ValorReceita)
         </dt>
-        <dd class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.ValorReceita)
         </dd>
-        <dt class="col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ValorSaida)
         </dt>
-        <dd class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.ValorSaida)
         </dd>
-        <dt class="col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Salario)
         </dt>
-        <dd class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Salario)
         </dd>
-        <dt class="col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CompraProdutos)
         </dt>
-        <dd class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.CompraProdutos)
         </dd>
-        <dt class="col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Servico)
         </dt>
-        <dd class="col-sm-10">
-            @(Model.Servico?.NomeServico) @* Exibe o nome do Servico, se existir *@
+        <dd class = "col-sm-10">
+            @(Model.Servico?.NomeServico) @* Exibe o nome do serviço, se existir *@
         </dd>
-        <dt class="col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Cliente)
         </dt>
-        <dd class="col-sm-10">
+        <dd class = "col-sm-10">
             @(Model.Cliente?.NomeResponsavel) @* Exibe o nome do cliente, se existir *@
         </dd>
         @* REMOVIDO: Campo Id (BaseModel) *@
-        <dt class="col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CreatedAt)
         </dt>
-        <dd class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.CreatedAt)
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.IdValor">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-id="@Model?.IdValor" class="btn btn-warning">Editar</a> |
+    <a asp-action="Index" class="btn btn-secondary">Voltar para a Lista</a>
 </div>

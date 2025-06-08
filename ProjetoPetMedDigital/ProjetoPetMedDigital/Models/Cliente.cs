@@ -1,4 +1,4 @@
-﻿// Removida: using PetMed_Digital.Models; - pois BaseModel estará em ProjetoPetMedDigital.Models
+﻿// Removida: using ProjetoPetMedDigital.Models; - pois BaseModel estará em ProjetoPetMedDigital.Models
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

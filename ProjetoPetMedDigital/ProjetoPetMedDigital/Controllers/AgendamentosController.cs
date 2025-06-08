@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ProjetoPetMedDigital.Data;
 using ProjetoPetMedDigital.Models;
 
 namespace ProjetoPetMedDigital.Controllers
@@ -49,7 +48,6 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: Agendamentos/Create
         public IActionResult Create()
         {
-            // Ajustado SelectList para exibir NomeCachorro do Paciente e NomeVeterinario
             ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro");
             ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario");
             return View();
@@ -62,11 +60,30 @@ namespace ProjetoPetMedDigital.Controllers
         {
             if (ModelState.IsValid)
             {
+                // *** INÍCIO DA LÓGICA DE NEGÓCIO ***
+
+                // Validação: Data e Hora do agendamento não podem ser no passado
+                DateTime dataHoraAgendamento = agendamento.DataAgendamento.Date + agendamento.HoraAgendamento.TimeOfDay;
+                if (dataHoraAgendamento < DateTime.Now)
+                {
+                    ModelState.AddModelError("DataAgendamento", "A data e hora do agendamento não podem ser no passado.");
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    // Re-popule os ViewDatas para dropdowns antes de retornar a View
+                    ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", agendamento.IdPaciente);
+                    ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", agendamento.IdVeterinario);
+                    return View(agendamento);
+                }
+
+                // *** FIM DA LÓGICA DE NEGÓCIO ***
+
                 _context.Add(agendamento);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            // Ajustado SelectList para exibir NomeCachorro do Paciente e NomeVeterinario
+            // Se ModelState.IsValid foi falso inicialmente (por Data Annotations), re-popule ViewDatas
             ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", agendamento.IdPaciente);
             ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", agendamento.IdVeterinario);
             return View(agendamento);
@@ -85,7 +102,6 @@ namespace ProjetoPetMedDigital.Controllers
             {
                 return NotFound();
             }
-            // Ajustado SelectList para exibir NomeCachorro do Paciente e NomeVeterinario
             ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", agendamento.IdPaciente);
             ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", agendamento.IdVeterinario);
             return View(agendamento);
@@ -103,6 +119,23 @@ namespace ProjetoPetMedDigital.Controllers
 
             if (ModelState.IsValid)
             {
+                // *** INÍCIO DA LÓGICA DE NEGÓCIO PARA EDIT ***
+                // Validação: Data e Hora do agendamento não podem ser no passado (igual ao Create)
+                DateTime dataHoraAgendamento = agendamento.DataAgendamento.Date + agendamento.HoraAgendamento.TimeOfDay;
+                if (dataHoraAgendamento < DateTime.Now)
+                {
+                    ModelState.AddModelError("DataAgendamento", "A data e hora do agendamento não podem ser no passado.");
+                }
+
+                // Se alguma validação customizada falhou, retorne a View
+                if (!ModelState.IsValid)
+                {
+                    ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", agendamento.IdPaciente);
+                    ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", agendamento.IdVeterinario);
+                    return View(agendamento);
+                }
+                // *** FIM DA LÓGICA DE NEGÓCIO PARA EDIT ***
+
                 try
                 {
                     _context.Update(agendamento);
@@ -121,7 +154,6 @@ namespace ProjetoPetMedDigital.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            // Ajustado SelectList para exibir NomeCachorro do Paciente e NomeVeterinario
             ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", agendamento.IdPaciente);
             ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", agendamento.IdVeterinario);
             return View(agendamento);

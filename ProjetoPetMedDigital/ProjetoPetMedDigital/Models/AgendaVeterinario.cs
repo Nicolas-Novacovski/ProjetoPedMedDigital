@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-// Removida: using PetMed_Digital.Models; - pois BaseModel estará em ProjetoPetMedDigital.Models
+// Removida: using ProjetoPetMedDigital.Models; - pois BaseModel estará em ProjetoPetMedDigital.Models
 
 namespace ProjetoPetMedDigital.Models // NAMESPACE PADRONIZADO
 {

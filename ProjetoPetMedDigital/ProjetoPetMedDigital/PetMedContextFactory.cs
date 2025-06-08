@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration; // Adicione este using
-using ProjetoPetMedDigital.Data; // Certifique-se de que este é o namespace correto do seu DbContext
+using ProjetoPetMedDigital.Models;
 using System.IO; // Adicione este using se já não estiver
 
 namespace ProjetoPetMedDigital

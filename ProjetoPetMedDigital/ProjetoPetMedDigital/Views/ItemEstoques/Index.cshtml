@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<ProjetoPetMedDigital.Models.ItemEstoque>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Itens de Estoque";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1 class="mb-4">Lista de Itens de Estoque</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Novo Item de Estoque</a>
 </p>
-<table class="table">
+<table class="table table-hover table-striped">
     <thead>
         <tr>
             <th>
@@ -40,6 +40,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.TransacaoDesejada)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vacina)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Procedimento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Servico)
+            </th>
             @* REMOVIDO: Campo Id (BaseModel) *@
             <th>
                 @Html.DisplayNameFor(model => model.CreatedAt)
@@ -48,46 +57,54 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NomeProduto)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Descricao)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Quantidade)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PrecoCusto)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PrecoVenda)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UnidadeMedida)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DataValidade)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Fornecedor)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TransacaoDesejada)
-                </td>
-                @* REMOVIDO: Campo Id (BaseModel) *@
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedAt)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.IdProduto">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.IdProduto">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.IdProduto">Delete</a>
-                </td>
-            </tr>
-        }
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NomeProduto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantidade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrecoCusto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrecoVenda)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnidadeMedida)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataValidade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fornecedor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransacaoDesejada)
+            </td>
+            <td>
+                @(item.Vacina?.NomeVacina)
+            </td>
+            <td>
+                @(item.Procedimento?.NomeProcedimento)
+            </td>
+            <td>
+                @(item.Servico?.NomeServico)
+            </td>
+            @* REMOVIDO: Campo Id (BaseModel) *@
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdProduto" class="btn btn-sm btn-info">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.IdProduto" class="btn btn-sm btn-secondary">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdProduto" class="btn btn-sm btn-danger">Excluir</a>
+            </td>
+        </tr>
+}
     </tbody>
 </table>

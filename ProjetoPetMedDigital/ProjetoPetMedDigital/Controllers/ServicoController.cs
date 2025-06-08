@@ -5,13 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ProjetoPetMedDigital.Data;
-using ProjetoPetMedDigital.Models; // Certifique-se que este using está correto
+using ProjetoPetMedDigital.Models;
 
 namespace ProjetoPetMedDigital.Controllers
 {
-    // O nome da classe do Controller geralmente é o plural do modelo.
-    // Se você renomeou o modelo de 'Servico' para 'Servico', este controller continua sendo 'ServicoController'.
+
     public class ServicoController : Controller
     {
         private readonly PetMedContext _context;
@@ -24,7 +22,7 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: Servico
         public async Task<IActionResult> Index()
         {
-            // Adicionado Include para carregar as propriedades de navegação
+            // DbSet é _context.Servico (singular, como definido em PetMedContext)
             var petMedContext = _context.Servico.Include(s => s.Agendamento).Include(s => s.ItemEstoque).Include(s => s.Valor).Include(s => s.Veterinario);
             return View(await petMedContext.ToListAsync());
         }
@@ -37,48 +35,76 @@ namespace ProjetoPetMedDigital.Controllers
                 return NotFound();
             }
 
-            var Servico = await _context.Servico
+            // Variável local 'servico' (minúscula)
+            var servico = await _context.Servico // DbSet é _context.Servico
                 .Include(s => s.Agendamento)
                 .Include(s => s.ItemEstoque)
                 .Include(s => s.Valor)
                 .Include(s => s.Veterinario)
                 .FirstOrDefaultAsync(m => m.IdServico == id);
-            if (Servico == null)
+            if (servico == null)
             {
                 return NotFound();
             }
 
-            return View(Servico);
+            return View(servico);
         }
 
         // GET: Servico/Create
         public IActionResult Create()
         {
             // Ajustado SelectList para exibir nomes em vez de IDs
-            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento"); // Exibir a data do agendamento
-            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto"); // Exibir o nome do produto
-            ViewData["IdValor"] = new SelectList(_context.Valores, "IdValor", "ValorProcedimento"); // Exibir o valor do procedimento
-            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario"); // Exibir o nome do veterinário
+            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento");
+            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto");
+            ViewData["IdValor"] = new SelectList(_context.Valores, "IdValor", "ValorProcedimento");
+            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario");
             return View();
         }
 
         // POST: Servico/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdServico,TipoVenda,NomeServico,IdVeterinario,Data,Hora,Status,PrecoVenda,Descricao,IdAgendamento,IdProduto,IdValor,Id,CreatedAt")] Servico Servico) // Mude 'Servico' para 'Servico' aqui
+        // Parâmetro do método é 'servico' (minúscula)
+        public async Task<IActionResult> Create([Bind("IdServico,TipoVenda,NomeServico,IdVeterinario,Data,Hora,Status,PrecoVenda,Descricao,IdAgendamento,IdProduto,IdValor,Id,CreatedAt")] Servico servico)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(Servico);
+                // *** INÍCIO DA LÓGICA DE NEGÓCIO ***
+
+                // Validação: Data e Hora do serviço não podem ser no passado
+                DateTime dataHoraServico = servico.Data.Date + servico.Hora.TimeOfDay;
+                if (dataHoraServico < DateTime.Now)
+                {
+                    ModelState.AddModelError("Data", "A data e hora do serviço não podem ser no passado.");
+                }
+
+                // Validação: Preço de venda deve ser maior que zero (além do Range na Model)
+                if (servico.PrecoVenda <= 0)
+                {
+                    ModelState.AddModelError("PrecoVenda", "O preço de venda deve ser maior que zero.");
+                }
+
+                // Se alguma validação customizada falhou, retorne a View
+                if (!ModelState.IsValid)
+                {
+                    ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento", servico.IdAgendamento);
+                    ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", servico.IdProduto);
+                    ViewData["IdValor"] = new SelectList(_context.Valores, "IdValor", "ValorProcedimento", servico.IdValor);
+                    ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", servico.IdVeterinario);
+                    return View(servico);
+                }
+
+                // *** FIM DA LÓGICA DE NEGÓCIO ***
+
+                _context.Servico.Add(servico); // DbSet é _context.Servico
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            // Ajustado SelectList para exibir nomes em vez de IDs
-            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento", Servico.IdAgendamento);
-            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", Servico.IdProduto);
-            ViewData["IdValor"] = new SelectList(_context.Valores, "IdValor", "ValorProcedimento", Servico.IdValor);
-            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", Servico.IdVeterinario);
-            return View(Servico);
+            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento", servico.IdAgendamento);
+            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", servico.IdProduto);
+            ViewData["IdValor"] = new SelectList(_context.Valores, "IdValor", "ValorProcedimento", servico.IdValor);
+            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", servico.IdVeterinario);
+            return View(servico);
         }
 
         // GET: Servico/Edit/5
@@ -89,39 +115,64 @@ namespace ProjetoPetMedDigital.Controllers
                 return NotFound();
             }
 
-            var Servico = await _context.Servico.FindAsync(id);
-            if (Servico == null)
+            var servico = await _context.Servico.FindAsync(id); // DbSet é _context.Servico
+            if (servico == null)
             {
                 return NotFound();
             }
-            // Ajustado SelectList para exibir nomes em vez de IDs
-            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento", Servico.IdAgendamento);
-            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", Servico.IdProduto);
-            ViewData["IdValor"] = new SelectList(_context.Valores, "IdValor", "ValorProcedimento", Servico.IdValor);
-            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", Servico.IdVeterinario);
-            return View(Servico);
+            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento", servico.IdAgendamento);
+            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", servico.IdProduto);
+            ViewData["IdValor"] = new SelectList(_context.Valores, "IdValor", "ValorProcedimento", servico.IdValor);
+            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", servico.IdVeterinario);
+            return View(servico);
         }
 
         // POST: Servico/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdServico,TipoVenda,NomeServico,IdVeterinario,Data,Hora,Status,PrecoVenda,Descricao,IdAgendamento,IdProduto,IdValor,Id,CreatedAt")] Servico Servico) // Mude 'Servico' para 'Servico' aqui
+        // Parâmetro do método é 'servico' (minúscula)
+        public async Task<IActionResult> Edit(int id, [Bind("IdServico,TipoVenda,NomeServico,IdVeterinario,Data,Hora,Status,PrecoVenda,Descricao,IdAgendamento,IdProduto,IdValor,Id,CreatedAt")] Servico servico)
         {
-            if (id != Servico.IdServico)
+            if (id != servico.IdServico)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                // *** INÍCIO DA LÓGICA DE NEGÓCIO PARA EDIT ***
+                // Validação: Data e Hora do serviço não podem ser no passado (igual ao Create)
+                DateTime dataHoraServico = servico.Data.Date + servico.Hora.TimeOfDay;
+                if (dataHoraServico < DateTime.Now)
+                {
+                    ModelState.AddModelError("Data", "A data e hora do serviço não podem ser no passado.");
+                }
+
+                // Validação: Preço de venda deve ser maior que zero (igual ao Create)
+                if (servico.PrecoVenda <= 0)
+                {
+                    ModelState.AddModelError("PrecoVenda", "O preço de venda deve ser maior que zero.");
+                }
+
+                // Se alguma validação customizada falhou, retorne a View
+                if (!ModelState.IsValid)
+                {
+                    ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento", servico.IdAgendamento);
+                    ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", servico.IdProduto);
+                    ViewData["IdValor"] = new SelectList(_context.Valores, "IdValor", "ValorProcedimento", servico.IdValor);
+                    ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", servico.IdVeterinario);
+                    return View(servico);
+                }
+                // *** FIM DA LÓGICA DE NEGÓCIO PARA EDIT ***
+
                 try
                 {
-                    _context.Update(Servico);
+                    _context.Servico.Update(servico); // DbSet é _context.Servico
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ServicoExists(Servico.IdServico))
+                    if (!ServicoExists(servico.IdServico))
                     {
                         return NotFound();
                     }
@@ -132,12 +183,11 @@ namespace ProjetoPetMedDigital.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            // Ajustado SelectList para exibir nomes em vez de IDs
-            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento", Servico.IdAgendamento);
-            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", Servico.IdProduto);
-            ViewData["IdValor"] = new SelectList(_context.Valores, "IdValor", "ValorProcedimento", Servico.IdValor);
-            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", Servico.IdVeterinario);
-            return View(Servico);
+            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento", servico.IdAgendamento);
+            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto", servico.IdProduto);
+            ViewData["IdValor"] = new SelectList(_context.Valores, "IdValor", "ValorProcedimento", servico.IdValor);
+            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", servico.IdVeterinario);
+            return View(servico);
         }
 
         // GET: Servico/Delete/5
@@ -148,18 +198,18 @@ namespace ProjetoPetMedDigital.Controllers
                 return NotFound();
             }
 
-            var Servico = await _context.Servico
+            var servico = await _context.Servico // DbSet é _context.Servico
                 .Include(s => s.Agendamento)
                 .Include(s => s.ItemEstoque)
                 .Include(s => s.Valor)
                 .Include(s => s.Veterinario)
                 .FirstOrDefaultAsync(m => m.IdServico == id);
-            if (Servico == null)
+            if (servico == null)
             {
                 return NotFound();
             }
 
-            return View(Servico);
+            return View(servico);
         }
 
         // POST: Servico/Delete/5
@@ -167,10 +217,10 @@ namespace ProjetoPetMedDigital.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var Servico = await _context.Servico.FindAsync(id);
-            if (Servico != null)
+            var servico = await _context.Servico.FindAsync(id); // DbSet é _context.Servico
+            if (servico != null)
             {
-                _context.Servico.Remove(Servico);
+                _context.Servico.Remove(servico);
             }
 
             await _context.SaveChangesAsync();
@@ -179,7 +229,7 @@ namespace ProjetoPetMedDigital.Controllers
 
         private bool ServicoExists(int id)
         {
-            return _context.Servico.Any(e => e.IdServico == id);
+            return _context.Servico.Any(e => e.IdServico == id); // DbSet é _context.Servico
         }
     }
 }

@@ -1,5 +1,8 @@
 ﻿using System;
-namespace ProjetoPetMedDigital.Models 
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ProjetoPetMedDigital.Models // <<< DEVE SER ESTE NAMESPACE
 {
     public class BaseModel
     {

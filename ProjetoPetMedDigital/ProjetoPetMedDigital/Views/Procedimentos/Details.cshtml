@@ -1,54 +1,50 @@
 ﻿@model ProjetoPetMedDigital.Models.Procedimento
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Detalhes do Procedimento";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
-
-<h4>Procedimento</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="IdProcedimento" /> @* MANTIDO: PK como hidden *@
-            <div class="form-group">
-                <label asp-for="NomeProcedimento" class="control-label"></label>
-                <input asp-for="NomeProcedimento" class="form-control" />
-                <span asp-validation-for="NomeProcedimento" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Descricao" class="control-label"></label>
-                <input asp-for="Descricao" class="form-control" />
-                <span asp-validation-for="Descricao" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Valor" class="control-label"></label>
-                <input asp-for="Valor" class="form-control" />
-                <span asp-validation-for="Valor" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdProduto" class="control-label"></label>
-                <select asp-for="IdProduto" class="form-control" asp-items="ViewBag.IdProduto"></select>
-                <span asp-validation-for="IdProduto" class="text-danger"></span>
-            </div>
-            @* REMOVIDO: Campo Id (BaseModel) *@
-            @* REMOVIDO: Campo CreatedAt *@
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+<h1 class="mb-3">Detalhes do Procedimento</h1>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <h4>Procedimento</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NomeProcedimento)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NomeProcedimento)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Descricao)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Descricao)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Valor)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Valor)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ItemEstoque)
+        </dt>
+        <dd class = "col-sm-10">
+            @(Model.ItemEstoque?.NomeProduto) @* Exibe o nome do item de estoque, se existir *@
+        </dd>
+        @* REMOVIDO: Campo Id (BaseModel) *@
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CreatedAt)
+        </dd>
+    </dl>
 </div>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-id="@Model?.IdProcedimento" class="btn btn-warning">Editar</a> |
+    <a asp-action="Index" class="btn btn-secondary">Voltar para a Lista</a>
+</div>

@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<ProjetoPetMedDigital.Models.Paciente>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Pacientes";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1 class="mb-4">Lista de Pacientes</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Novo Paciente</a>
 </p>
-<table class="table">
+<table class="table table-hover table-striped">
     <thead>
         <tr>
             <th>
@@ -45,43 +45,42 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NomeCachorro)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Estado)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Problema)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TipoAtendimento)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Peso)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SinaisVitais)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Recomendacoes)
-                </td>
-                <td>
-                    @(item.Cliente?.NomeResponsavel)
-                </td>
-                @* REMOVIDO: Campo Id (BaseModel) *@
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedAt)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.IdPaciente">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.IdPaciente">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.IdPaciente">Delete</a>
-                </td>
-            </tr>
-        }
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NomeCachorro)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Estado)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Problema)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoAtendimento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Peso)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SinaisVitais)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Recomendacoes)
+            </td>
+            <td>
+                @(item.Cliente?.NomeResponsavel)
+            </td>
+            @* REMOVIDO: Campo Id (BaseModel) *@
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdPaciente" class="btn btn-sm btn-info">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.IdPaciente" class="btn btn-sm btn-secondary">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdPaciente" class="btn btn-sm btn-danger">Excluir</a>
+            </td>
+        </tr>
+}
     </tbody>
 </table>

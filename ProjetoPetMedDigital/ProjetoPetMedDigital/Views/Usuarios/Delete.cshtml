@@ -1,47 +1,52 @@
-﻿@model ProjetoPetMedDigital.Models.Usuario
+﻿@model Microsoft.AspNetCore.Identity.IdentityUser
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Excluir Usuário";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Delete</h1>
+<h1 class="mb-3">Excluir Usuário</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Tem certeza que deseja excluir este usuário?</h3>
 <div>
-    <h4>Usuario</h4>
+    <h4>IdentityUser</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Login)
+        <dt class = "col-sm-2">
+            Login (UserName)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Login)
+        <dd class = "col-sm-10">
+            @Model.UserName
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Senha)
+        <dt class = "col-sm-2">
+            Email
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Senha)
+        <dd class = "col-sm-10">
+            @Model.Email
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CadastroColaborador)
+        <dt class = "col-sm-2">
+            Telefone
         </dt>
-        <dd class="col-sm-10">
-            @(Model.CadastroColaborador?.Nome)
+        <dd class = "col-sm-10">
+            @Model.PhoneNumber
         </dd>
-        @* REMOVIDO: Campo Id (BaseModel) *@
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
+        <dt class = "col-sm-2">
+            ID do Usuário
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
+        <dd class = "col-sm-10">
+            @Model.Id
+        </dd>
+        <dt class = "col-sm-2">
+            Colaborador Associado
+        </dt>
+        <dd class = "col-sm-10">
+            @(ViewBag.ColaboradorAssociado?.Nome ?? "N/A")
         </dd>
     </dl>
 
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Login" /> @* PK: MANTIDO, MAS COMO HIDDEN *@
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+    <form asp-action="Delete" onsubmit="return confirmDelete(event)">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Excluir" class="btn btn-danger"> |
+        <a asp-action="Index" class="btn btn-secondary">Volgar para a Lista</a>
     </form>
 </div>

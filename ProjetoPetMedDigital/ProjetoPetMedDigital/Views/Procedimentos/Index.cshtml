@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<ProjetoPetMedDigital.Models.Procedimento>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Procedimentos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1 class="mb-4">Lista de Procedimentos</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Novo Procedimento</a>
 </p>
-<table class="table">
+<table class="table table-hover table-striped">
     <thead>
         <tr>
             <th>
@@ -23,7 +23,7 @@
                 @Html.DisplayNameFor(model => model.Valor)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdProduto)
+                @Html.DisplayNameFor(model => model.ItemEstoque)
             </th>
             @* REMOVIDO: Campo Id (BaseModel) *@
             <th>
@@ -33,31 +33,30 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NomeProcedimento)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Descricao)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Valor)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IdProduto)
-                </td>
-                @* REMOVIDO: Campo Id (BaseModel) *@
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedAt)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.IdProcedimento">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.IdProcedimento">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.IdProcedimento">Delete</a>
-                </td>
-            </tr>
-        }
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NomeProcedimento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Valor)
+            </td>
+            <td>
+                @(item.ItemEstoque?.NomeProduto)
+            </td>
+            @* REMOVIDO: Campo Id (BaseModel) *@
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdProcedimento" class="btn btn-sm btn-info">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.IdProcedimento" class="btn btn-sm btn-secondary">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdProcedimento" class="btn btn-sm btn-danger">Excluir</a>
+            </td>
+        </tr>
+}
     </tbody>
 </table>

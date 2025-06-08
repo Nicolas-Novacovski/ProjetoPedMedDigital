@@ -1,19 +1,19 @@
-﻿@model ProjetoPetMedDigital.Models.Servico @* MODEL AGORA É 'Servico' (singular) *@
+﻿@model ProjetoPetMedDigital.Models.Servico
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Novo Serviço";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h1 class="mb-3">Novo Serviço</h1>
 
-<h4>Servico</h4> @* Título da entidade *@
+<h4>Servico</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @* REMOVIDO: Campo IdServico (PK) *@
+            @* REMOVIDO: Campo IdServico (PK, auto-gerado) *@
             <div class="form-group">
                 <label asp-for="TipoVenda" class="control-label"></label>
                 <input asp-for="TipoVenda" class="form-control" />
@@ -71,15 +71,15 @@
             </div>
             @* REMOVIDO: Campo Id (BaseModel) *@
             @* REMOVIDO: Campo CreatedAt *@
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group mt-3">
+                <input type="submit" value="Criar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="mt-3">
+    <a asp-action="Index" class="btn btn-link">Voltar para a Lista</a>
 </div>
 
 @section Scripts {

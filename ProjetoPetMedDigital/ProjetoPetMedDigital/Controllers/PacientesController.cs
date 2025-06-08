@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ProjetoPetMedDigital.Data;
 using ProjetoPetMedDigital.Models;
 
 namespace ProjetoPetMedDigital.Controllers
@@ -48,7 +47,6 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: Pacientes/Create
         public IActionResult Create()
         {
-            // Ajustado SelectList para exibir o NomeResponsavel do Cliente
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel");
             return View();
         }
@@ -60,11 +58,33 @@ namespace ProjetoPetMedDigital.Controllers
         {
             if (ModelState.IsValid)
             {
+                // *** INÍCIO DA LÓGICA DE NEGÓCIO ***
+
+                // Validação: Peso deve ser positivo
+                if (paciente.Peso <= 0)
+                {
+                    ModelState.AddModelError("Peso", "O peso do animal deve ser um valor positivo.");
+                }
+
+                // Validação: Nome do cachorro não pode ser igual a "Cachorro Genérico" (exemplo)
+                if (paciente.NomeCachorro.Equals("Cachorro Genérico", StringComparison.OrdinalIgnoreCase))
+                {
+                    ModelState.AddModelError("NomeCachorro", "Por favor, digite um nome específico para o animal.");
+                }
+
+                // Se alguma validação customizada falhou, retorne a View
+                if (!ModelState.IsValid)
+                {
+                    ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel", paciente.IdCliente);
+                    return View(paciente);
+                }
+
+                // *** FIM DA LÓGICA DE NEGÓCIO ***
+
                 _context.Add(paciente);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            // Ajustado SelectList para exibir o NomeResponsavel do Cliente
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel", paciente.IdCliente);
             return View(paciente);
         }
@@ -82,7 +102,6 @@ namespace ProjetoPetMedDigital.Controllers
             {
                 return NotFound();
             }
-            // Ajustado SelectList para exibir o NomeResponsavel do Cliente
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel", paciente.IdCliente);
             return View(paciente);
         }
@@ -99,6 +118,21 @@ namespace ProjetoPetMedDigital.Controllers
 
             if (ModelState.IsValid)
             {
+                // *** INÍCIO DA LÓGICA DE NEGÓCIO PARA EDIT ***
+                // Validação: Peso deve ser positivo (igual ao Create)
+                if (paciente.Peso <= 0)
+                {
+                    ModelState.AddModelError("Peso", "O peso do animal deve ser um valor positivo.");
+                }
+
+                // Se alguma validação customizada falhou, retorne a View
+                if (!ModelState.IsValid)
+                {
+                    ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel", paciente.IdCliente);
+                    return View(paciente);
+                }
+                // *** FIM DA LÓGICA DE NEGÓCIO PARA EDIT ***
+
                 try
                 {
                     _context.Update(paciente);
@@ -117,7 +151,6 @@ namespace ProjetoPetMedDigital.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            // Ajustado SelectList para exibir o NomeResponsavel do Cliente
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel", paciente.IdCliente);
             return View(paciente);
         }

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ProjetoPetMedDigital.Data;
 using ProjetoPetMedDigital.Models;
 
 namespace ProjetoPetMedDigital.Controllers
@@ -22,7 +21,6 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: AgendaVeterinarios
         public async Task<IActionResult> Index()
         {
-            // Adicionado Include para carregar as propriedades de navegação
             var petMedContext = _context.AgendaVeterinarios.Include(a => a.Veterinario).Include(a => a.Paciente);
             return View(await petMedContext.ToListAsync());
         }
@@ -37,7 +35,7 @@ namespace ProjetoPetMedDigital.Controllers
 
             var agendaVeterinario = await _context.AgendaVeterinarios
                 .Include(a => a.Veterinario)
-                .Include(a => a.Paciente) // Adicionado Include
+                .Include(a => a.Paciente)
                 .FirstOrDefaultAsync(m => m.IdAgendaVeterinario == id);
             if (agendaVeterinario == null)
             {
@@ -50,7 +48,6 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: AgendaVeterinarios/Create
         public IActionResult Create()
         {
-            // Ajustado SelectList para exibir o NomeVeterinario e NomeCachorro
             ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario");
             ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro");
             return View();
@@ -63,11 +60,35 @@ namespace ProjetoPetMedDigital.Controllers
         {
             if (ModelState.IsValid)
             {
+                // *** INÍCIO DA LÓGICA DE NEGÓCIO ***
+
+                // Validação: Data de início não pode ser no passado
+                if (agendaVeterinario.DataInicio < DateTime.Now)
+                {
+                    ModelState.AddModelError("DataInicio", "A data e hora de início não podem ser no passado.");
+                }
+
+                // Validação: Data de fim não pode ser anterior à data de início
+                if (agendaVeterinario.DataFim < agendaVeterinario.DataInicio)
+                {
+                    ModelState.AddModelError("DataFim", "A data e hora de fim não podem ser anteriores à data de início.");
+                }
+
+
+                // Se alguma validação customizada falhou, retorne a View
+                if (!ModelState.IsValid)
+                {
+                    ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", agendaVeterinario.IdVeterinario);
+                    ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", agendaVeterinario.IdPaciente);
+                    return View(agendaVeterinario);
+                }
+
+                // *** FIM DA LÓGICA DE NEGÓCIO ***
+
                 _context.Add(agendaVeterinario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            // Ajustado SelectList para exibir o NomeVeterinario e NomeCachorro
             ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", agendaVeterinario.IdVeterinario);
             ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", agendaVeterinario.IdPaciente);
             return View(agendaVeterinario);
@@ -86,7 +107,6 @@ namespace ProjetoPetMedDigital.Controllers
             {
                 return NotFound();
             }
-            // Ajustado SelectList para exibir o NomeVeterinario e NomeCachorro
             ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", agendaVeterinario.IdVeterinario);
             ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", agendaVeterinario.IdPaciente);
             return View(agendaVeterinario);
@@ -104,6 +124,28 @@ namespace ProjetoPetMedDigital.Controllers
 
             if (ModelState.IsValid)
             {
+                // *** INÍCIO DA LÓGICA DE NEGÓCIO PARA EDIT ***
+                // Validação: Data de início não pode ser no passado (igual ao Create)
+                if (agendaVeterinario.DataInicio < DateTime.Now)
+                {
+                    ModelState.AddModelError("DataInicio", "A data e hora de início não podem ser no passado.");
+                }
+
+                // Validação: Data de fim não pode ser anterior à data de início (igual ao Create)
+                if (agendaVeterinario.DataFim < agendaVeterinario.DataInicio)
+                {
+                    ModelState.AddModelError("DataFim", "A data e hora de fim não podem ser anteriores à data de início.");
+                }
+
+                // Se alguma validação customizada falhou, retorne a View
+                if (!ModelState.IsValid)
+                {
+                    ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", agendaVeterinario.IdVeterinario);
+                    ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", agendaVeterinario.IdPaciente);
+                    return View(agendaVeterinario);
+                }
+                // *** FIM DA LÓGICA DE NEGÓCIO PARA EDIT ***
+
                 try
                 {
                     _context.Update(agendaVeterinario);
@@ -122,7 +164,6 @@ namespace ProjetoPetMedDigital.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            // Ajustado SelectList para exibir o NomeVeterinario e NomeCachorro
             ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", agendaVeterinario.IdVeterinario);
             ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", agendaVeterinario.IdPaciente);
             return View(agendaVeterinario);
@@ -138,7 +179,7 @@ namespace ProjetoPetMedDigital.Controllers
 
             var agendaVeterinario = await _context.AgendaVeterinarios
                 .Include(a => a.Veterinario)
-                .Include(a => a.Paciente) // Adicionado Include
+                .Include(a => a.Paciente)
                 .FirstOrDefaultAsync(m => m.IdAgendaVeterinario == id);
             if (agendaVeterinario == null)
             {

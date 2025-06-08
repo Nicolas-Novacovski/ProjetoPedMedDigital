@@ -1,19 +1,18 @@
 ﻿@model ProjetoPetMedDigital.Models.ItemEstoque
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Novo Item de Estoque";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h1 class="mb-3">Novo Item de Estoque</h1>
 
 <h4>ItemEstoque</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @* REMOVIDO: Campo IdProduto (PK) *@
             <div class="form-group">
                 <label asp-for="NomeProduto" class="control-label"></label>
                 <input asp-for="NomeProduto" class="form-control" />
@@ -59,21 +58,17 @@
                 <input asp-for="TransacaoDesejada" class="form-control" />
                 <span asp-validation-for="TransacaoDesejada" class="text-danger"></span>
             </div>
-            @* REMOVIDO: Campo Id (BaseModel) *@
-            @* REMOVIDO: Campo CreatedAt *@
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group mt-3">
+                <input type="submit" value="Criar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="mt-3">
+    <a asp-action="Index" class="btn btn-link">Voltar para a Lista</a>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

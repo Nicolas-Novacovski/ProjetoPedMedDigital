@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<ProjetoPetMedDigital.Models.Agendamento>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Agendamentos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1 class="mb-4">Lista de Agendamentos</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Novo Agendamento</a>
 </p>
-<table class="table">
+<table class="table table-hover table-striped"> @* Classes Bootstrap para tabelas *@
     <thead>
         <tr>
             <th>
@@ -28,7 +28,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Veterinario)
             </th>
-            @* REMOVED: Field for Id (BaseModel) *@
+            @* REMOVIDO: Campo Id (BaseModel) *@
             <th>
                 @Html.DisplayNameFor(model => model.CreatedAt)
             </th>
@@ -36,34 +36,33 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DataAgendamento)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.HoraAgendamento)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Observacoes)
-                </td>
-                <td>
-                    @(item.Paciente?.NomeCachorro)
-                </td>
-                <td>
-                    @(item.Veterinario?.NomeVeterinario)
-                </td>
-                @* REMOVIDO: Campo Id (BaseModel) *@
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedAt)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.IdAgendamento">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.IdAgendamento">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.IdAgendamento">Delete</a>
-                </td>
-            </tr>
-        }
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataAgendamento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HoraAgendamento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Observacoes)
+            </td>
+            <td>
+                @(item.Paciente?.NomeCachorro)
+            </td>
+            <td>
+                @(item.Veterinario?.NomeVeterinario)
+            </td>
+            @* REMOVIDO: Campo Id (BaseModel) *@
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdAgendamento" class="btn btn-sm btn-info">Editar</a> | @* Botões estilizados *@
+                <a asp-action="Details" asp-route-id="@item.IdAgendamento" class="btn btn-sm btn-secondary">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdAgendamento" class="btn btn-sm btn-danger">Excluir</a>
+            </td>
+        </tr>
+}
     </tbody>
 </table>

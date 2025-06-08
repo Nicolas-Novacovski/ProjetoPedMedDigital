@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ProjetoPetMedDigital.Data;
-using ProjetoPetMedDigital.Models;
+using ProjetoPetMedDigital.Models; // Certifique-se que este using está correto
 
 namespace ProjetoPetMedDigital.Controllers
 {
@@ -22,7 +21,6 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: Valores
         public async Task<IActionResult> Index()
         {
-            // Adicionado Include para carregar as propriedades de navegação
             var petMedContext = _context.Valores.Include(v => v.Cliente).Include(v => v.Servico);
             return View(await petMedContext.ToListAsync());
         }
@@ -50,9 +48,8 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: Valores/Create
         public IActionResult Create()
         {
-            // Ajustado SelectList para exibir o NomeResponsavel do Cliente e NomeServico
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel");
-            ViewData["IdServico"] = new SelectList(_context.Servico, "IdServico", "NomeServico"); // Assuming Servico.NomeServico is the display property
+            ViewData["IdServico"] = new SelectList(_context.Servico, "IdServico", "NomeServico");
             return View();
         }
 
@@ -63,13 +60,37 @@ namespace ProjetoPetMedDigital.Controllers
         {
             if (ModelState.IsValid)
             {
+                // *** INÍCIO DA LÓGICA DE NEGÓCIO ***
+
+                // Validação: Valores monetários devem ser positivos (além do Range na Model, que já faz isso)
+                if (valor.ValorProcedimento < 0 || valor.ValorReceita < 0 || valor.ValorSaida < 0 || valor.Salario < 0 || valor.CompraProdutos < 0)
+                {
+                    ModelState.AddModelError("", "Nenhum valor monetário pode ser negativo."); // Erro genérico para o modelo
+                }
+
+                // Exemplo: Tipo de Pagamento deve ser um valor específico
+                if (valor.TipoPagamento != "Dinheiro" && valor.TipoPagamento != "Cartao" && valor.TipoPagamento != "Pix")
+                {
+                    ModelState.AddModelError("TipoPagamento", "Tipo de pagamento inválido. Use 'Dinheiro', 'Cartao' ou 'Pix'.");
+                }
+
+
+                // Se alguma validação customizada falhou, retorne a View
+                if (!ModelState.IsValid)
+                {
+                    ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel", valor.IdCliente);
+                    ViewData["IdServico"] = new SelectList(_context.Servico, "IdServico", "NomeServico", valor.Servico?.IdServico);
+                    return View(valor);
+                }
+
+                // *** FIM DA LÓGICA DE NEGÓCIO ***
+
                 _context.Add(valor);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            // Ajustado SelectList para exibir o NomeResponsavel do Cliente e NomeServico
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel", valor.IdCliente);
-            ViewData["IdServico"] = new SelectList(_context.Servico, "IdServico", "NomeServico", valor.Servico?.IdServico); // Use valor.Servico?.IdServico se a FK para Servico for IdServico em Valor
+            ViewData["IdServico"] = new SelectList(_context.Servico, "IdServico", "NomeServico", valor.Servico?.IdServico);
             return View(valor);
         }
 
@@ -86,9 +107,8 @@ namespace ProjetoPetMedDigital.Controllers
             {
                 return NotFound();
             }
-            // Ajustado SelectList para exibir o NomeResponsavel do Cliente e NomeServico
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel", valor.IdCliente);
-            ViewData["IdServico"] = new SelectList(_context.Servico, "IdServico", "NomeServico", valor.Servico?.IdServico); // Use valor.Servico?.IdServico
+            ViewData["IdServico"] = new SelectList(_context.Servico, "IdServico", "NomeServico", valor.Servico?.IdServico);
             return View(valor);
         }
 
@@ -104,6 +124,28 @@ namespace ProjetoPetMedDigital.Controllers
 
             if (ModelState.IsValid)
             {
+                // *** INÍCIO DA LÓGICA DE NEGÓCIO PARA EDIT ***
+                // Validação: Valores monetários devem ser positivos (igual ao Create)
+                if (valor.ValorProcedimento < 0 || valor.ValorReceita < 0 || valor.ValorSaida < 0 || valor.Salario < 0 || valor.CompraProdutos < 0)
+                {
+                    ModelState.AddModelError("", "Nenhum valor monetário pode ser negativo.");
+                }
+
+                // Exemplo: Tipo de Pagamento deve ser um valor específico (igual ao Create)
+                if (valor.TipoPagamento != "Dinheiro" && valor.TipoPagamento != "Cartao" && valor.TipoPagamento != "Pix")
+                {
+                    ModelState.AddModelError("TipoPagamento", "Tipo de pagamento inválido. Use 'Dinheiro', 'Cartao' ou 'Pix'.");
+                }
+
+                // Se alguma validação customizada falhou, retorne a View
+                if (!ModelState.IsValid)
+                {
+                    ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel", valor.IdCliente);
+                    ViewData["IdServico"] = new SelectList(_context.Servico, "IdServico", "NomeServico", valor.Servico?.IdServico);
+                    return View(valor);
+                }
+                // *** FIM DA LÓGICA DE NEGÓCIO PARA EDIT ***
+
                 try
                 {
                     _context.Update(valor);
@@ -122,9 +164,8 @@ namespace ProjetoPetMedDigital.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            // Ajustado SelectList para exibir o NomeResponsavel do Cliente e NomeServico
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel", valor.IdCliente);
-            ViewData["IdServico"] = new SelectList(_context.Servico, "IdServico", "NomeServico", valor.Servico?.IdServico); // Use valor.Servico?.IdServico
+            ViewData["IdServico"] = new SelectList(_context.Servico, "IdServico", "NomeServico", valor.Servico?.IdServico);
             return View(valor);
         }
 

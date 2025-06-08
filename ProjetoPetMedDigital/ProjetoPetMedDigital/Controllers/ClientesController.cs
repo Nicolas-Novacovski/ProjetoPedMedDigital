@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ProjetoPetMedDigital.Data;
 using ProjetoPetMedDigital.Models;
 
 namespace ProjetoPetMedDigital.Controllers
@@ -50,14 +49,40 @@ namespace ProjetoPetMedDigital.Controllers
         }
 
         // POST: Clientes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdCliente,NomeResponsavel,Telefone,Email,CPF,RG,DtNascimento,CEP,Endereco,Bairro,Cidade,Id,CreatedAt")] Cliente cliente)
         {
             if (ModelState.IsValid)
             {
+                // *** INÍCIO DA LÓGICA DE NEGÓCIO ***
+
+                // Validação: Idade mínima (ex: 18 anos)
+                if (cliente.DtNascimento > DateTime.Now.AddYears(-18))
+                {
+                    ModelState.AddModelError("DtNascimento", "O cliente deve ter no mínimo 18 anos.");
+                }
+
+                // Validação: CPF já existe
+                if (await _context.Clientes.AnyAsync(c => c.CPF == cliente.CPF && c.IdCliente != cliente.IdCliente))
+                {
+                    ModelState.AddModelError("CPF", "Este CPF já está cadastrado.");
+                }
+
+                // Validação: Email já existe
+                if (await _context.Clientes.AnyAsync(c => c.Email == cliente.Email && c.IdCliente != cliente.IdCliente))
+                {
+                    ModelState.AddModelError("Email", "Este e-mail já está cadastrado.");
+                }
+
+                // Se alguma validação customizada falhou, retorne a View
+                if (!ModelState.IsValid)
+                {
+                    return View(cliente);
+                }
+
+                // *** FIM DA LÓGICA DE NEGÓCIO ***
+
                 _context.Add(cliente);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -82,8 +107,6 @@ namespace ProjetoPetMedDigital.Controllers
         }
 
         // POST: Clientes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdCliente,NomeResponsavel,Telefone,Email,CPF,RG,DtNascimento,CEP,Endereco,Bairro,Cidade,Id,CreatedAt")] Cliente cliente)
@@ -95,6 +118,32 @@ namespace ProjetoPetMedDigital.Controllers
 
             if (ModelState.IsValid)
             {
+                // *** INÍCIO DA LÓGICA DE NEGÓCIO PARA EDIT ***
+                // Validação: Idade mínima (igual ao Create)
+                if (cliente.DtNascimento > DateTime.Now.AddYears(-18))
+                {
+                    ModelState.AddModelError("DtNascimento", "O cliente deve ter no mínimo 18 anos.");
+                }
+
+                // Validação: CPF já existe (igual ao Create)
+                if (await _context.Clientes.AnyAsync(c => c.CPF == cliente.CPF && c.IdCliente != cliente.IdCliente))
+                {
+                    ModelState.AddModelError("CPF", "Este CPF já está cadastrado.");
+                }
+
+                // Validação: Email já existe (igual ao Create)
+                if (await _context.Clientes.AnyAsync(c => c.Email == cliente.Email && c.IdCliente != cliente.IdCliente))
+                {
+                    ModelState.AddModelError("Email", "Este e-mail já está cadastrado.");
+                }
+
+                // Se alguma validação customizada falhou, retorne a View
+                if (!ModelState.IsValid)
+                {
+                    return View(cliente);
+                }
+                // *** FIM DA LÓGICA DE NEGÓCIO PARA EDIT ***
+
                 try
                 {
                     _context.Update(cliente);
