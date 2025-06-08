@@ -1,0 +1,18 @@
+@{
+    ViewData["Title"] = "Home - Administrador";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="mb-4">Bem-vindo, Administrador!</h1>
+
+<div class="card p-4 shadow-sm">
+    <p>Este é o painel de controle do Administrador. Aqui você terá acesso a:</p>
+    <ul>
+        <li>Gerenciamento completo de usuários e perfis.</li>
+        <li>Configurações do sistema.</li>
+        <li>Relatórios gerais.</li>
+    </ul>
+    <p><a asp-controller="Usuarios" asp-action="Index" class="btn btn-primary mt-2">Gerenciar Usuários</a></p>
+    <p><a asp-controller="CadastroColaboradores" asp-action="Index" class="btn btn-info mt-2">Gerenciar Colaboradores</a></p>
+    @* Adicione mais links específicos do Administrador aqui *@
+</div>

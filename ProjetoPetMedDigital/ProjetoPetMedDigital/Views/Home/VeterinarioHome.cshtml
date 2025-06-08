@@ -1,0 +1,19 @@
+@{
+    ViewData["Title"] = "Home - Veterinário";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="mb-4">Bem-vindo, Veterinário(a)!</h1>
+
+<div class="card p-4 shadow-sm">
+    <p>Este é o seu painel de controle. Aqui você terá acesso a:</p>
+    <ul>
+        <li>Sua agenda de consultas.</li>
+        <li>Prontuários de pacientes.</li>
+        <li>Registros de vacinas e procedimentos.</li>
+    </ul>
+    <p><a asp-controller="Agendamentos" asp-action="Index" class="btn btn-primary mt-2">Ver Agendamentos</a></p>
+    <p><a asp-controller="Prontuarios" asp-action="Index" class="btn btn-info mt-2">Ver Prontuários</a></p>
+    <p><a asp-controller="Pacientes" asp-action="Index" class="btn btn-secondary mt-2">Gerenciar Pacientes</a></p>
+    @* Adicione mais links específicos do Veterinário aqui *@
+</div>

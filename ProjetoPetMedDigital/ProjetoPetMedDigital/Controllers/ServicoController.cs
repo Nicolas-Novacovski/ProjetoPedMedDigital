@@ -11,11 +11,11 @@ using Microsoft.AspNetCore.Authorization; // NECESSÁRIO para [Authorize]
 namespace ProjetoPetMedDigital.Controllers
 {
     [Authorize(Roles = "Administrador,Secretaria")] // Exemplo: Apenas Admin e Secretaria podem gerenciar serviços
-    public class ServicosController : Controller
+    public class ServicoController : Controller
     {
         private readonly PetMedContext _context;
 
-        public ServicosController(PetMedContext context)
+        public ServicoController(PetMedContext context)
         {
             _context = context;
         }
