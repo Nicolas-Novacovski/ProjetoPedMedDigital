@@ -1,22 +1,20 @@
-using Microsoft.AspNetCore.Identity; // NECESSÁRIO para IdentityUser, IdentityRole
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection; // NECESSÁRIO para AddDefaultIdentity
-using ProjetoPetMedDigital.Models; // NECESSÁRIO para PetMedContext
-
-// Certifique-se de que não há nenhum outro 'using' para "PetMed_Digital.Models" ou duplicado aqui.
+using Microsoft.Extensions.DependencyInjection;
+using ProjetoPetMedDigital.Models; // Certifique-se de que este using está correto para o DbInitializer
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ⬇️ Configura o DbContext para o Entity Framework
+// Adiciona o contexto do banco de dados
 builder.Services.AddDbContext<PetMedContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// ⬇️ Configura o ASP.NET Core Identity
+// Configura o Identity para autenticação
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddRoles<IdentityRole>() // Permite usar perfis (Roles)
-    .AddEntityFrameworkStores<PetMedContext>(); // Conecta o Identity ao seu PetMedContext
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<PetMedContext>();
 
-// Add services to the container. (Adiciona suporte a Controllers com Views)
+// Adiciona suporte a controladores MVC com views
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -29,20 +27,36 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection(); // Redireciona requisições HTTP para HTTPS
-app.UseStaticFiles();      // Permite servir arquivos estáticos (CSS, JS, imagens)
+app.UseStaticFiles();     // Permite servir arquivos estáticos (CSS, JS, imagens)
 
-app.UseRouting();          // Habilita o roteamento
+app.UseRouting();         // Habilita o roteamento
 
-app.UseAuthentication();   // Habilita a autenticação (necessário para o Identity)
-app.UseAuthorization();    // Habilita a autorização
+app.UseAuthentication();  // Habilita a autenticação (necessário para o Identity)
+app.UseAuthorization();   // Habilita a autorização
 
-// Mapeamento da rota padrão (AGORA PARA A TELA DE LOGIN DO IDENTITY)
+// ***** RESTAURADO: Rota padrão para Home/Index *****
+// Esta rota é a rota padrão para seus controladores MVC.
+// Após o login, o usuário provavelmente será redirecionado para cá.
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Identity}/{action=Account/Login}/{id?}"); // <-- ALTERADO AQUI
+    pattern: "{controller=Home}/{action=Index}/{id?}"); // Voltar para Home/Index como padrão
 
 // Mapeia as Razor Pages (essencial para o Identity UI)
 app.MapRazorPages();
+
+// ***** ADIÇÃO CRÍTICA: Redireciona a raiz ("/") para a página de login do Identity *****
+// Isso garante que ao iniciar a aplicação, a primeira tela seja a de login.
+app.MapGet("/", context => {
+    // Redireciona para o caminho padrão da página de login do Identity.
+    // O caminho para as páginas do Identity UI é sempre /Identity/Account/Login
+    context.Response.Redirect("/Identity/Account/Login");
+    return Task.CompletedTask; // Retorna um Task.CompletedTask para indicar que a operação assíncrona foi concluída.
+});
+// ***********************************************************************************
+
+
+// Chamada ao inicializador de banco de dados para criar Roles e um Admin padrão
+// Este bloco deve estar APÓS app.Build() e ANTES de app.Run()
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -77,6 +91,12 @@ using (var scope = app.Services.CreateScope())
             await userManager.AddToRoleAsync(adminUser, "Administrador");
         }
     }
+
+    // Se você tinha um DbInitializer.Initialize(scope.ServiceProvider) antes,
+    // pode ter sido substituído ou integrado aqui.
+    // Se o seu DbInitializer tinha outras lógicas, certifique-se de que ainda são executadas.
+    // Exemplo:
+    // await DbInitializer.Initialize(scope.ServiceProvider); 
 }
 
 app.Run();
