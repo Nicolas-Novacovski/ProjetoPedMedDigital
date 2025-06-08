@@ -7,13 +7,12 @@
 
 <h1 class="mb-3">Novo Serviço</h1>
 
-<h4>Servico</h4>
+<h4>Servico</h4> 
 <hr />
 <div class="row">
     <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @* REMOVIDO: Campo IdServico (PK, auto-gerado) *@
             <div class="form-group">
                 <label asp-for="TipoVenda" class="control-label"></label>
                 <input asp-for="TipoVenda" class="form-control" />
@@ -69,8 +68,7 @@
                 <select asp-for="IdValor" class ="form-control" asp-items="ViewBag.IdValor"></select>
                 <span asp-validation-for="IdValor" class="text-danger"></span>
             </div>
-            @* REMOVIDO: Campo Id (BaseModel) *@
-            @* REMOVIDO: Campo CreatedAt *@
+
             <div class="form-group mt-3">
                 <input type="submit" value="Criar" class="btn btn-primary" />
             </div>
