@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+
 using ProjetoPetMedDigital.Models;
+using Microsoft.AspNetCore.Authorization; // NECESSÁRIO
 
 namespace ProjetoPetMedDigital.Controllers
 {
+    [Authorize(Roles = "Administrador,Secretaria")] // Apenas Admin e Secretaria podem gerenciar estoque
     public class ItemEstoquesController : Controller
     {
         private readonly PetMedContext _context;
@@ -49,7 +52,7 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: ItemEstoques/Create
         public IActionResult Create()
         {
-            ViewData["IdProduto"] = new SelectList(_context.Vacinas, "IdVacina", "NomeVacina"); // Exemplo se ItemEstoque tiver relação 1:1 com Vacina, etc.
+            // Se precisar de dropdowns, adicione aqui (ex: se Vacina, Procedimento ou Servico tivessem dropdowns)
             return View();
         }
 
@@ -120,13 +123,13 @@ namespace ProjetoPetMedDigital.Controllers
             if (ModelState.IsValid)
             {
                 // *** INÍCIO DA LÓGICA DE NEGÓCIO PARA EDIT ***
-                // Validação: Data de validade não pode ser no passado (igual ao Create)
+                // Validação: Data de validade não pode ser no passado (se fornecida)
                 if (itemEstoque.DataValidade.HasValue && itemEstoque.DataValidade.Value.Date < DateTime.Today)
                 {
                     ModelState.AddModelError("DataValidade", "A data de validade não pode ser no passado.");
                 }
 
-                // Validação: Preço de venda não pode ser menor que preço de custo (igual ao Create)
+                // Validação: Preço de venda não pode ser menor que preço de custo
                 if (itemEstoque.PrecoVenda.HasValue && itemEstoque.PrecoCusto.HasValue &&
                     itemEstoque.PrecoVenda.Value < itemEstoque.PrecoCusto.Value)
                 {
@@ -161,7 +164,8 @@ namespace ProjetoPetMedDigital.Controllers
             return View(itemEstoque);
         }
 
-        // GET: ItemEstoques/Delete/5
+        // GET: ItemEstoques/Delete/5 (Apenas Administrador)
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -182,9 +186,10 @@ namespace ProjetoPetMedDigital.Controllers
             return View(itemEstoque);
         }
 
-        // POST: ItemEstoques/Delete/5
+        // POST: ItemEstoques/Delete/5 (Apenas Administrador)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var itemEstoque = await _context.ItensEstoque.FindAsync(id);

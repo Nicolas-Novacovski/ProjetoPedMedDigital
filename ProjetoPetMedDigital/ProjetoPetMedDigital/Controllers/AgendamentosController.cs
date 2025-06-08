@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjetoPetMedDigital.Models;
+using Microsoft.AspNetCore.Authorization; // NECESSÁRIO
 
 namespace ProjetoPetMedDigital.Controllers
 {
+    [Authorize(Roles = "Administrador,Secretaria,Veterinario")] // Admin e Secretaria podem tudo, Veterinario talvez só possa ver a Index e Details
     public class AgendamentosController : Controller
     {
         private readonly PetMedContext _context;
@@ -45,7 +47,8 @@ namespace ProjetoPetMedDigital.Controllers
             return View(agendamento);
         }
 
-        // GET: Agendamentos/Create
+        // GET: Agendamentos/Create (Apenas Admin e Secretaria)
+        [Authorize(Roles = "Administrador,Secretaria")]
         public IActionResult Create()
         {
             ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro");
@@ -53,43 +56,26 @@ namespace ProjetoPetMedDigital.Controllers
             return View();
         }
 
-        // POST: Agendamentos/Create
+        // POST: Agendamentos/Create (Apenas Admin e Secretaria)
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador,Secretaria")]
         public async Task<IActionResult> Create([Bind("IdAgendamento,IdPaciente,IdVeterinario,DataAgendamento,HoraAgendamento,Observacoes,Id,CreatedAt")] Agendamento agendamento)
         {
             if (ModelState.IsValid)
             {
-                // *** INÍCIO DA LÓGICA DE NEGÓCIO ***
-
-                // Validação: Data e Hora do agendamento não podem ser no passado
-                DateTime dataHoraAgendamento = agendamento.DataAgendamento.Date + agendamento.HoraAgendamento.TimeOfDay;
-                if (dataHoraAgendamento < DateTime.Now)
-                {
-                    ModelState.AddModelError("DataAgendamento", "A data e hora do agendamento não podem ser no passado.");
-                }
-
-                if (!ModelState.IsValid)
-                {
-                    // Re-popule os ViewDatas para dropdowns antes de retornar a View
-                    ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", agendamento.IdPaciente);
-                    ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", agendamento.IdVeterinario);
-                    return View(agendamento);
-                }
-
-                // *** FIM DA LÓGICA DE NEGÓCIO ***
-
+                // ... (Sua lógica de negócio) ...
                 _context.Add(agendamento);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            // Se ModelState.IsValid foi falso inicialmente (por Data Annotations), re-popule ViewDatas
             ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", agendamento.IdPaciente);
             ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", agendamento.IdVeterinario);
             return View(agendamento);
         }
 
-        // GET: Agendamentos/Edit/5
+        // GET: Agendamentos/Edit/5 (Apenas Admin e Secretaria)
+        [Authorize(Roles = "Administrador,Secretaria")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -107,9 +93,10 @@ namespace ProjetoPetMedDigital.Controllers
             return View(agendamento);
         }
 
-        // POST: Agendamentos/Edit/5
+        // POST: Agendamentos/Edit/5 (Apenas Admin e Secretaria)
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador,Secretaria")]
         public async Task<IActionResult> Edit(int id, [Bind("IdAgendamento,IdPaciente,IdVeterinario,DataAgendamento,HoraAgendamento,Observacoes,Id,CreatedAt")] Agendamento agendamento)
         {
             if (id != agendamento.IdAgendamento)
@@ -119,23 +106,7 @@ namespace ProjetoPetMedDigital.Controllers
 
             if (ModelState.IsValid)
             {
-                // *** INÍCIO DA LÓGICA DE NEGÓCIO PARA EDIT ***
-                // Validação: Data e Hora do agendamento não podem ser no passado (igual ao Create)
-                DateTime dataHoraAgendamento = agendamento.DataAgendamento.Date + agendamento.HoraAgendamento.TimeOfDay;
-                if (dataHoraAgendamento < DateTime.Now)
-                {
-                    ModelState.AddModelError("DataAgendamento", "A data e hora do agendamento não podem ser no passado.");
-                }
-
-                // Se alguma validação customizada falhou, retorne a View
-                if (!ModelState.IsValid)
-                {
-                    ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro", agendamento.IdPaciente);
-                    ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario", agendamento.IdVeterinario);
-                    return View(agendamento);
-                }
-                // *** FIM DA LÓGICA DE NEGÓCIO PARA EDIT ***
-
+                // ... (Sua lógica de negócio) ...
                 try
                 {
                     _context.Update(agendamento);
@@ -159,7 +130,8 @@ namespace ProjetoPetMedDigital.Controllers
             return View(agendamento);
         }
 
-        // GET: Agendamentos/Delete/5
+        // GET: Agendamentos/Delete/5 (Apenas Administrador)
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -179,9 +151,10 @@ namespace ProjetoPetMedDigital.Controllers
             return View(agendamento);
         }
 
-        // POST: Agendamentos/Delete/5
+        // POST: Agendamentos/Delete/5 (Apenas Administrador)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var agendamento = await _context.Agendamentos.FindAsync(id);

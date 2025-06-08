@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+
 using ProjetoPetMedDigital.Models;
+using Microsoft.AspNetCore.Authorization; // NECESSÁRIO
 
 namespace ProjetoPetMedDigital.Controllers
 {
+    [Authorize(Roles = "Administrador,Veterinario,Secretaria")] // Admin, Vet e Secretaria podem gerenciar pacientes
     public class PacientesController : Controller
     {
         private readonly PetMedContext _context;
@@ -155,7 +158,8 @@ namespace ProjetoPetMedDigital.Controllers
             return View(paciente);
         }
 
-        // GET: Pacientes/Delete/5
+        // GET: Pacientes/Delete/5 (Apenas Administrador)
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -174,9 +178,10 @@ namespace ProjetoPetMedDigital.Controllers
             return View(paciente);
         }
 
-        // POST: Pacientes/Delete/5
+        // POST: Pacientes/Delete/5 (Apenas Administrador)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var paciente = await _context.Pacientes.FindAsync(id);

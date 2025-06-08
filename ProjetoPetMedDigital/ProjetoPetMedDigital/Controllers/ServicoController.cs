@@ -5,29 +5,29 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ProjetoPetMedDigital.Models;
+using ProjetoPetMedDigital.Models; // Certifique-se que este using está correto
+using Microsoft.AspNetCore.Authorization; // NECESSÁRIO para [Authorize]
 
 namespace ProjetoPetMedDigital.Controllers
 {
-
-    public class ServicoController : Controller
+    [Authorize(Roles = "Administrador,Secretaria")] // Exemplo: Apenas Admin e Secretaria podem gerenciar serviços
+    public class ServicosController : Controller
     {
         private readonly PetMedContext _context;
 
-        public ServicoController(PetMedContext context)
+        public ServicosController(PetMedContext context)
         {
             _context = context;
         }
 
-        // GET: Servico
+        // GET: Servicos
         public async Task<IActionResult> Index()
         {
-            // DbSet é _context.Servico (singular, como definido em PetMedContext)
             var petMedContext = _context.Servico.Include(s => s.Agendamento).Include(s => s.ItemEstoque).Include(s => s.Valor).Include(s => s.Veterinario);
             return View(await petMedContext.ToListAsync());
         }
 
-        // GET: Servico/Details/5
+        // GET: Servicos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,8 +35,7 @@ namespace ProjetoPetMedDigital.Controllers
                 return NotFound();
             }
 
-            // Variável local 'servico' (minúscula)
-            var servico = await _context.Servico // DbSet é _context.Servico
+            var servico = await _context.Servico
                 .Include(s => s.Agendamento)
                 .Include(s => s.ItemEstoque)
                 .Include(s => s.Valor)
@@ -50,10 +49,9 @@ namespace ProjetoPetMedDigital.Controllers
             return View(servico);
         }
 
-        // GET: Servico/Create
+        // GET: Servicos/Create
         public IActionResult Create()
         {
-            // Ajustado SelectList para exibir nomes em vez de IDs
             ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento");
             ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto");
             ViewData["IdValor"] = new SelectList(_context.Valores, "IdValor", "ValorProcedimento");
@@ -61,10 +59,9 @@ namespace ProjetoPetMedDigital.Controllers
             return View();
         }
 
-        // POST: Servico/Create
+        // POST: Servicos/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        // Parâmetro do método é 'servico' (minúscula)
         public async Task<IActionResult> Create([Bind("IdServico,TipoVenda,NomeServico,IdVeterinario,Data,Hora,Status,PrecoVenda,Descricao,IdAgendamento,IdProduto,IdValor,Id,CreatedAt")] Servico servico)
         {
             if (ModelState.IsValid)
@@ -96,7 +93,7 @@ namespace ProjetoPetMedDigital.Controllers
 
                 // *** FIM DA LÓGICA DE NEGÓCIO ***
 
-                _context.Servico.Add(servico); // DbSet é _context.Servico
+                _context.Servico.Add(servico);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -107,7 +104,7 @@ namespace ProjetoPetMedDigital.Controllers
             return View(servico);
         }
 
-        // GET: Servico/Edit/5
+        // GET: Servicos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -115,7 +112,7 @@ namespace ProjetoPetMedDigital.Controllers
                 return NotFound();
             }
 
-            var servico = await _context.Servico.FindAsync(id); // DbSet é _context.Servico
+            var servico = await _context.Servico.FindAsync(id);
             if (servico == null)
             {
                 return NotFound();
@@ -127,10 +124,9 @@ namespace ProjetoPetMedDigital.Controllers
             return View(servico);
         }
 
-        // POST: Servico/Edit/5
+        // POST: Servicos/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        // Parâmetro do método é 'servico' (minúscula)
         public async Task<IActionResult> Edit(int id, [Bind("IdServico,TipoVenda,NomeServico,IdVeterinario,Data,Hora,Status,PrecoVenda,Descricao,IdAgendamento,IdProduto,IdValor,Id,CreatedAt")] Servico servico)
         {
             if (id != servico.IdServico)
@@ -167,7 +163,7 @@ namespace ProjetoPetMedDigital.Controllers
 
                 try
                 {
-                    _context.Servico.Update(servico); // DbSet é _context.Servico
+                    _context.Servico.Update(servico);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -190,7 +186,8 @@ namespace ProjetoPetMedDigital.Controllers
             return View(servico);
         }
 
-        // GET: Servico/Delete/5
+        // GET: Servicos/Delete/5 (Apenas Administrador)
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -198,7 +195,7 @@ namespace ProjetoPetMedDigital.Controllers
                 return NotFound();
             }
 
-            var servico = await _context.Servico // DbSet é _context.Servico
+            var servico = await _context.Servico
                 .Include(s => s.Agendamento)
                 .Include(s => s.ItemEstoque)
                 .Include(s => s.Valor)
@@ -212,12 +209,13 @@ namespace ProjetoPetMedDigital.Controllers
             return View(servico);
         }
 
-        // POST: Servico/Delete/5
+        // POST: Servicos/Delete/5 (Apenas Administrador)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var servico = await _context.Servico.FindAsync(id); // DbSet é _context.Servico
+            var servico = await _context.Servico.FindAsync(id);
             if (servico != null)
             {
                 _context.Servico.Remove(servico);
@@ -229,7 +227,7 @@ namespace ProjetoPetMedDigital.Controllers
 
         private bool ServicoExists(int id)
         {
-            return _context.Servico.Any(e => e.IdServico == id); // DbSet é _context.Servico
+            return _context.Servico.Any(e => e.IdServico == id);
         }
     }
 }

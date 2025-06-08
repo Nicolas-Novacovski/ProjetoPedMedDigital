@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+
 using ProjetoPetMedDigital.Models;
+using Microsoft.AspNetCore.Authorization; // NECESSÁRIO
 
 namespace ProjetoPetMedDigital.Controllers
 {
+    [Authorize(Roles = "Administrador,Veterinario")] // Admin e Veterinario podem gerenciar prontuários
     public class ProntuariosController : Controller
     {
         private readonly PetMedContext _context;
@@ -49,9 +52,9 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: Prontuarios/Create
         public IActionResult Create()
         {
-            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento");
-            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro");
-            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario");
+            ViewData["IdAgendamento"] = new SelectList(_context.Agendamentos, "IdAgendamento", "DataAgendamento"); // Exibir a data do agendamento
+            ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "NomeCachorro"); // Exibir o nome do paciente
+            ViewData["IdVeterinario"] = new SelectList(_context.Veterinarios, "IdVeterinario", "NomeVeterinario"); // Exibir o nome do veterinário
             return View();
         }
 
@@ -175,7 +178,8 @@ namespace ProjetoPetMedDigital.Controllers
             return View(prontuario);
         }
 
-        // GET: Prontuarios/Delete/5
+        // GET: Prontuarios/Delete/5 (Apenas Administrador)
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -196,9 +200,10 @@ namespace ProjetoPetMedDigital.Controllers
             return View(prontuario);
         }
 
-        // POST: Prontuarios/Delete/5
+        // POST: Prontuarios/Delete/5 (Apenas Administrador)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var prontuario = await _context.Prontuarios.FindAsync(id);

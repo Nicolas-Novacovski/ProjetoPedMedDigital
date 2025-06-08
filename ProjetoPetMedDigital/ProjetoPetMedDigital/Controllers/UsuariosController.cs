@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity; // NECESSÁRIO
-using ProjetoPetMedDigital.Models; // NECESSÁRIO para outros modelos como CadastroColaborador
+using Microsoft.AspNetCore.Authorization; // NECESSÁRIO
+
+using ProjetoPetMedDigital.Models;
 
 namespace ProjetoPetMedDigital.Controllers
 {
+    [Authorize(Roles = "Administrador")] // Apenas Administradores podem gerenciar usuários
     public class UsuariosController : Controller
     {
         private readonly PetMedContext _context;
@@ -26,8 +29,8 @@ namespace ProjetoPetMedDigital.Controllers
         {
             var usuariosComColaboradores = await _context.Users
                 .GroupJoin(_context.CadastroColaboradores,
-                    user => user.Id, // PK do IdentityUser
-                    colaborador => colaborador.IdentityUserId, // FK em CadastroColaborador
+                    user => user.Id,
+                    colaborador => colaborador.IdentityUserId,
                     (user, colaboradores) => new { User = user, Colaborador = colaboradores.FirstOrDefault() })
                 .ToListAsync();
 
@@ -54,10 +57,11 @@ namespace ProjetoPetMedDigital.Controllers
             return View(identityUser);
         }
 
-        // Redireciona para as páginas Identity para Create/Edit/Delete
+        // Redireciona para as páginas Identity para Create/Edit
         public IActionResult Create() { return Redirect("/Identity/Account/Register"); }
-        public async Task<IActionResult> Edit(string id) { return Redirect("/Identity/Account/Manage"); } // Removed unused parameter 'id' warning
+        public async Task<IActionResult> Edit(string id) { return Redirect("/Identity/Account/Manage"); }
 
+        // GET: Usuarios/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null) { return NotFound(); }
@@ -70,6 +74,7 @@ namespace ProjetoPetMedDigital.Controllers
             return View(identityUser);
         }
 
+        // POST: Usuarios/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
@@ -84,6 +89,7 @@ namespace ProjetoPetMedDigital.Controllers
                     return View(identityUser);
                 }
             }
+
             return RedirectToAction(nameof(Index));
         }
 

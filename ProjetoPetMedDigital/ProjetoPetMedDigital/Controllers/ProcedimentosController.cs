@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+
 using ProjetoPetMedDigital.Models;
+using Microsoft.AspNetCore.Authorization; // NECESSÁRIO
 
 namespace ProjetoPetMedDigital.Controllers
 {
+    [Authorize(Roles = "Administrador,Veterinario")] // Apenas Admin e Veterinario podem gerenciar procedimentos
     public class ProcedimentosController : Controller
     {
         private readonly PetMedContext _context;
@@ -47,7 +50,7 @@ namespace ProjetoPetMedDigital.Controllers
         // GET: Procedimentos/Create
         public IActionResult Create()
         {
-            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto"); // Exibe o nome do produto
+            ViewData["IdProduto"] = new SelectList(_context.ItensEstoque, "IdProduto", "NomeProduto");
             return View();
         }
 
@@ -118,7 +121,14 @@ namespace ProjetoPetMedDigital.Controllers
                 var itemEstoqueAssociado = await _context.ItensEstoque.FirstOrDefaultAsync(i => i.IdProduto == procedimento.IdProduto);
                 if (itemEstoqueAssociado != null && itemEstoqueAssociado.DataValidade.HasValue && itemEstoqueAssociado.DataValidade.Value.Date < DateTime.Today)
                 {
-                    ModelState.AddModelError("IdProduto", "O produto associado a este procedimento está vencido.");
+                    ModelState.AddModelError("DataValidade", "A data de validade não pode ser no passado.");
+                }
+
+                // Validação: Preço de venda não pode ser menor que preço de custo
+                if (itemEstoqueAssociado != null && itemEstoqueAssociado.PrecoVenda.HasValue && itemEstoqueAssociado.PrecoCusto.HasValue &&
+                    itemEstoqueAssociado.PrecoVenda.Value < itemEstoqueAssociado.PrecoCusto.Value)
+                {
+                    ModelState.AddModelError("PrecoVenda", "O preço de venda não pode ser menor que o preço de custo do produto associado.");
                 }
 
                 // Se alguma validação customizada falhou, retorne a View
@@ -151,7 +161,8 @@ namespace ProjetoPetMedDigital.Controllers
             return View(procedimento);
         }
 
-        // GET: Procedimentos/Delete/5
+        // GET: Procedimentos/Delete/5 (Apenas Administrador)
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -170,9 +181,10 @@ namespace ProjetoPetMedDigital.Controllers
             return View(procedimento);
         }
 
-        // POST: Procedimentos/Delete/5
+        // POST: Procedimentos/Delete/5 (Apenas Administrador)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var procedimento = await _context.Procedimentos.FindAsync(id);

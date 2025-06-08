@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ProjetoPetMedDigital.Models; // Certifique-se que este using está correto
+
+using ProjetoPetMedDigital.Models;
+using Microsoft.AspNetCore.Authorization; // NECESSÁRIO
 
 namespace ProjetoPetMedDigital.Controllers
 {
+    [Authorize(Roles = "Administrador,Veterinario")] // Apenas Admin e Veterinario podem gerenciar vacinas
     public class VacinasController : Controller
     {
         private readonly PetMedContext _context;
@@ -64,7 +67,7 @@ namespace ProjetoPetMedDigital.Controllers
 
                 // Exemplo: Verificar se há estoque suficiente do produto
                 var itemEstoque = await _context.ItensEstoque.FirstOrDefaultAsync(i => i.IdProduto == vacina.IdProduto);
-                if (itemEstoque == null || (itemEstoque.Quantidade.HasValue && itemEstoque.Quantidade.Value <= 0)) // Check for null quantity
+                if (itemEstoque == null || (itemEstoque.Quantidade.HasValue && itemEstoque.Quantidade.Value <= 0))
                 {
                     ModelState.AddModelError("IdProduto", "Produto sem estoque ou não encontrado.");
                 }
@@ -158,7 +161,8 @@ namespace ProjetoPetMedDigital.Controllers
             return View(vacina);
         }
 
-        // GET: Vacinas/Delete/5
+        // GET: Vacinas/Delete/5 (Apenas Administrador)
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -178,9 +182,10 @@ namespace ProjetoPetMedDigital.Controllers
             return View(vacina);
         }
 
-        // POST: Vacinas/Delete/5
+        // POST: Vacinas/Delete/5 (Apenas Administrador)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var vacina = await _context.Vacinas.FindAsync(id);

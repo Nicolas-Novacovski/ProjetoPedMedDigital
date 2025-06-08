@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using ProjetoPetMedDigital.Models; // Mantenha este using se usar outros modelos, remova se não.
+using ProjetoPetMedDigital.Models;
+using Microsoft.AspNetCore.Authorization; // NECESSÁRIO para [Authorize]
 
 namespace ProjetoPetMedDigital.Controllers
 {
+    // [Authorize] // Se você quiser que o usuário precise estar logado para ver a Home
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -22,22 +24,26 @@ namespace ProjetoPetMedDigital.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous] // Permite acesso mesmo sem estar logado
         public IActionResult Login()
         {
             return Redirect("/Identity/Account/Login");
         }
 
+        [AllowAnonymous] // Permite acesso mesmo sem estar logado
         public IActionResult Index()
         {
             return View();
         }
 
+        [AllowAnonymous] // Permite acesso mesmo sem estar logado
         public IActionResult Privacy()
         {
             return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [AllowAnonymous] // Se a página de erro deve ser acessível publicamente
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
