@@ -12,7 +12,7 @@ using ProjetoPetMedDigital.Models;
 namespace ProjetoPetMedDigital.Migrations
 {
     [DbContext(typeof(PetMedContext))]
-    [Migration("20250608144229_InitialProjectSchema")]
+    [Migration("20250609223611_InitialProjectSchema")]
     partial class InitialProjectSchema
     {
         /// <inheritdoc />
