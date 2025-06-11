@@ -1,0 +1,49 @@
+﻿@* ProjetoPetMedDigital/ProjetoPetMedDigital/Views/DadosFakes/Index.cshtml *@
+
+@{
+    ViewData["Title"] = "Gerar Dados Fakes";
+}
+
+<div class="container mt-5">
+    <h2>Gerar Dados Fakes para Teste</h2>
+
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["MensagemSucesso"]
+        </div>
+    }
+
+    @if (TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["MensagemErro"]
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Opções de Geração</h5>
+            <form asp-controller="DadosFakes" asp-action="GerarDados" method="post">
+                <div class="mb-3">
+                    <label for="quantidadeClientes" class="form-label">Quantidade de Clientes a Gerar:</label>
+                    <input type="number" id="quantidadeClientes" name="quantidadeClientes" class="form-control" value="10" min="1" required />
+                </div>
+                <div class="mb-3">
+                    <label for="pacientesPorCliente" class="form-label">Pacientes por Cliente:</label>
+                    <input type="number" id="pacientesPorCliente" name="pacientesPorCliente" class="form-control" value="2" min="1" required />
+                </div>
+                <button type="submit" class="btn btn-primary">Gerar Dados Fakes</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <h3>Observações:</h3>
+        <ul>
+            <li>Esta funcionalidade é para propósitos de **desenvolvimento e teste**.</li>
+            <li>Os dados gerados serão persistidos no seu banco de dados.</li>
+            <li>O código acima **não limpa os dados existentes** automaticamente, para evitar perda acidental. Se você quiser limpar antes de gerar, pode descomentar as linhas no controller.</li>
+        </ul>
+    </div>
+</div>
