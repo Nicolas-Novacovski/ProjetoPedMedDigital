@@ -20,30 +20,66 @@
             @TempData["MensagemErro"]
         </div>
     }
+    
+    @if (TempData["MensagemAlerta"] != null)
+    {
+        <div class="alert alert-warning" role="alert">
+            @TempData["MensagemAlerta"]
+        </div>
+    }
 
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Opções de Geração</h5>
             <form asp-controller="DadosFakes" asp-action="GerarDados" method="post">
-                <div class="mb-3">
-                    <label for="quantidadeClientes" class="form-label">Quantidade de Clientes a Gerar:</label>
-                    <input type="number" id="quantidadeClientes" name="quantidadeClientes" class="form-control" value="10" min="1" required />
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="quantidadeClientes" class="form-label">Clientes:</label>
+                        <input type="number" id="quantidadeClientes" name="quantidadeClientes" class="form-control" value="100" min="1" required />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="pacientesPorCliente" class="form-label">Pacientes por Cliente:</label>
+                        <input type="number" id="pacientesPorCliente" name="pacientesPorCliente" class="form-control" value="3" min="1" required />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="quantidadeColaboradores" class="form-label">Colaboradores (e IdentityUsers):</label>
+                        <input type="number" id="quantidadeColaboradores" name="quantidadeColaboradores" class="form-control" value="20" min="1" required />
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="pacientesPorCliente" class="form-label">Pacientes por Cliente:</label>
-                    <input type="number" id="pacientesPorCliente" name="pacientesPorCliente" class="form-control" value="2" min="1" required />
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="quantidadeVeterinarios" class="form-label">Veterinários:</label>
+                        <input type="number" id="quantidadeVeterinarios" name="quantidadeVeterinarios" class="form-control" value="10" min="1" required />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="quantidadeServicos" class="form-label">Serviços:</label>
+                        <input type="number" id="quantidadeServicos" name="quantidadeServicos" class="form-control" value="20" min="1" required />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="quantidadeProcedimentos" class="form-label">Procedimentos:</label>
+                        <input type="number" id="quantidadeProcedimentos" name="quantidadeProcedimentos" class="form-control" value="30" min="1" required />
+                    </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="quantidadeItensEstoque" class="form-label">Itens de Estoque:</label>
+                        <input type="number" id="quantidadeItensEstoque" name="quantidadeItensEstoque" class="form-control" value="50" min="1" required />
+                    </div>
+                </div>
+                
                 <button type="submit" class="btn btn-primary">Gerar Dados Fakes</button>
             </form>
         </div>
     </div>
 
     <div class="mt-4">
-        <h3>Observações:</h3>
+        <h3>Observações Importantes:</h3>
         <ul>
             <li>Esta funcionalidade é para propósitos de **desenvolvimento e teste**.</li>
             <li>Os dados gerados serão persistidos no seu banco de dados.</li>
-            <li>O código acima **não limpa os dados existentes** automaticamente, para evitar perda acidental. Se você quiser limpar antes de gerar, pode descomentar as linhas no controller.</li>
+            <li>A limpeza de dados existentes está **comentada** no código do controller. Se você precisa limpar dados antes de gerar novos, **descomente a chamada `await LimparDadosExistentes();` no controller, mas use com EXTREMA CAUTELA!**</li>
+            <li>Certifique-se de que seu banco de dados esteja atualizado com as migrações mais recentes para que todas as tabelas existam.</li>
+            <li>Foi adicionada a geração de `IdentityUser` para cada `CadastroColaborador` e uma senha padrão de `Senha@123`.</li>
         </ul>
     </div>
 </div>

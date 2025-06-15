@@ -8,7 +8,7 @@ namespace ProjetoPetMedDigital.Models // NAMESPACE PADRONIZADO
     [Table("Paciente")]
     public class Paciente : BaseModel
     {
-        private static readonly List<Prontuario> prontuarios = [];
+        // REMOVIDA: private static readonly List<Prontuario> prontuarios = []; // Esta linha foi removida!
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -53,7 +53,7 @@ namespace ProjetoPetMedDigital.Models // NAMESPACE PADRONIZADO
         // Propriedades de navegação
         public Cliente? Cliente { get; set; }
         public List<Agendamento> Agendamentos { get; set; } = new List<Agendamento>();
-        public List<Prontuario> Prontuarios { get; set; } = prontuarios;
+        public List<Prontuario> Prontuarios { get; set; } = new List<Prontuario>(); // CORRIGIDO: Agora é uma nova lista para cada instância!
         public List<Vacina> Vacinas { get; set; } = new List<Vacina>();
     }
 }
