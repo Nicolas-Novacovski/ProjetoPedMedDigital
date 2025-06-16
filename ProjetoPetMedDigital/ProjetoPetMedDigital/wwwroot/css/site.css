@@ -1,6 +1,6 @@
 /* Variáveis CSS para Cores */
 :root {
-    --primary-color: #FF8C42; /* Laranja vibrante para navbar, botões principais */
+    --primary-color: #003049; /* Laranja vibrante para navbar, botões principais */
     --primary-dark-color: #e6762f; /* Laranja mais escuro para hover/ativos */
     --secondary-color: #DDF6EC; /* Verde claro para cabeçalhos de tabela, etc. */
     --success-color: #2E7D5B; /* Verde para mensagens de sucesso */
@@ -9,6 +9,7 @@
     --text-light: #FFFFFF; /* Texto branco puro para fundos escuros */
     --bg-light: #F8F9FA; /* Fundo de componentes brancos (tabelas, formulários) */
     --bg-page-contrast: #F0F4F8; /* O cinza claro que você já tinha na home.css e quer de fundo. */
+    --hoverBotao: transparent;
 }
 
 html {
@@ -49,8 +50,9 @@ a {
 }
 
     .btn-primary:hover {
-        background-color: var(--primary-dark-color);
-        border-color: var(--primary-dark-color);
+        background-color: var(--hoverBotao);
+        border-color: var(--primary-color);
+        color: var(--primary-color);
     }
 
 .btn-warning {
@@ -205,4 +207,16 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     padding: 5px;
     color: var(--text-light);
     cursor: pointer;
+}
+
+.footer {
+    background-color: var(--primary-color) !important;
+}
+
+.text-footer {
+    color: var(--text-light) !important;
+}
+
+.text {
+    color: var(--text-light) !important;
 }
