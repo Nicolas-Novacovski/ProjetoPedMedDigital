@@ -1,109 +1,186 @@
-﻿@* <!DOCTYPE html> *@
-<html lang="en">
+﻿<!DOCTYPE html>
+<html lang="pt-br">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - PetMed Digital</title>
-    <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 260px;
+            background-color: #1e6091;
+            color: white;
+            padding: 1rem;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .sidebar-nav .nav-link {
+            color: #adb5bd;
+            padding: 0.75rem 1rem;
+            border-radius: 0.25rem;
+            margin-bottom: 0.5rem;
+            transition: background-color 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-nav .nav-link:hover, .sidebar-nav .nav-link.active {
+            background-color: #4a5a94;
+            color: white;
+        }
+        
+        .main-content {
+            transition: margin-left 0.3s ease-in-out;
+            margin-left: 260px;
+        }
+
+        .main-content.full-width {
+            margin-left: 0;
+        }
+
+        .top-bar {
+            background-color: #ffffff;
+            padding: 0.5rem 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        #sidebarToggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #1e6091;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+    </style>
 </head>
 <body>
-    <header class="bg-primary text-white shadow-sm">
-        @* Esta classe bg-primary será sobrescrita pelo seu site.css *@
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-primary box-shadow">
-            @* Esta classe bg-primary também será sobrescrita *@
-            <div class="container-fluid">
-                <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">PetMed Digital</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                @if (User.IsInRole("Secretaria") || User.IsInRole("Veterinario") || User.IsInRole("Administrador"))
-                {
-                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                        <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="Agendamentos" asp-action="Index">Agendamentos</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="AgendaVeterinarios" asp-action="Index">Agenda Vets</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="CadastroColaboradores" asp-action="Index">Colaboradores</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="Clientes" asp-action="Index">Clientes</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="ItemEstoques" asp-action="Index">Estoque</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="Pacientes" asp-action="Index">Pacientes</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="Procedimentos" asp-action="Index">Procedimentos</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="Prontuarios" asp-action="Index">Prontuários</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="Servico" asp-action="Index">Serviços</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="Usuarios" asp-action="Index">Usuários</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="Vacinas" asp-action="Index">Vacinas</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="Valores" asp-action="Index">Valores</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="DadosFakes" asp-action="Index">Gerar Fakes</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="Veterinarios" asp-action="Index">Veterinários</a>
-                            </li>
-                        </ul>
-                    </div>
-                }
-                else
-                {
-                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end align-items-center">
-                        <ul class="d-flex list-unstyled mb-0">
-                            <li class="nav-item">
-                                <a style="text-decoration: none" class="text" asp-area="Identity" asp-page="/Account/Register">
-                                    Não tem Login? Cadastre-se
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                }
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <!-- Menu Lateral (Sidebar) -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <a asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/4tyo.gif" alt="Logo PetMed" style="height: 150px;"/>
+                </a>
             </div>
-        </nav>
-    </header>
-    <div class="container mt-4">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+            <ul class="nav flex-column sidebar-nav">
+                <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
+                <li class="nav-item"><a class="nav-link" asp-controller="Agendamentos" asp-action="Index">Agendamentos</a></li>
+                <li class="nav-item"><a class="nav-link" asp-controller="Clientes" asp-action="Index">Clientes</a></li>
+                <li class="nav-item"><a class="nav-link" asp-controller="ItemEstoques" asp-action="Index">Estoque</a></li>
+                <li class="nav-item"><a class="nav-link" asp-controller="Pacientes" asp-action="Index">Pacientes</a></li>
+                <li class="nav-item"><a class="nav-link" asp-controller="Prontuarios" asp-action="Index">Prontuários</a></li>
+                <li class="nav-item"><a class="nav-link" asp-controller="Valores" asp-action="Index">Valores</a></li>
 
-    <footer class="border-top footer text-muted bg-secondary">
-        @* bg-secondary para o footer *@
-        <center>
-            <div class="container text-footer">
-                &copy; 2025 - PetMed Digital - Privacy</a>
+                @if (User.IsInRole("Admin"))
+                {
+                    <hr class="my-2" style="border-color: #495057;">
+                    <li class="nav-item"><a class="nav-link" asp-controller="AgendaVeterinarios" asp-action="Index">Agenda Vets</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="CadastroColaboradores" asp-action="Index">Colaboradores</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="Procedimentos" asp-action="Index">Procedimentos</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="Servico" asp-action="Index">Serviços</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="Usuarios" asp-action="Index">Usuários</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="Vacinas" asp-action="Index">Vacinas</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="Veterinarios" asp-action="Index">Veterinários</a></li>
+                }
+            </ul>
+
+            <!-- Botão de Logout com novo estilo -->
+            <div class="mt-auto pt-3">
+                <form asp-area="Identity" asp-page="/Account/Logout" method="post">
+                     <button type="submit" class="btn btn-danger w-100 d-flex align-items-center justify-content-center py-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        <span>Sair</span>
+                    </button>
+                </form>
             </div>
-        </center>
-    </footer>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <div id="main-content" class="main-content">
+            <header class="top-bar">
+                <button id="sidebarToggle" title="Recolher menu">☰</button>
+            </header>
+            <main role="main" class="container-fluid p-4">
+                @RenderBody()
+            </main>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const sidebar = document.getElementById('sidebar');
+                const mainContent = document.getElementById('main-content');
+                const sidebarToggle = document.getElementById('sidebarToggle');
+
+                // Verificar estado salvo
+                const savedState = localStorage.getItem('sidebarState');
+                if (savedState === 'hidden') {
+                    sidebar.classList.add('hidden');
+                    mainContent.classList.add('full-width');
+                }
+
+                // Configurar evento de clique
+                if (sidebarToggle) {
+                    sidebarToggle.addEventListener('click', function() {
+                        sidebar.classList.toggle('hidden');
+                        mainContent.classList.toggle('full-width');
+                        
+                        // Salvar estado
+                        localStorage.setItem('sidebarState', 
+                            sidebar.classList.contains('hidden') ? 'hidden' : 'visible');
+                    });
+                }
+            });
+        </script>
+    }
+    else
+    {
+        <!-- PÁGINA DE LOGIN CORRIGIDA -->
+        <div class="login-container">
+            @RenderBody()
+        </div>
+    }
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
