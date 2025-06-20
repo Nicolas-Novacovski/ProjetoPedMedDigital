@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity; // NECESSÁRIO
+using Microsoft.AspNetCore.Identity; 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -68,9 +68,6 @@ namespace ProjetoPetMedDigital.Controllers
         {
             if (ModelState.IsValid)
             {
-                // LÓGICA DE NEGÓCIO
-                // ...
-                // FIM DA LÓGICA DE NEGÓCIO
 
                 if (!ModelState.IsValid)
                 {
@@ -115,9 +112,6 @@ namespace ProjetoPetMedDigital.Controllers
 
             if (ModelState.IsValid)
             {
-                // LÓGICA DE NEGÓCIO PARA EDIT
-                // ...
-                // FIM DA LÓGICA DE NEGÓCIO
 
                 if (!ModelState.IsValid)
                 {

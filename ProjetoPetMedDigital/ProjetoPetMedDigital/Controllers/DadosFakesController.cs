@@ -1,6 +1,4 @@
-﻿// ProjetoPetMedDigital/ProjetoPetMedDigital/Controllers/DadosFakesController.cs
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProjetoPetMedDigital.Models;
 using Bogus;
 using System.Linq;
@@ -45,12 +43,8 @@ namespace ProjetoPetMedDigital.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // LIMPEZA DE DADOS EXISTENTES (USE COM EXTREMA CAUTELA EM PRODUÇÃO!)
-            // ESTA LINHA FOI DESCOMENTADA PARA RESOLVER ERROS DE CHAVE PRIMÁRIA/UNICIDADE.
-            // Se você NÃO quiser que o banco de dados seja limpo, comente-a novamente, mas pode ter problemas com dados duplicados.
             await LimparDadosExistentes();
 
-            // Variáveis para armazenar IDs dos dados gerados, para uso em chaves estrangeiras
             var clientesIds = new List<int>();
             var pacientesIds = new List<int>();
             var veterinariosIds = new List<int>();
@@ -61,7 +55,6 @@ namespace ProjetoPetMedDigital.Controllers
             var agendamentosIds = new List<int>(); // IDs de Agendamento
             var valoresIds = new List<int>();
 
-            // Variáveis para armazenar as listas geradas (inicializadas para evitar erro de escopo)
             List<CadastroColaborador> colaboradoresGerados = new List<CadastroColaborador>();
             List<Veterinario> veterinariosGerados = new List<Veterinario>();
             List<Cliente> clientesGerados = new List<Cliente>();
@@ -75,10 +68,8 @@ namespace ProjetoPetMedDigital.Controllers
             List<Prontuario> prontuariosGerados = new List<Prontuario>();
             List<AgendaVeterinario> agendasGeradas = new List<AgendaVeterinario>();
 
-            // Instância Faker genérica para PickRandom fora de RuleFor (fkr na RuleFor, f aqui)
             var f = new Faker("pt_BR");
 
-            // Instâncias Faker para cada modelo, INICIALIZADAS NA DECLARAÇÃO
             var cadastroColaboradorFaker = new Faker<CadastroColaborador>("pt_BR");
             var clientesFaker = new Faker<Cliente>("pt_BR");
             var pacientesFaker = new Faker<Paciente>("pt_BR");

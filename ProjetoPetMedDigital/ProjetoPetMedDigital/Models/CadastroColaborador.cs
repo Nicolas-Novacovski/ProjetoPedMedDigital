@@ -1,8 +1,8 @@
-using ProjetoPetMedDigital.Models; // <<< DEVE SER ESTE NAMESPACE
+using ProjetoPetMedDigital.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Identity; // <<< NECESSÁRIO
+using Microsoft.AspNetCore.Identity; 
 
 namespace ProjetoPetMedDigital.Models
 {
@@ -72,14 +72,10 @@ namespace ProjetoPetMedDigital.Models
         [Range(1, int.MaxValue, ErrorMessage = "Selecione um tipo de usuário válido.")]
         [Display(Name = "Tipo de Usuário")]
         public int TipoUsuario { get; set; }
-
-        // PROPRIEDADES REMOVIDAS: UsuarioId e Login (antigas)
-        // NOVO: Propriedade para a FK do IdentityUser (AspNetUsers.Id)
         [Required(ErrorMessage = "O ID do usuário Identity é obrigatório.")]
         [Display(Name = "ID do Usuário (Identity)")]
         public string IdentityUserId { get; set; } = null!;
 
-        // NOVO: Propriedade de navegação para IdentityUser
         public IdentityUser? IdentityUser { get; set; }
 
         public Veterinario? Veterinario { get; set; }

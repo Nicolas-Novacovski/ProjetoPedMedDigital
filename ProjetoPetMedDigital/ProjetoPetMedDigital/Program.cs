@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using ProjetoPetMedDigital.Models; // Certifique-se de que este using está correto para o DbInitializer
+using ProjetoPetMedDigital.Models; 
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Adiciona o contexto do banco de dados
 builder.Services.AddDbContext<PetMedContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
