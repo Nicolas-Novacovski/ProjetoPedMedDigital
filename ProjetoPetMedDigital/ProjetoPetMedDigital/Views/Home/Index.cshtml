@@ -1,35 +1,117 @@
 @{
-    ViewData["Title"] = "Página Inicial";
+    ViewData["Title"] = "Dashboard";
 }
 
-<link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+<style>
+    .stat-card {
+        border-left: 5px solid #1e6091;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    }
 
-<div class="home-main-content">
-    <div class="container">
-        <div class="coluna-esquerda">
-            <a class="home-link" asp-controller="Agendamentos" asp-action="Index">
-                <p>Minha Agenda</p>
-            </a>
-            <a class="home-link" asp-controller="Vacinas" asp-action="Index">
-                <p>Vacinas em estoque</p>
-            </a>
-            <a class="home-link" asp-controller="Prontuarios" asp-action="Index">
-                <p>Últimos Atendimentos</p>
+    .action-card {
+        background-color: #1e6091;
+        color: white;
+        transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+    }
+    .action-card:hover {
+        background-color: #164a6e;
+        transform: translateY(-5px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    }
+    .action-card-secondary {
+        background-color: #f8f9fa;
+        color: #1e6091;
+        border: 1px solid #dee2e6;
+    }
+    .action-card-secondary:hover {
+        background-color: #e9ecef;
+    }
+</style>
+
+<!-- Título de Boas-vindas -->
+<div class="mb-4">
+    <h3>Dashboard</h3>
+    <p class="text-muted">Bem-vindo(a) de volta, @User.Identity?.Name!</p>
+</div>
+
+<!-- Cartões de Estatísticas -->
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card shadow-sm stat-card h-100">
+            <div class="card-body">
+                <h5 class="card-title text-muted">Agendamentos para Hoje</h5>
+                <p class="card-text fs-2 fw-bold">5</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm stat-card h-100">
+            <div class="card-body">
+                <h5 class="card-title text-muted">Pacientes na Fila</h5>
+                <p class="card-text fs-2 fw-bold">12</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm stat-card h-100">
+            <div class="card-body">
+                <h5 class="card-title text-muted">Novos Clientes (Mês)</h5>
+                <p class="card-text fs-2 fw-bold">8</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ações Rápidas -->
+<hr class="my-4">
+<h4>Ações Rápidas</h4>
+
+<div class="row g-4 mt-2">
+    <!-- Ações para Secretária e Admin -->
+    @if (User.IsInRole("Admin") || User.IsInRole("Secretaria"))
+    {
+        <div class="col-md-6 col-lg-4">
+            <a asp-controller="Agendamentos" asp-action="Create" class="card text-decoration-none action-card h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Novo Agendamento</h5>
+                    <p class="card-text">Agende uma nova consulta ou procedimento.</p>
+                </div>
             </a>
         </div>
-        <div class="imagem-centro">
-            <img src="~/images/dog com lingua .png" alt="Imagem do Centro" />
-        </div>
-        <div class="coluna-direita">
-            <a class="home-link" asp-controller="Agendamentos" asp-action="Create">
-                <p>Novo Atendimento</p>
-            </a>
-            <a class="home-link" asp-controller="ItemEstoques" asp-action="Index">
-                <p>Medicamentos em estoque</p>
-            </a>
-            <a class="home-link" asp-controller="Pacientes" asp-action="Index">
-                <p>Fila de espera</p>
+        <div class="col-md-6 col-lg-4">
+            <a asp-controller="Clientes" asp-action="Create" class="card text-decoration-none action-card-secondary h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Cadastrar Cliente</h5>
+                    <p class="card-text">Adicione um novo tutor e seu pet ao sistema.</p>
+                </div>
             </a>
         </div>
+    }
+
+    <!-- Ação para Veterinário e Admin -->
+    @if (User.IsInRole("Admin") || User.IsInRole("Veterinario"))
+    {
+        <div class="col-md-6 col-lg-4">
+            <a asp-controller="Prontuarios" asp-action="Create" class="card text-decoration-none action-card h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Novo Prontuário</h5>
+                    <p class="card-text">Inicie um novo registro de atendimento.</p>
+                </div>
+            </a>
+        </div>
+    }
+
+    <!-- Ação genérica para todos -->
+    <div class="col-md-6 col-lg-4">
+        <a asp-controller="Prontuarios" asp-action="Index" class="card text-decoration-none action-card-secondary h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title">Ver Atendimentos</h5>
+                <p class="card-text">Consulte a lista de últimos atendimentos.</p>
+            </div>
+        </a>
     </div>
 </div>

@@ -6,11 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjetoPetMedDigital.Models;
-using Microsoft.AspNetCore.Authorization; // NECESSÁRIO
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProjetoPetMedDigital.Controllers
 {
-    [Authorize(Roles = "Administrador,Secretaria,Veterinario")] // Admin e Secretaria podem tudo, Veterinario talvez só possa ver a Index e Details
+    // CORREÇÃO 1: Permissão geral para qualquer utilizador autenticado ver a lista
+    [Authorize]
     public class AgendamentosController : Controller
     {
         private readonly PetMedContext _context;
@@ -47,7 +48,8 @@ namespace ProjetoPetMedDigital.Controllers
             return View(agendamento);
         }
 
-        // GET: Agendamentos/Create (Apenas Admin e Secretaria)
+        // GET: Agendamentos/Create
+        // CORREÇÃO 2: Apenas Admin e Secretaria podem criar
         [Authorize(Roles = "Administrador,Secretaria")]
         public IActionResult Create()
         {
@@ -56,7 +58,7 @@ namespace ProjetoPetMedDigital.Controllers
             return View();
         }
 
-        // POST: Agendamentos/Create (Apenas Admin e Secretaria)
+        // POST: Agendamentos/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrador,Secretaria")]
@@ -64,7 +66,6 @@ namespace ProjetoPetMedDigital.Controllers
         {
             if (ModelState.IsValid)
             {
-                // ... (Sua lógica de negócio) ...
                 _context.Add(agendamento);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -74,7 +75,8 @@ namespace ProjetoPetMedDigital.Controllers
             return View(agendamento);
         }
 
-        // GET: Agendamentos/Edit/5 (Apenas Admin e Secretaria)
+        // GET: Agendamentos/Edit/5
+        // CORREÇÃO 3: Apenas Admin e Secretaria podem editar
         [Authorize(Roles = "Administrador,Secretaria")]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -93,7 +95,7 @@ namespace ProjetoPetMedDigital.Controllers
             return View(agendamento);
         }
 
-        // POST: Agendamentos/Edit/5 (Apenas Admin e Secretaria)
+        // POST: Agendamentos/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrador,Secretaria")]
@@ -106,7 +108,6 @@ namespace ProjetoPetMedDigital.Controllers
 
             if (ModelState.IsValid)
             {
-                // ... (Sua lógica de negócio) ...
                 try
                 {
                     _context.Update(agendamento);
@@ -130,7 +131,8 @@ namespace ProjetoPetMedDigital.Controllers
             return View(agendamento);
         }
 
-        // GET: Agendamentos/Delete/5 (Apenas Administrador)
+        // GET: Agendamentos/Delete/5
+        // CORREÇÃO 4: Apenas Administrador pode excluir
         [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -151,7 +153,7 @@ namespace ProjetoPetMedDigital.Controllers
             return View(agendamento);
         }
 
-        // POST: Agendamentos/Delete/5 (Apenas Administrador)
+        // POST: Agendamentos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrador")]

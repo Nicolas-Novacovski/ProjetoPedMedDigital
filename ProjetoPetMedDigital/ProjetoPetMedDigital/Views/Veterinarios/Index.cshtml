@@ -1,68 +1,75 @@
 ﻿@model IEnumerable<ProjetoPetMedDigital.Models.Veterinario>
 
 @{
-    ViewData["Title"] = "Veterinários";
+    ViewData["Title"] = "Lista de Veterinários";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="mb-4">Lista de Veterinários</h1>
+<style>
+    .table-actions .dropdown-toggle::after {
+        display: none; /* Esconde a seta padrão do dropdown */
+    }
+</style>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Novo Veterinário</a>
-</p>
-<table class="table table-hover table-striped">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.NomeVeterinario)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Especialidade)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Telefone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CadastroColaborador)
-            </th>
-            @* REMOVIDO: Campo Id (BaseModel) *@
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NomeVeterinario)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Especialidade)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @(item.CadastroColaborador?.Nome)
-            </td>
-            @* REMOVIDO: Campo Id (BaseModel) *@
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdVeterinario" class="btn btn-sm btn-info">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.IdVeterinario" class="btn btn-sm btn-secondary">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdVeterinario" class="btn btn-sm btn-danger">Excluir</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<!-- Título da Página e Botão de Ação -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Lista de Veterinários</h1>
+
+    <!-- Botão "Novo Veterinário" visível apenas para o Admin -->
+    @if (User.IsInRole("Administrador"))
+    {
+        <a asp-action="Create" class="btn text-white" style="background-color: #1e6091;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg me-2" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+            </svg>
+            Novo Veterinário
+        </a>
+    }
+</div>
+
+<!-- Tabela dentro de um Card -->
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.NomeVeterinario)</th>
+                        <th>@Html.DisplayNameFor(model => model.Especialidade)</th>
+                        <th>@Html.DisplayNameFor(model => model.Email)</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.NomeVeterinario)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Especialidade)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                            <td class="text-center table-actions">
+                                <!-- Botão de Ações com Dropdown -->
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton-@item.IdVeterinario" data-bs-toggle="dropdown" aria-expanded="false" data-bs-strategy="fixed">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
+                                        </svg>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton-@item.IdVeterinario">
+                                        <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@item.IdVeterinario">Editar</a></li>
+                                        <li><a class="dropdown-item" asp-action="Details" asp-route-id="@item.IdVeterinario">Detalhes</a></li>
+                                        @if (User.IsInRole("Administrador"))
+                                        {
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" asp-action="Delete" asp-route-id="@item.IdVeterinario">Excluir</a></li>
+                                        }
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

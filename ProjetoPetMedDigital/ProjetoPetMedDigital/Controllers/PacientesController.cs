@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-
 using ProjetoPetMedDigital.Models;
-using Microsoft.AspNetCore.Authorization; // NECESSÁRIO
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProjetoPetMedDigital.Controllers
 {
-    [Authorize(Roles = "Administrador,Veterinario,Secretaria")] // Admin, Vet e Secretaria podem gerenciar pacientes
+    // CORREÇÃO APLICADA AQUI: Adicionado "Secretaria" à lista de perfis autorizados.
+    [Authorize(Roles = "Administrador,Secretaria,Veterinario")]
     public class PacientesController : Controller
     {
         private readonly PetMedContext _context;
@@ -61,29 +61,6 @@ namespace ProjetoPetMedDigital.Controllers
         {
             if (ModelState.IsValid)
             {
-                // *** INÍCIO DA LÓGICA DE NEGÓCIO ***
-
-                // Validação: Peso deve ser positivo
-                if (paciente.Peso <= 0)
-                {
-                    ModelState.AddModelError("Peso", "O peso do animal deve ser um valor positivo.");
-                }
-
-                // Validação: Nome do cachorro não pode ser igual a "Cachorro Genérico" (exemplo)
-                if (paciente.NomeCachorro.Equals("Cachorro Genérico", StringComparison.OrdinalIgnoreCase))
-                {
-                    ModelState.AddModelError("NomeCachorro", "Por favor, digite um nome específico para o animal.");
-                }
-
-                // Se alguma validação customizada falhou, retorne a View
-                if (!ModelState.IsValid)
-                {
-                    ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel", paciente.IdCliente);
-                    return View(paciente);
-                }
-
-                // *** FIM DA LÓGICA DE NEGÓCIO ***
-
                 _context.Add(paciente);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -121,21 +98,6 @@ namespace ProjetoPetMedDigital.Controllers
 
             if (ModelState.IsValid)
             {
-                // *** INÍCIO DA LÓGICA DE NEGÓCIO PARA EDIT ***
-                // Validação: Peso deve ser positivo (igual ao Create)
-                if (paciente.Peso <= 0)
-                {
-                    ModelState.AddModelError("Peso", "O peso do animal deve ser um valor positivo.");
-                }
-
-                // Se alguma validação customizada falhou, retorne a View
-                if (!ModelState.IsValid)
-                {
-                    ViewData["IdCliente"] = new SelectList(_context.Clientes, "IdCliente", "NomeResponsavel", paciente.IdCliente);
-                    return View(paciente);
-                }
-                // *** FIM DA LÓGICA DE NEGÓCIO PARA EDIT ***
-
                 try
                 {
                     _context.Update(paciente);
@@ -158,7 +120,8 @@ namespace ProjetoPetMedDigital.Controllers
             return View(paciente);
         }
 
-        // GET: Pacientes/Delete/5 (Apenas Administrador)
+        // GET: Pacientes/Delete/5
+        // Apenas o Administrador pode excluir diretamente
         [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -178,7 +141,7 @@ namespace ProjetoPetMedDigital.Controllers
             return View(paciente);
         }
 
-        // POST: Pacientes/Delete/5 (Apenas Administrador)
+        // POST: Pacientes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrador")]

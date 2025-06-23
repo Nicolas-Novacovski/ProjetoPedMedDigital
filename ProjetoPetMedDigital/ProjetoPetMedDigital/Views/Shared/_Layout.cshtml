@@ -99,29 +99,44 @@
                     <img src="~/images/4tyo.gif" alt="Logo PetMed" style="height: 150px;"/>
                 </a>
             </div>
-            <ul class="nav flex-column sidebar-nav">
+            <ul class="nav flex-column sidebar-nav flex-grow-1">
+                <!-- ======================================================= -->
+                <!-- LÓGICA DE PERMISSÕES DO MENU ATUALIZADA E CORRIGIDA -->
+                <!-- ======================================================= -->
+
                 <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
                 <li class="nav-item"><a class="nav-link" asp-controller="Agendamentos" asp-action="Index">Agendamentos</a></li>
-                <li class="nav-item"><a class="nav-link" asp-controller="Clientes" asp-action="Index">Clientes</a></li>
-                <li class="nav-item"><a class="nav-link" asp-controller="ItemEstoques" asp-action="Index">Estoque</a></li>
                 <li class="nav-item"><a class="nav-link" asp-controller="Pacientes" asp-action="Index">Pacientes</a></li>
-                <li class="nav-item"><a class="nav-link" asp-controller="Prontuarios" asp-action="Index">Prontuários</a></li>
-                <li class="nav-item"><a class="nav-link" asp-controller="Valores" asp-action="Index">Valores</a></li>
 
-                @if (User.IsInRole("Admin"))
+                <!-- Links para Secretária e Admin -->
+                @if (User.IsInRole("Administrador") || User.IsInRole("Secretaria"))
+                {
+                    <li class="nav-item"><a class="nav-link" asp-controller="Clientes" asp-action="Index">Clientes</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="ItemEstoques" asp-action="Index">Estoque</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="Valores" asp-action="Index">Financeiro</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="AgendaVeterinarios" asp-action="Index">Agenda Vets</a></li>
+                }
+
+                <!-- Links para Veterinário e Admin -->
+                @if (User.IsInRole("Administrador") || User.IsInRole("Veterinario"))
+                {
+                    <li class="nav-item"><a class="nav-link" asp-controller="Prontuarios" asp-action="Index">Prontuários</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="Vacinas" asp-action="Index">Vacinas</a></li>
+                }
+
+                <!-- Links Apenas para Admin -->
+                @if (User.IsInRole("Administrador"))
                 {
                     <hr class="my-2" style="border-color: #495057;">
-                    <li class="nav-item"><a class="nav-link" asp-controller="AgendaVeterinarios" asp-action="Index">Agenda Vets</a></li>
                     <li class="nav-item"><a class="nav-link" asp-controller="CadastroColaboradores" asp-action="Index">Colaboradores</a></li>
                     <li class="nav-item"><a class="nav-link" asp-controller="Procedimentos" asp-action="Index">Procedimentos</a></li>
                     <li class="nav-item"><a class="nav-link" asp-controller="Servico" asp-action="Index">Serviços</a></li>
                     <li class="nav-item"><a class="nav-link" asp-controller="Usuarios" asp-action="Index">Usuários</a></li>
-                    <li class="nav-item"><a class="nav-link" asp-controller="Vacinas" asp-action="Index">Vacinas</a></li>
                     <li class="nav-item"><a class="nav-link" asp-controller="Veterinarios" asp-action="Index">Veterinários</a></li>
                 }
             </ul>
 
-            <!-- Botão de Logout com novo estilo -->
+            <!-- Botão de Logout -->
             <div class="mt-auto pt-3">
                 <form asp-area="Identity" asp-page="/Account/Logout" method="post">
                      <button type="submit" class="btn btn-danger w-100 d-flex align-items-center justify-content-center py-2">
@@ -141,37 +156,9 @@
                 @RenderBody()
             </main>
         </div>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const sidebar = document.getElementById('sidebar');
-                const mainContent = document.getElementById('main-content');
-                const sidebarToggle = document.getElementById('sidebarToggle');
-
-                // Verificar estado salvo
-                const savedState = localStorage.getItem('sidebarState');
-                if (savedState === 'hidden') {
-                    sidebar.classList.add('hidden');
-                    mainContent.classList.add('full-width');
-                }
-
-                // Configurar evento de clique
-                if (sidebarToggle) {
-                    sidebarToggle.addEventListener('click', function() {
-                        sidebar.classList.toggle('hidden');
-                        mainContent.classList.toggle('full-width');
-                        
-                        // Salvar estado
-                        localStorage.setItem('sidebarState', 
-                            sidebar.classList.contains('hidden') ? 'hidden' : 'visible');
-                    });
-                }
-            });
-        </script>
     }
     else
     {
-        <!-- PÁGINA DE LOGIN CORRIGIDA -->
         <div class="login-container">
             @RenderBody()
         </div>
@@ -180,6 +167,33 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+
+            const savedState = localStorage.getItem('sidebarState');
+            if (savedState === 'hidden') {
+                sidebar.classList.add('hidden');
+                mainContent.classList.add('full-width');
+            }
+
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('hidden');
+                    mainContent.classList.toggle('full-width');
+                    
+                    localStorage.setItem('sidebarState', 
+                        sidebar.classList.contains('hidden') ? 'hidden' : 'visible');
+                });
+            }
+        });
+    </script>
+    }
     
     @await RenderSectionAsync("Scripts", required: false)
 </body>

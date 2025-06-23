@@ -1,110 +1,111 @@
 ﻿@model IEnumerable<ProjetoPetMedDigital.Models.ItemEstoque>
 
 @{
-    ViewData["Title"] = "Itens de Estoque";
+    ViewData["Title"] = "Gerenciamento de Estoque";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="mb-4">Lista de Itens de Estoque</h1>
+<!-- Título da Página e Botão de Ação -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Itens de Estoque</h1>
+    <a asp-action="Create" class="btn text-white" style="background-color: #1e6091;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg me-2" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+        </svg>
+        Novo Item
+    </a>
+</div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Novo Item de Estoque</a>
-</p>
-<table class="table table-hover table-striped">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.NomeProduto)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantidade)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PrecoCusto)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PrecoVenda)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnidadeMedida)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataValidade)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fornecedor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TransacaoDesejada)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vacina)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Procedimento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Servico)
-            </th>
-            @* REMOVIDO: Campo Id (BaseModel) *@
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NomeProduto)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descricao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantidade)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrecoCusto)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrecoVenda)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnidadeMedida)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataValidade)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fornecedor)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TransacaoDesejada)
-            </td>
-            <td>
-                @(item.Vacina?.NomeVacina)
-            </td>
-            <td>
-                @(item.Procedimento?.NomeProcedimento)
-            </td>
-            <td>
-                @(item.Servico?.NomeServico)
-            </td>
-            @* REMOVIDO: Campo Id (BaseModel) *@
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdProduto" class="btn btn-sm btn-info">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.IdProduto" class="btn btn-sm btn-secondary">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdProduto" class="btn btn-sm btn-danger">Excluir</a>
-            </td>
-        </tr>
+<!-- Tabela dentro de um Card -->
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.NomeProduto)</th>
+                        <th class="text-center">@Html.DisplayNameFor(model => model.Quantidade)</th>
+                        <th>@Html.DisplayNameFor(model => model.PrecoVenda)</th>
+                        <th>@Html.DisplayNameFor(model => model.DataValidade)</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.NomeProduto)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.Quantidade)</td>
+                            <td>@(item.PrecoVenda.HasValue? item.PrecoVenda.Value.ToString("C") : "N/A")</td>
+                            <td>@(item.DataValidade.HasValue? item.DataValidade.Value.ToShortDateString() : "N/A")</td>
+                            <td class="text-center">
+                                <!-- Este botão agora abre o Modal de Ações, passando os dados do item -->
+                                <button class="btn btn-sm btn-secondary action-button"
+                                        type="button"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#actionModal"
+                                        data-item-name="@item.NomeProduto"
+                                        data-edit-url="@Url.Action("Edit", new { id = item.IdProduto })"
+                                        data-details-url="@Url.Action("Details", new { id = item.IdProduto })"
+                                        data-delete-url="@Url.Action("Delete", new { id = item.IdProduto })">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                        <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Único de Ações -->
+<div class="modal fade" id="actionModal" tabindex="-1" aria-labelledby="actionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="actionModalLabel">Ações para: <span id="modalItemName"></span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-grid gap-2">
+                <a id="modalEditButton" class="btn btn-outline-primary">Editar Item</a>
+                <a id="modalDetailsButton" class="btn btn-outline-secondary">Ver Detalhes</a>
+                <a id="modalDeleteButton" class="btn btn-outline-danger">Excluir Item</a>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var actionModal = document.getElementById('actionModal');
+            actionModal.addEventListener('show.bs.modal', function (event) {
+                // Botão que acionou o modal
+                var button = event.relatedTarget;
+
+                // Extrai as informações dos atributos data-*
+                var itemName = button.getAttribute('data-item-name');
+                var editUrl = button.getAttribute('data-edit-url');
+                var detailsUrl = button.getAttribute('data-details-url');
+                var deleteUrl = button.getAttribute('data-delete-url');
+
+                // Atualiza o conteúdo do modal
+                var modalTitle = actionModal.querySelector('#modalItemName');
+                var modalEditButton = actionModal.querySelector('#modalEditButton');
+                var modalDetailsButton = actionModal.querySelector('#modalDetailsButton');
+                var modalDeleteButton = actionModal.querySelector('#modalDeleteButton');
+
+                modalTitle.textContent = itemName;
+                modalEditButton.href = editUrl;
+                modalDetailsButton.href = detailsUrl;
+                modalDeleteButton.href = deleteUrl;
+            });
+        });
+    </script>
 }
-    </tbody>
-</table>

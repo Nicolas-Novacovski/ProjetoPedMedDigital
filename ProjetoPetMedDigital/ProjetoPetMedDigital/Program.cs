@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using ProjetoPetMedDigital.Models; 
+using ProjetoPetMedDigital.Data;
+using ProjetoPetMedDigital.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,49 +13,45 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<PetMedContext>();
 
+// Configuração dos Cookies de Autenticação
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+    options.LoginPath = "/Identity/Account/Login";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.SlidingExpiration = true;
+});
+
 // Adiciona suporte a controladores MVC com views
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
+
 
 var app = builder.Build();
 
 // Configuração do pipeline de requisições HTTP
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error"); // Redireciona erros para a página de erro do Home
+    app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
 
-app.UseHttpsRedirection(); // Redireciona requisições HTTP para HTTPS
-app.UseStaticFiles();     // Permite servir arquivos estáticos (CSS, JS, imagens)
+app.UseHttpsRedirection();
+app.UseStaticFiles();
 
-app.UseRouting();         // Habilita o roteamento
+app.UseRouting();
 
-app.UseAuthentication();  // Habilita a autenticação (necessário para o Identity)
-app.UseAuthorization();   // Habilita a autorização
+app.UseAuthentication();
+app.UseAuthorization();
 
-// ***** RESTAURADO: Rota padrão para Home/Index *****
-// Esta rota é a rota padrão para seus controladores MVC.
-// Após o login, o usuário provavelmente será redirecionado para cá.
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}"); // Voltar para Home/Index como padrão
-
-// Mapeia as Razor Pages (essencial para o Identity UI)
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
-// ***** ADIÇÃO CRÍTICA: Redireciona a raiz ("/") para a página de login do Identity *****
-// Isso garante que ao iniciar a aplicação, a primeira tela seja a de login.
-app.MapGet("/", context => {
-    // Redireciona para o caminho padrão da página de login do Identity.
-    // O caminho para as páginas do Identity UI é sempre /Identity/Account/Login
-    context.Response.Redirect("/Identity/Account/Login");
-    return Task.CompletedTask; // Retorna um Task.CompletedTask para indicar que a operação assíncrona foi concluída.
-});
-// ***********************************************************************************
 
-
-// Chamada ao inicializador de banco de dados para criar Roles e um Admin padrão
-// Este bloco deve estar APÓS app.Build() e ANTES de app.Run()
+// Chamada ao inicializador de banco de dados para criar Roles e utilizadores padrão
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -91,11 +87,26 @@ using (var scope = app.Services.CreateScope())
         }
     }
 
-    // Se você tinha um DbInitializer.Initialize(scope.ServiceProvider) antes,
-    // pode ter sido substituído ou integrado aqui.
-    // Se o seu DbInitializer tinha outras lógicas, certifique-se de que ainda são executadas.
-    // Exemplo:
-    // await DbInitializer.Initialize(scope.ServiceProvider); 
+    // *** CÓDIGO PARA A SECRETARIA ADICIONADO AQUI ***
+    // Seed Secretaria User
+    string secretariaEmail = "secretaria@petmed.com";
+    string secretariaPassword = "Secretaria@123";
+
+    if (await userManager.FindByEmailAsync(secretariaEmail) == null)
+    {
+        var secretariaUser = new IdentityUser
+        {
+            UserName = secretariaEmail,
+            Email = secretariaEmail,
+            EmailConfirmed = true
+        };
+
+        var result = await userManager.CreateAsync(secretariaUser, secretariaPassword);
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(secretariaUser, "Secretaria");
+        }
+    }
 }
 
 app.Run();
